@@ -28,3 +28,4 @@ def register():
         db.session.add(user)
         db.session.commit()
         return jsonify(errcode=RET.OK, errmsg="注册成功")
+# 注释
