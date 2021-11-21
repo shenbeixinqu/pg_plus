@@ -1,5 +1,6 @@
 from exts import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 
 # 员工表
@@ -44,3 +45,12 @@ class CMSUser(db.Model):
             "username": self.name
         }
         return user_dict
+
+
+# 法律
+class CMSLaw(db.Model):
+    __tablename__ = 'cms_law'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)

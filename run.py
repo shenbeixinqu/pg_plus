@@ -1,11 +1,13 @@
 from flask import Flask
 from exts import db
 from config import configs
+from flask_cors import *
 
 
 def create_app(develop):
     config_name = "develop"
     app = Flask(__name__)
+    CORS(app, supports_credentials=True)
     app.config.from_object(configs[config_name])
     db.init_app(app)
     from apps.cms import bp as cms_bp
