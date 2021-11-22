@@ -2,6 +2,7 @@ from flask import Flask
 from exts import db
 from config import configs
 from flask_cors import *
+from flask_httpauth import HTTPBasicAuth
 
 
 def create_app(develop):
