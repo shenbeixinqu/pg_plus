@@ -2,7 +2,9 @@ import os
 import logging
 
 Base_dir = os.path.dirname(__file__)
-Base_url = "http://127.0.0.1:5000"
+# Base_url = "http://127.0.0.1:5000"
+Base_url = "http://waxh.pg024.com"
+
 
 class Config(object):
     DEBUG = True

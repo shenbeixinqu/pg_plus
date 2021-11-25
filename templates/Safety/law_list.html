@@ -1,0 +1,16 @@
+{% extends 'Safety/base_list.html' %}
+
+{% block title %}
+    法律法规
+{% endblock %}
+
+{% block content %}
+    {% for law in laws %}
+        <a href="{{ url_for('api.law_detail', law_id=law.id) }}">
+            <div class="list_part">
+                <div class="list_left">{{ law.title }}</div>
+                <div class="list_right">{{ law.addtime|date_format }}</div>
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}

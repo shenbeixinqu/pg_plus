@@ -1,0 +1,97 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>会员注册</title>
+	<link href="../../static/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="../../static/css/common.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="../../static/js/jquery.js"></script>
+	<script type="text/javascript" src="../../static/js/nav.js"></script>
+</head>
+
+<body>
+	<div class="warp">
+		<div class="form-content">
+			<div class="register-content-form">
+				<form method="post" action="" name="quire" id="quire" onsubmit="return RegisterForm(this)">
+					<div class="quire-form-mes">
+						<div class="form-title"><span class="star">*</span>您的姓名：</div>
+						<div class="psw-form-inputDiv"><input name="name" type="text" id="name" placeholder="请输入您的姓名">
+						</div>
+					</div>
+					<div class="quire-form-mes">
+						<div class="form-title"><span class="star">*</span>所在公司：</div>
+						<div class="psw-form-inputDiv"><input name="company" type="text" id="company"
+								placeholder="请输入所在公司"></div>
+					</div>
+					<div class="quire-form-mes">
+						<div class="form-title"><span class="star">*</span>目前职位：</div>
+						<div class="psw-form-inputDiv"><input name="job" type="text" id="job" placeholder="请输入目标职位">
+						</div>
+					</div>
+					<div class="quire-form-mes">
+						<div class="form-title"><span class="star">*</span>联系电话：</div>
+						<div class="psw-form-inputDiv"><input name="tel" type="text" id="tel" placeholder="请输入联系电话">
+						</div>
+					</div>
+					<input name="registersubmit" type="submit" class="psw-submit" id="registerBtn" value="提交"
+						title="提交">
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		// 表单前端验证
+		String.prototype.Trim = function () {
+			var m = this.match(/^\s*(\S+(\s+\S+)*)\s*$/);
+			return (m == null) ? "" : m[1];
+		}
+
+		//验证手机号
+		String.prototype.isMobile = function () {
+			return (/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57]|19[0-9]|16[0-9])[0-9]{8}$/.test(this
+				.Trim()));
+		}
+
+		//验证电话
+		String.prototype.isTel = function () {
+			//"兼容格式: 国家代码(2到3位)-区号(2到3位)-电话号码(7到8位)-分机号(3位)"
+			//return (/^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/.test(this.Trim()));
+			return (/^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/.test(this.Trim()));
+		}
+		function RegisterForm(theform) {
+			if (theform.name.value == "") {
+				alert("用户名不能为空！");
+				theform.name.focus();
+				return (false);
+			}
+			if (theform.company.value == "") {
+				alert("公司不能为空！");
+				theform.company.focus();
+				return (false);
+			}
+			if (theform.job.value == "") {
+				alert("职位不能为空！");
+				theform.job.focus();
+				return (false);
+			}
+			if (theform.tel.value == "") {
+				alert("手机号不能为空！");
+				theform.tel.focus();
+				return (false);
+			}
+			if (theform.tel.value.isTel() || theform.tel.value.isMobile()) {
+				theform.tel.value = theform.tel.value.Trim();
+			} else {
+				alert("请输入正确的手机号");
+				theform.tel.focus();
+				return (false);
+			}
+		}
+		window.history.replaceState(null, null, window.location.href);
+	</script>
+</body>
+
+</html>

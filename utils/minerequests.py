@@ -14,7 +14,6 @@ def generate_auth_token(user_id, expiration=36000):
     :return:
     """
     s = Serializer(SECRET_KEY, expires_in=expiration)
-    print(s.dumps({"user_id": user_id}))
     return s.dumps({"user_id": user_id})
 
 
@@ -41,8 +40,3 @@ def verify_auth_token(token):
         data["msg"] = "token错误"
         print("token wrong")
         return jsonify(data)
-
-
-# generate_auth_token(7)
-# token_data = "eyJhbGciOiJIUzUxMiIsImlhdCI6MTYzNzU2MDU0MywiZXhwIjoxNjM3NTk2NTQzfQ.eyJ1c2VyX2lkIjo3fQ.uvEsrubbKnOQpkeH7Hn2VIzvxzGd-YtXLVf87mUKXf9pSABH9cbDjwulp5csmLbyVP4cRHSGGuA3DC-wZeMgsw"
-# verify_auth_token(token_data)

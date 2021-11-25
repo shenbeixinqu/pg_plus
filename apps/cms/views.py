@@ -26,21 +26,21 @@ def index():
 @bp.route('/register', methods=["POST"])
 def register():
     # 获取请求的json数据，返回字典
-    name = request.values.get("name")
-    password = request.values.get("password")
-    # req_dict = request.get_json()
-    # name = req_dict.get("name")
-    # password = req_dict.get("password")
-    # password2 = req_dict.get("password2")
+    data = {"rc": 0, "data": "", "msg": ""}
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    name = get_data["account"]
+    password = get_data["password"]
+    print("name", name, "password", password)
     # 判断是否注册过，未注册则保存到数据库中
     user = CMSUser.query.filter(CMSUser.name == name).first()
     if user:
-        return jsonify(errcode=RET.DATAEXIST, errmsg="用户名已存在")
+        return success_return(msg="用户名已存在", rc=1)
     else:
         account = CMSUser(name=name, pwd=generate_password_hash(password))
         db.session.add(account)
         db.session.commit()
-        return jsonify(errcode=RET.OK, errmsg="注册成功")
+        return success_return(msg="注册成功", rc=0)
 
 
 # 登录
@@ -54,15 +54,16 @@ def login():
     token = get_data["token"]
     if token and account == "":
         check_value = verify_auth_token(token)
-        print("check_value", check_value)
     if account == "" or password == "":
         data["rc"] = 1
         data["msg"] = "账号和密码不能为空"
     else:
         user = CMSUser.query.filter(CMSUser.name == account).first()
         if not user or not user.check_pwd(password):
+            print("账号密码错误")
             data["rc"] = 1
             data["msg"] = "账号或密码错误"
+            return success_return(msg="账号或密码错误", rc=1)
         else:
             user_id = user.id
             token_data = generate_auth_token(user_id)
@@ -71,8 +72,7 @@ def login():
             data["account"] = account
             data["token"] = token_data
     # return jsonify({"data": data})
-    return success_return(data)
-
+    return success_return(**{"data": data})
 
 
 # 退出
@@ -80,12 +80,7 @@ def login():
 def log_out():
     data = {"rc": 0, "data": "", "msg": ""}
     token_data = request.args.get("token")
-    return jsonify({"data": data})
-
-
-# 获取用户信息
-# @bp.route('/userInfo')
-# def user_info():
+    return success_return(**{"data": data})
 
 
 # 生成图片名
@@ -99,6 +94,13 @@ def picname(name):
 def get_image(filename):
     up_dir = Base_dir + '/static/uploads/'
     return send_from_directory(up_dir, filename)
+
+
+@bp.route('/fileuploads/<path:filename>')
+def get_file(filename):
+    up_dir = Base_dir + '/static/uploads/files'
+    return send_from_directory(up_dir, filename)
+
 
 
 # 图片上传
@@ -134,6 +136,75 @@ def imgUpload():
     return jsonify(code=RET.OK, errmsg="上传成功", img_info=img_info_lst)
 
 
+# 文件上传
+@bp.route('/fileUpload', methods=['POST'])
+def fileUpload():
+    file_dir = Base_dir + '/static/uploads/files'
+    files = request.files
+    f = files["file"]
+    f_name = f.filename
+    uuid_name = picname(f_name)
+    f.save(os.path.join(file_dir, uuid_name))
+    url = url_for('cms.get_file', filename=uuid_name)
+    file_dir = Base_url + url
+    file_dir = file_dir.replace('\\', '/')
+    return jsonify(code=RET.OK, file_dir=file_dir)
+
+
+# 添加安全服务
+@bp.route('addService', methods=['POST'])
+def add_service():
+    data = request.get_data()
+    data = json.loads(data)
+    title = data["title"]
+    mold = data["mold"]
+    link = data["link"]
+    file_dir = data["file_dir"]
+    if mold == '1':
+        service = CMSService(title=title, mold=mold, link=link)
+    else:
+        service = CMSService(title=title, mold=mold, file_dir=file_dir)
+    db.session.add(service)
+    db.session.commit()
+    print("serviceData", data)
+    return success_return()
+
+
+# 安全服务列表
+@bp.route('serviceList')
+def service_list():
+    title = request.values.get("kword")
+    if title:
+        querys = CMSService.query.filter(CMSService.title.contains(title)).all()
+        total = CMSService.query.filter(CMSService.title.contains(title)).count()
+    else:
+        querys = CMSService.query.all()
+        total = CMSService.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "title": q.title,
+            "mold": "链接" if q.mold == '1' else "文件",
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除安全服务
+@bp.route('deleteService', methods=['POST'])
+def delete_service():
+    data = {}
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    service_id = get_data["deleteId"]
+    service = CMSService.query.get(service_id)
+    db.session.delete(service)
+    db.session.commit()
+    return success_return(**{"data": data})
+
+
 # 添加法律法规
 @bp.route('/addLaw', methods=["POST"])
 def add_law():
@@ -150,14 +221,19 @@ def add_law():
         law = CMSLaw(title=title, content=content)
         db.session.add(law)
     db.session.commit()
-    return jsonify(status=RET.OK, msg="成功")
+    return success_return()
 
 
 # 法律法规列表
 @bp.route('/lawList')
 def lawList():
-    querys = CMSLaw.query.all()
-    total = CMSLaw.query.count()
+    title = request.values.get("kword")
+    if title:
+        querys = CMSLaw.query.filter(CMSLaw.title.contains(title)).all()
+        total = CMSLaw.query.filter(CMSLaw.title.contains(title)).count()
+    else:
+        querys = CMSLaw.query.all()
+        total = CMSLaw.query.count()
     data = []
     for q in querys:
         record = {
@@ -205,8 +281,13 @@ def add_loophole():
 # 漏洞发布列表
 @bp.route('/loopholeList')
 def loophole_list():
-    querys = CMSLoophole.query.all()
-    total = CMSLoophole.query.count()
+    title = request.values.get("kword")
+    if title:
+        querys = CMSLoophole.query.filter(CMSLoophole.title.contains(title)).all()
+        total = CMSLoophole.query.filter(CMSLoophole.title.contains(title)).count()
+    else:
+        querys = CMSLoophole.query.all()
+        total = CMSLoophole.query.count()
     data = []
     for q in querys:
         record = {
@@ -254,8 +335,13 @@ def add_event():
 # 安全事件列表
 @bp.route('/eventList')
 def event_list():
-    querys = CMSEvent.query.all()
-    total = CMSEvent.query.count()
+    title = request.values.get("kword")
+    if title:
+        querys = CMSEvent.query.filter(CMSEvent.title.contains(title)).all()
+        total = CMSEvent.query.filter(CMSEvent.title.contains(title)).count()
+    else:
+        querys = CMSEvent.query.all()
+        total = CMSEvent.query.count()
     data = []
     for q in querys:
         record = {
@@ -284,8 +370,13 @@ def delete_event():
 # 会员列表
 @bp.route('/memberList')
 def member_list():
-    querys = CMSMember.query.all()
-    total = CMSMember.query.count()
+    title = request.values.get("kword")
+    if title:
+        querys = CMSMember.query.filter(CMSMember.name.contains(title)).all()
+        total = CMSMember.query.filter(CMSMember.name.contains(title)).count()
+    else:
+        querys = CMSMember.query.all()
+        total = CMSMember.query.count()
     data = []
     for q in querys:
         record = {

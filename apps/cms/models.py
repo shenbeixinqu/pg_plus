@@ -97,5 +97,7 @@ class CMSService(db.Model):
     __tablename__ = 'cms_service'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100))
-    content = db.Column(db.TEXT)
+    mold = db.Column(db.String(10))
+    link = db.Column(db.String(100))
+    file_dir = db.Column(db.String(100))
     addtime = db.Column(db.DateTime, default=datetime.now)

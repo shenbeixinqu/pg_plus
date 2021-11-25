@@ -14,9 +14,9 @@ def error_return(msg, status=0):
 
 
 # 返回成功信息
-def success_return(msg="操作成功", **kwargs):
+def success_return(rc=0, msg="操作成功", **kwargs):
     result = {
-        "rc": 0,
+        "rc": rc,
         "msg": msg,
         "data": {
             "status": 200

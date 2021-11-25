@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+/*■■■■■■■■　共同设定 ■■■■■■■■*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,table,tr,th,td{margin:0;padding:0; 
+}
+
+html, body {
+	height: 100%;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,th,var{font-style:normal;font-weight:normal;}
+ul,ul li,input, dl, dd {  padding:0; margin:0; list-style-type:none;}
+img,a img{border:0;margin:0;padding:0;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+a{text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0)}
+a:hover{text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0) }
+.clear{clear:both;}
+
+/*■■■■■■■■　基本设定　■■■■■■■■*/
+body{ font-family: -apple-system-font, "Helvetica Neue",Tahoma,"PingFang SC","lantinghei sc","Microsoft Yahei", sans-serif;font-size:12px; color:#535353;}

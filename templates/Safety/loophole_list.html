@@ -1,0 +1,16 @@
+{% extends 'Safety/base_list.html' %}
+
+{% block title %}
+    漏洞发布
+{% endblock %}
+
+{% block content %}
+    {% for loophole in loopholes %}
+        <a href="{{ url_for('api.loophole_detail', loophole_id=loophole.id) }}">
+            <div class="list_part">
+                <div class="list_left">{{ loophole.title }}</div>
+                <div class="list_right">{{ loophole.addtime|date_format }}</div>
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'Safety/base_list.html' %}
+
+{% block title %}
+    安全服务
+{% endblock %}
+
+{% block content %}
+    {% for service in services %}
+        <div class="list_part">
+				<div class="list_left">{{ service.title }}</div>
+			    {% if service.mold == '2' %}
+                     <a href="{{ service.file_dir }}" download><div class="list_right_download_a">下载资料</div></a>
+                {% else %}
+				    <a href="{{ service.link }}"><div class="list_right_download_b">点击前往</div></a>
+                {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}
