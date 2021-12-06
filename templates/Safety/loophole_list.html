@@ -4,10 +4,14 @@
     漏洞发布
 {% endblock %}
 
+{% block img %}
+    <img src="../../static/img/ldfb.jpg">
+{% endblock %}
 {% block content %}
     {% for loophole in loopholes %}
         <a href="{{ url_for('api.loophole_detail', loophole_id=loophole.id) }}">
             <div class="list_part">
+                <div class="point"><img src="../../static/img/point.png"></div>
                 <div class="list_left">{{ loophole.title }}</div>
                 <div class="list_right">{{ loophole.addtime|date_format }}</div>
             </div>

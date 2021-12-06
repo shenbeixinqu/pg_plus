@@ -152,7 +152,7 @@ def fileUpload():
 
 
 # 添加安全服务
-@bp.route('addService', methods=['POST'])
+@bp.route('/addService', methods=['POST'])
 def add_service():
     data = request.get_data()
     data = json.loads(data)
@@ -166,19 +166,20 @@ def add_service():
         service = CMSService(title=title, mold=mold, file_dir=file_dir)
     db.session.add(service)
     db.session.commit()
-    print("serviceData", data)
     return success_return()
 
 
 # 安全服务列表
-@bp.route('serviceList')
+@bp.route('/serviceList')
 def service_list():
     title = request.values.get("kword")
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSService.query.filter(CMSService.title.contains(title)).all()
+        querys = CMSService.query.filter(CMSService.title.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSService.query.filter(CMSService.title.contains(title)).count()
     else:
-        querys = CMSService.query.all()
+        querys = CMSService.query.offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSService.query.count()
     data = []
     for q in querys:
@@ -193,7 +194,7 @@ def service_list():
 
 
 # 删除安全服务
-@bp.route('deleteService', methods=['POST'])
+@bp.route('/deleteService', methods=['POST'])
 def delete_service():
     data = {}
     get_data = request.get_data()
@@ -228,11 +229,13 @@ def add_law():
 @bp.route('/lawList')
 def lawList():
     title = request.values.get("kword")
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSLaw.query.filter(CMSLaw.title.contains(title)).all()
+        querys = CMSLaw.query.filter(CMSLaw.title.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSLaw.query.filter(CMSLaw.title.contains(title)).count()
     else:
-        querys = CMSLaw.query.all()
+        querys = CMSLaw.query.offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSLaw.query.count()
     data = []
     for q in querys:
@@ -282,11 +285,13 @@ def add_loophole():
 @bp.route('/loopholeList')
 def loophole_list():
     title = request.values.get("kword")
+    pn = int(request.values.get("pn",1))
+    limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSLoophole.query.filter(CMSLoophole.title.contains(title)).all()
+        querys = CMSLoophole.query.filter(CMSLoophole.title.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSLoophole.query.filter(CMSLoophole.title.contains(title)).count()
     else:
-        querys = CMSLoophole.query.all()
+        querys = CMSLoophole.query.offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSLoophole.query.count()
     data = []
     for q in querys:
@@ -336,11 +341,13 @@ def add_event():
 @bp.route('/eventList')
 def event_list():
     title = request.values.get("kword")
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSEvent.query.filter(CMSEvent.title.contains(title)).all()
+        querys = CMSEvent.query.filter(CMSEvent.title.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSEvent.query.filter(CMSEvent.title.contains(title)).count()
     else:
-        querys = CMSEvent.query.all()
+        querys = CMSEvent.query.offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSEvent.query.count()
     data = []
     for q in querys:

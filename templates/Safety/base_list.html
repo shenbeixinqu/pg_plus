@@ -7,12 +7,39 @@
 	<title>{% block title %}{% endblock %}</title>
 	<link href="../../static/css/style.css" rel="stylesheet" type="text/css" />
 	<link href="../../static/css/common.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="../../static/js/jquery.js"></script>
+    <link href="../../static/css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../static/js/jquery.js"></script>
 	<script type="text/javascript" src="../../static/js/nav.js"></script>
+    <script type="text/javascript" src="../../static/js/swiper-bundle.min.js"></script>
+    <style>
+		.swiper-slide img {
+			width: 100%;
+		}
+        .point{
+            float: left;
+            width: 0.2rem;
+            height: 0.2rem;
+            padding-top: 0.15rem;
+            padding-right: 0.1rem;
+        }
+        .point img{
+            width: 0.2rem;
+            height: 0.2rem;
+        }
+	</style>
+    {% block css %}{% endblock %}
 </head>
 
 <body>
 	<div class="warp">
+        <div class="swiper mySwiper">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+                    {% block img %}
+                    {% endblock %}
+                </div>
+			</div>
+		</div>
 		<div class="content">
 			{% block content %}
             {% endblock %}

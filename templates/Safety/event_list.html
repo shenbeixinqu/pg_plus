@@ -3,11 +3,14 @@
 {% block title %}
     安全事件
 {% endblock %}
-
+{% block img %}
+    <img src="../../static/img/aqsj.jpg">
+{% endblock %}
 {% block content %}
     {% for event in events %}
         <a href="{{ url_for('api.event_detail', event_id=event.id) }}">
             <div class="list_part">
+                <div class="point"><img src="../../static/img/point.png"></div>
                 <div class="list_left">{{ event.title }}</div>
                 <div class="list_right">{{ event.addtime|date_format }}</div>
             </div>

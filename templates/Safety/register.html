@@ -7,12 +7,21 @@
 	<title>会员注册</title>
 	<link href="../../static/css/style.css" rel="stylesheet" type="text/css" />
 	<link href="../../static/css/common.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="../../static/js/jquery.js"></script>
+    <link href="../../static/css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../static/js/jquery.js"></script>
 	<script type="text/javascript" src="../../static/js/nav.js"></script>
+    <script type="text/javascript" src="../../static/js/swiper-bundle.min.js"></script>
 </head>
 
 <body>
 	<div class="warp">
+        <div class="swiper mySwiper">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+                        <img src="../../static/img/register.jpg" style="width: 100%">
+                </div>
+			</div>
+		</div>
 		<div class="form-content">
 			<div class="register-content-form">
 				<form method="post" action="" name="quire" id="quire" onsubmit="return RegisterForm(this)">

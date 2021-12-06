@@ -1,13 +1,20 @@
 {% extends 'Safety/base_list.html' %}
 
+{% block css %}
+
+{% endblock %}
 {% block title %}
     法律法规
 {% endblock %}
 
+{% block img %}
+    <img src="../../static/img/flfg.jpg">
+{% endblock %}
 {% block content %}
     {% for law in laws %}
         <a href="{{ url_for('api.law_detail', law_id=law.id) }}">
             <div class="list_part">
+                <div class="point"><img src="../../static/img/point.png"></div>
                 <div class="list_left">{{ law.title }}</div>
                 <div class="list_right">{{ law.addtime|date_format }}</div>
             </div>

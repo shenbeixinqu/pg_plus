@@ -3,10 +3,13 @@
 {% block title %}
     安全服务
 {% endblock %}
-
+{% block img %}
+    <img src="../../static/img/aqfw.jpg">
+{% endblock %}
 {% block content %}
     {% for service in services %}
         <div class="list_part">
+                <div class="point"><img src="../../static/img/point.png"></div>
 				<div class="list_left">{{ service.title }}</div>
 			    {% if service.mold == '2' %}
                      <a href="{{ service.file_dir }}" download><div class="list_right_download_a">下载资料</div></a>
