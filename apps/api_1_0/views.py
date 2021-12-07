@@ -22,7 +22,7 @@ def register():
 @bp.route('/lawList')
 def law_list():
 	context = {
-		'laws': CMSLaw.query.all()
+		'laws': CMSLaw.query.order_by(CMSLaw.reorder.asc())
 	}
 	return render_template('Safety/law_list.html', **context)
 
@@ -40,7 +40,7 @@ def law_detail(law_id):
 @bp.route('/loopholeList')
 def loophole_list():
 	context = {
-		"loopholes": CMSLoophole.query.all()
+		"loopholes": CMSLoophole.query.order_by(CMSLaw.reorder.asc())
 	}
 	return render_template('Safety/loophole_list.html', **context)
 
@@ -58,7 +58,7 @@ def loophole_detail(loophole_id):
 @bp.route('/eventList')
 def event_list():
 	context = {
-		"events": CMSEvent.query.all()
+		"events": CMSEvent.query.order_by(CMSLaw.reorder.asc())
 	}
 	return render_template('Safety/event_list.html', **context)
 

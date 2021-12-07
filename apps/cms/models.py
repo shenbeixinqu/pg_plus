@@ -60,6 +60,7 @@ class CMSLaw(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100))
     content = db.Column(db.TEXT)
+    reorder = db.Column(db.Integer)
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 
@@ -80,6 +81,7 @@ class CMSLoophole(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100))
     content = db.Column(db.TEXT)
+    reorder = db.Column(db.Integer)
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 
@@ -89,6 +91,7 @@ class CMSEvent(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100))
     content = db.Column(db.TEXT)
+    reorder = db.Column(db.Integer)
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 

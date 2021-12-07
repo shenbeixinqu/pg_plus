@@ -213,13 +213,15 @@ def add_law():
     data = json.loads(data)
     title = data["title"]
     content = data["detail"]
+    reorder = data["reorder"]
     if data["id"]:
         law_id = data["id"]
         law = CMSLaw.query.get(law_id)
         law.title = title
         law.content = content
+        law.reorder = reorder
     else:
-        law = CMSLaw(title=title, content=content)
+        law = CMSLaw(title=title, content=content, reorder=reorder)
         db.session.add(law)
     db.session.commit()
     return success_return()
@@ -243,6 +245,7 @@ def lawList():
             "id": q.id,
             "title": q.title,
             "content": q.content,
+            "reorder": q.reorder,
             "addtime": datetimeformat(q.addtime)
         }
         data.append(record)
@@ -269,13 +272,15 @@ def add_loophole():
     data = json.loads(data)
     title = data["title"]
     content = data["detail"]
+    reorder = data["reorder"]
     if data["id"]:
         loophole_id = data["id"]
         loophole = CMSLoophole.query.get(loophole_id)
         loophole.title = title
         loophole.content = content
+        loophole.reorder = reorder
     else:
-        loophole = CMSLoophole(title=title, content=content)
+        loophole = CMSLoophole(title=title, content=content, reorder=reorder)
         db.session.add(loophole)
     db.session.commit()
     return success_return()
@@ -299,6 +304,7 @@ def loophole_list():
             "id": q.id,
             "title": q.title,
             "content": q.content,
+            "reorder": q.reorder,
             "addtime": datetimeformat(q.addtime)
         }
         data.append(record)
@@ -325,13 +331,15 @@ def add_event():
     data = json.loads(data)
     title = data["title"]
     content = data["detail"]
+    reorder = data["reorder"]
     if data["id"]:
         event_id = data["id"]
         event = CMSEvent.query.get(event_id)
         event.title = title
         event.content = content
+        event.reorder = reorder
     else:
-        event = CMSEvent(title=title, content=content)
+        event = CMSEvent(title=title, content=content, reorder=reorder)
         db.session.add(event)
     db.session.commit()
     return success_return()
@@ -355,6 +363,7 @@ def event_list():
             "id": q.id,
             "title": q.title,
             "content": q.content,
+            "reorder": q.reorder,
             "addtime": datetimeformat(q.addtime)
         }
         data.append(record)

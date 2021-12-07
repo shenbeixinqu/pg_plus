@@ -160,14 +160,22 @@
    line-height: .35rem;
    text-decoration: none;
 }
-/*.point{*/
-/*    float: left;*/
-/*    width: 0.2rem;*/
-/*    height: 0.2rem;*/
-/*    padding-top: 0.15rem;*/
-/*    padding-right: 0.1rem;*/
-/*}*/
-/*.point img{*/
-/*    width: 0.2rem;*/
-/*    height: 0.2rem;*/
-/*}*/
+.point{
+    float: left;
+    width: 0.2rem;
+    height: 0.2rem;
+    padding-top: 0.15rem;
+    padding-right: 0.1rem;
+}
+.point img{
+    width: 0.2rem;
+    height: 0.2rem;
+}
+
+table td {
+    border-collapse: collapse;
+    font-size: 12px;
+    border: 1px solid #e0e0e0;
+    word-break: break-all;
+    padding: 10px;
+}
