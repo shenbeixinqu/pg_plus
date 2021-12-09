@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, send_from_directory, url_for
-from .models import CMSUser, CMSLaw, CMSMember, CMSLoophole, CMSEvent, CMSService
+from .models import CMSUser, CMSLaw, CMSMember, CMSLoophole, CMSEvent, CMSService, CMSIntroduction
 from utils.response_code import RET
 from utils.return_method import success_return, error_return
 from utils.datetime_format import datetimeformat
@@ -387,11 +387,13 @@ def delete_event():
 @bp.route('/memberList')
 def member_list():
     title = request.values.get("kword")
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSMember.query.filter(CMSMember.name.contains(title)).all()
+        querys = CMSMember.query.filter(CMSMember.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSMember.query.filter(CMSMember.name.contains(title)).count()
     else:
-        querys = CMSMember.query.all()
+        querys = CMSMember.query.offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSMember.query.count()
     data = []
     for q in querys:
@@ -401,6 +403,46 @@ def member_list():
             "company": q.company,
             "position": q.position,
             "phone": q.phone,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+"""
+网站接口
+"""
+
+
+# 添加简介
+@bp.route('/addIntroduction', methods=['POST'])
+def add_introduction():
+    data = request.get_data()
+    data = json.loads(data)
+    content = data["content"]
+    if data["id"]:
+        introduction_id = data["id"]
+        introduction = CMSIntroduction.query.get(introduction_id)
+        introduction.content = content
+    else:
+        introduction = CMSIntroduction(content=content)
+        db.session.add(introduction)
+    db.session.commit()
+    return success_return()
+
+
+# 协会简介
+@bp.route('/introductionList')
+def introduction_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSIntroduction.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSIntroduction.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "content": q.content,
             "addtime": datetimeformat(q.addtime)
         }
         data.append(record)

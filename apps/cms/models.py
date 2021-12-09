@@ -104,3 +104,11 @@ class CMSService(db.Model):
     link = db.Column(db.String(100))
     file_dir = db.Column(db.String(100))
     addtime = db.Column(db.DateTime, default=datetime.now)
+
+
+# 协会简介
+class CMSIntroduction(db.Model):
+    __tablename__ = 'cms_introduction'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
