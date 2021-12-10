@@ -1,5 +1,16 @@
 from flask import Blueprint, request, jsonify, send_from_directory, url_for
-from .models import CMSUser, CMSLaw, CMSMember, CMSLoophole, CMSEvent, CMSService, CMSIntroduction
+from .models import (
+    CMSUser,
+    CMSLaw,
+    CMSMember,
+    CMSLoophole,
+    CMSEvent,
+    CMSService,
+    CMSIntroduction,
+    CMSBylaws,
+    CMSStandard,
+    CMSMemberCompany
+)
 from utils.response_code import RET
 from utils.return_method import success_return, error_return
 from utils.datetime_format import datetimeformat
@@ -139,15 +150,15 @@ def imgUpload():
 # 文件上传
 @bp.route('/fileUpload', methods=['POST'])
 def fileUpload():
-    file_dir = Base_dir + '/static/uploads/files'
+    base_dir = Base_dir + '/static/uploads/files'
     files = request.files
     f = files["file"]
     f_name = f.filename
     uuid_name = picname(f_name)
-    f.save(os.path.join(file_dir, uuid_name))
-    url = url_for('cms.get_file', filename=uuid_name)
-    file_dir = Base_url + url
+    f.save(os.path.join(base_dir, uuid_name))
+    file_dir = base_dir + '/' + uuid_name
     file_dir = file_dir.replace('\\', '/')
+    print("file_dir", file_dir)
     return jsonify(code=RET.OK, file_dir=file_dir)
 
 
@@ -160,6 +171,7 @@ def add_service():
     mold = data["mold"]
     link = data["link"]
     file_dir = data["file_dir"]
+    print("文件上传", file_dir)
     if mold == '1':
         service = CMSService(title=title, mold=mold, link=link)
     else:
@@ -176,10 +188,10 @@ def service_list():
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSService.query.filter(CMSService.title.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
+        querys = CMSService.query.filter(CMSService.title.contains(title)).order_by(CMSService.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSService.query.filter(CMSService.title.contains(title)).count()
     else:
-        querys = CMSService.query.offset((pn-1)*limit_num).limit(limit_num).all()
+        querys = CMSService.query.order_by(CMSService.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSService.query.count()
     data = []
     for q in querys:
@@ -234,10 +246,10 @@ def lawList():
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSLaw.query.filter(CMSLaw.title.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
+        querys = CMSLaw.query.filter(CMSLaw.title.contains(title)).order_by(CMSLaw.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSLaw.query.filter(CMSLaw.title.contains(title)).count()
     else:
-        querys = CMSLaw.query.offset((pn-1)*limit_num).limit(limit_num).all()
+        querys = CMSLaw.query.order_by(CMSLaw.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSLaw.query.count()
     data = []
     for q in querys:
@@ -293,10 +305,10 @@ def loophole_list():
     pn = int(request.values.get("pn",1))
     limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSLoophole.query.filter(CMSLoophole.title.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
+        querys = CMSLoophole.query.filter(CMSLoophole.title.contains(title)).order_by(CMSLoophole.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSLoophole.query.filter(CMSLoophole.title.contains(title)).count()
     else:
-        querys = CMSLoophole.query.offset((pn-1)*limit_num).limit(limit_num).all()
+        querys = CMSLoophole.query.order_by(CMSLoophole.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSLoophole.query.count()
     data = []
     for q in querys:
@@ -352,10 +364,10 @@ def event_list():
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
     if title:
-        querys = CMSEvent.query.filter(CMSEvent.title.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
+        querys = CMSEvent.query.filter(CMSEvent.title.contains(title)).order_by(CMSEvent.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSEvent.query.filter(CMSEvent.title.contains(title)).count()
     else:
-        querys = CMSEvent.query.offset((pn-1)*limit_num).limit(limit_num).all()
+        querys = CMSEvent.query.order_by(CMSEvent.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
         total = CMSEvent.query.count()
     data = []
     for q in querys:
@@ -447,3 +459,157 @@ def introduction_list():
         }
         data.append(record)
     return success_return(**{"data": data, "total": total})
+
+
+# 删除简介
+@bp.route('/deleteIntroduction', methods=['POST'])
+def delete_introduction():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    introduction_id = get_data["deleteId"]
+    introduction = CMSIntroduction.query.get(introduction_id)
+    db.session.delete(introduction)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
+# 添加协会章程
+@bp.route('/addBylaws', methods=['POST'])
+def add_bylaws():
+    data = request.get_data()
+    data = json.loads(data)
+    content = data["content"]
+    if data["id"]:
+        bylaws_id = data["id"]
+        bylaws = CMSBylaws.query.get(bylaws_id)
+        bylaws.content = content
+    else:
+        bylaws = CMSBylaws(content=content)
+        db.session.add(bylaws)
+    db.session.commit()
+    return success_return()
+
+
+# 协会章程列表
+@bp.route('/bylawsList')
+def bylaws_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSBylaws.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSBylaws.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "content": q.content,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除协会章程
+@bp.route('/deleteBylaws', methods=['POST'])
+def delete_bylaws():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    bylaws_id = get_data["deleteId"]
+    bylaws = CMSBylaws.query.get(bylaws_id)
+    db.session.delete(bylaws)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
+# 添加会员单位
+@bp.route('/addMemberCompany', methods=['POST'])
+def add_member_company():
+    data = request.get_data()
+    data = json.loads(data)
+    content = data["content"]
+    if data["id"]:
+        member_id = data["id"]
+        member = CMSMemberCompany.query.get(member_id)
+        member.content = content
+    else:
+        member = CMSMemberCompany(content=content)
+        db.session.add(member)
+    db.session.commit()
+    return success_return()
+
+
+# 会员单位列表
+@bp.route('/memberCompanyList')
+def member_company_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSMemberCompany.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSMemberCompany.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "content": q.content,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除会员单位
+@bp.route('/deleteMemberCompany', methods=['POST'])
+def delete_member_company():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    member_id = get_data["deleteId"]
+    member = CMSMemberCompany.query.get(member_id)
+    db.session.delete(member)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
+
+# 添加会费标准
+@bp.route('/addStandard', methods=['POST'])
+def add_standard():
+    data = request.get_data()
+    data = json.loads(data)
+    content = data["content"]
+    if data["id"]:
+        standard_id = data["id"]
+        standard = CMSStandard.query.get(standard_id)
+        standard.content = content
+    else:
+        standard = CMSStandard(content=content)
+        db.session.add(standard)
+    db.session.commit()
+    return success_return()
+
+
+# 会费标准列表
+@bp.route('/standardList')
+def standard_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSStandard.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSStandard.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "content": q.content,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除会费标准
+@bp.route('/deleteStandard', methods=['POST'])
+def delete_standard():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    standard_id = get_data["deleteId"]
+    standard = CMSStandard.query.get(standard_id)
+    db.session.delete(standard)
+    db.session.commit()
+    return success_return(**{"data": {}})

@@ -112,3 +112,30 @@ class CMSIntroduction(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.TEXT)
     addtime = db.Column(db.DateTime, default=datetime.now)
+
+
+# 协会章程
+class CMSBylaws(db.Model):
+    __tablename__ = 'cms_bylaws'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+
+
+# 会员单位
+class CMSMemberCompany(db.Model):
+    __tablename__ = 'cms_member_company'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100))
+    logo = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+
+
+# 会费标准
+class CMSStandard(db.Model):
+    __tablename__ = 'cms_standard'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+
