@@ -122,9 +122,41 @@ class CMSBylaws(db.Model):
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 
+# 协会章程
+class CMSBranch(db.Model):
+    __tablename__ = 'cms_branch'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    logo = db.Column(db.String(100))
+    address = db.Column(db.String(100))
+    href = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+
+
+# 理事单位
+class CMSDirectorCompany(db.Model):
+    __tablename__ = 'cms_director_company'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100))
+    logo = db.Column(db.String(100))
+    desc = db.Column(db.TEXT)
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+
+
 # 会员单位
 class CMSMemberCompany(db.Model):
     __tablename__ = 'cms_member_company'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100))
+    logo = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+
+
+# 支撑单位
+class CMSSupportCompany(db.Model):
+    __tablename__ = 'cms_support_company'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100))
     logo = db.Column(db.String(100))
@@ -139,3 +171,19 @@ class CMSStandard(db.Model):
     content = db.Column(db.TEXT)
     addtime = db.Column(db.DateTime, default=datetime.now)
 
+
+"""
+协会工作
+"""
+
+# 党建活动
+class CMSBuilding(db.Model):
+    __tablename__ = 'cms_building'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100))
+    reorder = db.Column(db.Integer)
+    if_banner = db.Column(db.Integer)
+    banner_url = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+    kind = db.Column(db.Integer)

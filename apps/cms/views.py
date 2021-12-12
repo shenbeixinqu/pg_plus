@@ -9,7 +9,11 @@ from .models import (
     CMSIntroduction,
     CMSBylaws,
     CMSStandard,
-    CMSMemberCompany
+    CMSMemberCompany,
+    CMSSupportCompany,
+    CMSDirectorCompany,
+    CMSBranch,
+    CMSBuilding
 )
 from utils.response_code import RET
 from utils.return_method import success_return, error_return
@@ -151,12 +155,13 @@ def imgUpload():
 @bp.route('/fileUpload', methods=['POST'])
 def fileUpload():
     base_dir = Base_dir + '/static/uploads/files'
+    base_url = Base_url + '/static/uploads/files'
     files = request.files
     f = files["file"]
     f_name = f.filename
     uuid_name = picname(f_name)
     f.save(os.path.join(base_dir, uuid_name))
-    file_dir = base_dir + '/' + uuid_name
+    file_dir = base_url + '/' + uuid_name
     file_dir = file_dir.replace('\\', '/')
     print("file_dir", file_dir)
     return jsonify(code=RET.OK, file_dir=file_dir)
@@ -520,18 +525,136 @@ def delete_bylaws():
     return success_return(**{"data": {}})
 
 
+# 添加分支机构
+@bp.route('/addBranch', methods=['POST'])
+def add_branch():
+    data = request.get_data()
+    data = json.loads(data)
+    logo = data["logo"]
+    content = data["content"]
+    address = data["address"]
+    href = data["href"]
+    if data["id"]:
+        branch_id = data["id"]
+        branch = CMSBranch.query.get(branch_id)
+        branch.logo = logo
+        branch.content = content
+        branch.address = address
+        branch.href = href
+    else:
+        branch = CMSBranch(logo=logo, content=content, address=address, href=href)
+        db.session.add(branch)
+    db.session.commit()
+    return success_return()
+
+
+# 分支机构列表
+@bp.route('/branchList')
+def branch_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSBranch.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSBranch.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "address": q.address,
+            "logo": q.logo,
+            "content": q.content,
+            "href": q.href,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除分支机构
+@bp.route('/deleteBranch', methods=['POST'])
+def delete_branch():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    branch_id = get_data["deleteId"]
+    branch = CMSBranch.query.get(branch_id)
+    db.session.delete(branch)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
+# 添加理事单位
+@bp.route('/addDirectorCompany', methods=['POST'])
+def add_director_company():
+    data = request.get_data()
+    data = json.loads(data)
+    print('data', data)
+    name = data["name"]
+    content = data["content"]
+    logoUrl = data["logoUrl"]
+    desc = data["desc"]
+    if data["id"]:
+        director_id = data["id"]
+        director = CMSDirectorCompany.query.get(director_id)
+        director.name = name
+        director.content = content
+        director.logoUrl = logoUrl
+        director.desc = desc
+    else:
+        director = CMSDirectorCompany(name=name, content=content, logo=logoUrl, desc=desc)
+        db.session.add(director)
+    db.session.commit()
+    return success_return()
+
+
+# 会员单位列表
+@bp.route('/directorCompanyList')
+def director_company_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSDirectorCompany.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSDirectorCompany.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "name": q.name,
+            "logoUrl": q.logo,
+            "desc": q.desc,
+            "content": q.content,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除会员单位
+@bp.route('/deleteDirectorCompany', methods=['POST'])
+def delete_director_company():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    director_id = get_data["deleteId"]
+    director = CMSDirectorCompany.query.get(director_id)
+    db.session.delete(director)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
 # 添加会员单位
 @bp.route('/addMemberCompany', methods=['POST'])
 def add_member_company():
     data = request.get_data()
     data = json.loads(data)
+    print('data', data)
+    name = data["name"]
     content = data["content"]
+    logoUrl = data["logoUrl"]
     if data["id"]:
         member_id = data["id"]
         member = CMSMemberCompany.query.get(member_id)
+        member.name = name
         member.content = content
+        member.logoUrl = logoUrl
     else:
-        member = CMSMemberCompany(content=content)
+        member = CMSMemberCompany(name=name, content=content, logo=logoUrl)
         db.session.add(member)
     db.session.commit()
     return success_return()
@@ -548,6 +671,8 @@ def member_company_list():
     for q in querys:
         record = {
             "id": q.id,
+            "name": q.name,
+            "logoUrl": q.logo,
             "content": q.content,
             "addtime": datetimeformat(q.addtime)
         }
@@ -566,6 +691,58 @@ def delete_member_company():
     db.session.commit()
     return success_return(**{"data": {}})
 
+
+# 添加支撑单位
+@bp.route('/addSupportCompany', methods=['POST'])
+def add_support_company():
+    data = request.get_data()
+    data = json.loads(data)
+    name = data["name"]
+    content = data["content"]
+    logoUrl = data["logoUrl"]
+    if data["id"]:
+        support_id = data["id"]
+        support = CMSSupportCompany.query.get(support_id)
+        support.name = name
+        support.content = content
+        support.logoUrl = logoUrl
+    else:
+        support = CMSSupportCompany(name=name, content=content, logo=logoUrl)
+        db.session.add(support)
+    db.session.commit()
+    return success_return()
+
+
+# 支撑单位列表
+@bp.route('/supportCompanyList')
+def support_company_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSSupportCompany.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSSupportCompany.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "name": q.name,
+            "logoUrl": q.logo,
+            "content": q.content,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除支撑单位
+@bp.route('/deleteSupportCompany', methods=['POST'])
+def delete_support_company():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    support_id = get_data["deleteId"]
+    support = CMSSupportCompany.query.get(support_id)
+    db.session.delete(support)
+    db.session.commit()
+    return success_return(**{"data": {}})
 
 
 # 添加会费标准
@@ -611,5 +788,61 @@ def delete_standard():
     standard_id = get_data["deleteId"]
     standard = CMSStandard.query.get(standard_id)
     db.session.delete(standard)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
+# 添加分支机构
+@bp.route('/addBuilding', methods=['POST'])
+def add_building():
+    data = request.get_data()
+    data = json.loads(data)
+    logo = data["logo"]
+    content = data["content"]
+    address = data["address"]
+    href = data["href"]
+    if data["id"]:
+        building_id = data["id"]
+        building = CMSBuilding.query.get(building_id)
+        building.logo = logo
+        building.content = content
+        building.address = address
+        building.href = href
+    else:
+        branch = CMSBuilding(logo=logo, content=content, address=address, href=href)
+        db.session.add(branch)
+    db.session.commit()
+    return success_return()
+
+
+# 党建活动列表
+@bp.route('/buildingList')
+def building_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSBuilding.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSBuilding.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "address": q.address,
+            "logo": q.logo,
+            "content": q.content,
+            "href": q.href,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除分支机构
+@bp.route('/deleteBuilding', methods=['POST'])
+def delete_building():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    building_id = get_data["deleteId"]
+    building = CMSBuilding.query.get(building_id)
+    db.session.delete(building)
     db.session.commit()
     return success_return(**{"data": {}})
