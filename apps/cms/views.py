@@ -13,7 +13,10 @@ from .models import (
     CMSSupportCompany,
     CMSDirectorCompany,
     CMSBranch,
-    CMSBuilding
+    CMSBuilding,
+    CMSLeader,
+    CMSNotice,
+    CMSFooter
 )
 from utils.response_code import RET
 from utils.return_method import success_return, error_return
@@ -581,6 +584,65 @@ def delete_branch():
     return success_return(**{"data": {}})
 
 
+# 添加协会负责人
+@bp.route('/addLeader', methods=['POST'])
+def add_leader():
+    data = request.get_data()
+    data = json.loads(data)
+    name = data["name"]
+    photo = data["photo"]
+    content = data["content"]
+    duty = data["duty"]
+    company = data["company"]
+    if data["id"]:
+        leader_id = data["id"]
+        leader = CMSLeader.query.get(leader_id)
+        leader.name = name
+        leader.content = content
+        leader.photo = photo
+        leader.duty = duty
+        leader.company = company
+    else:
+        leader = CMSLeader(name=name, content=content, photo=photo, duty=duty, company=company)
+        db.session.add(leader)
+    db.session.commit()
+    return success_return()
+
+
+# 协会负责人列表
+@bp.route('/leaderList')
+def leader_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSLeader.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSLeader.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "name": q.name,
+            "photo": q.photo,
+            "content": q.content,
+            "duty": q.duty,
+            "company": q.company,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除协会负责人
+@bp.route('/deleteLeader', methods=['POST'])
+def delete_leader():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    leader_id = get_data["deleteId"]
+    leader = CMSLeader.query.get(leader_id)
+    db.session.delete(leader)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
 # 添加理事单位
 @bp.route('/addDirectorCompany', methods=['POST'])
 def add_director_company():
@@ -792,24 +854,30 @@ def delete_standard():
     return success_return(**{"data": {}})
 
 
-# 添加分支机构
+# 添加党建活动
 @bp.route('/addBuilding', methods=['POST'])
 def add_building():
     data = request.get_data()
     data = json.loads(data)
-    logo = data["logo"]
+    name = data["name"]
+    reorder = data["reorder"]
+    if_new = data["if_new"]
+    if_banner = data["if_banner"]
+    banner_url = data["banner_url"]
     content = data["content"]
-    address = data["address"]
-    href = data["href"]
+    kind = data["kind"]
     if data["id"]:
         building_id = data["id"]
         building = CMSBuilding.query.get(building_id)
-        building.logo = logo
+        building.name = name
+        building.reorder = reorder
+        building.if_new = if_new
+        building.if_banner = if_banner
         building.content = content
-        building.address = address
-        building.href = href
+        building.banner_url = banner_url
     else:
-        branch = CMSBuilding(logo=logo, content=content, address=address, href=href)
+        branch = CMSBuilding(name=name, reorder=reorder, if_new=if_new,
+                             if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
         db.session.add(branch)
     db.session.commit()
     return success_return()
@@ -820,23 +888,26 @@ def add_building():
 def building_list():
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
-    querys = CMSBuilding.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    kind = int(request.values.get('kind'))
+    querys = CMSBuilding.query.filter(CMSBuilding.kind == kind).offset((pn-1)*limit_num).limit(limit_num).all()
     total = CMSBuilding.query.count()
     data = []
     for q in querys:
         record = {
             "id": q.id,
-            "address": q.address,
-            "logo": q.logo,
+            "name": q.name,
+            "reorder": q.reorder,
+            "if_new": q.if_new,
+            "if_banner": q.if_banner,
+            "banner_url": q.banner_url,
             "content": q.content,
-            "href": q.href,
             "addtime": datetimeformat(q.addtime)
         }
         data.append(record)
     return success_return(**{"data": data, "total": total})
 
 
-# 删除分支机构
+# 删除党建活动
 @bp.route('/deleteBuilding', methods=['POST'])
 def delete_building():
     get_data = request.get_data()
@@ -844,5 +915,120 @@ def delete_building():
     building_id = get_data["deleteId"]
     building = CMSBuilding.query.get(building_id)
     db.session.delete(building)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
+# 添加通知公告
+@bp.route('/addNotice', methods=['POST'])
+def add_notice():
+    data = request.get_data()
+    data = json.loads(data)
+    name = data["name"]
+    reorder = data["reorder"]
+    if_new = data["if_new"]
+    if_banner = data["if_banner"]
+    banner_url = data["banner_url"]
+    content = data["content"]
+    kind = data["kind"]
+    if data["id"]:
+        notice_id = data["id"]
+        notice = CMSNotice.query.get(notice_id)
+        notice.name = name
+        notice.reorder = reorder
+        notice.if_new = if_new
+        notice.if_banner = if_banner
+        notice.content = content
+        notice.banner_url = banner_url
+    else:
+        notice = CMSNotice(name=name, reorder=reorder, if_new=if_new,
+                             if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
+        db.session.add(notice)
+    db.session.commit()
+    return success_return()
+
+
+# 通知公告列表
+@bp.route('/noticeList')
+def notice_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    kind = int(request.values.get('kind'))
+    querys = CMSNotice.query.filter(CMSNotice.kind == kind).offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSNotice.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "name": q.name,
+            "reorder": q.reorder,
+            "if_new": q.if_new,
+            "if_banner": q.if_banner,
+            "banner_url": q.banner_url,
+            "content": q.content,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除通知公告
+@bp.route('/deleteNotice', methods=['POST'])
+def delete_notice():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    notice_id = get_data["deleteId"]
+    notice = CMSNotice.query.get(notice_id)
+    db.session.delete(notice)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
+# 添加底部信息
+@bp.route('/addFooter', methods=['POST'])
+def add_footer():
+    data = request.get_data()
+    data = json.loads(data)
+    content = data["content"]
+    code = data["code"]
+    if data["id"]:
+        footer_id = data["id"]
+        footer = CMSFooter.query.get(footer_id)
+        footer.content = content
+        footer.code = code
+    else:
+        footer = CMSFooter(content=content, code=code)
+        db.session.add(footer)
+    db.session.commit()
+    return success_return()
+
+
+# 底部信息列表
+@bp.route('/FooterList')
+def footer_list():
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    querys = CMSFooter.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSFooter.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "code": q.code,
+            "content": q.content,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除底部信息
+@bp.route('/deleteFooter', methods=['POST'])
+def delete_footer():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    footer_id = get_data["deleteId"]
+    footer = CMSFooter.query.get(footer_id)
+    db.session.delete(footer)
     db.session.commit()
     return success_return(**{"data": {}})

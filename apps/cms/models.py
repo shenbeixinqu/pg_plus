@@ -122,7 +122,7 @@ class CMSBylaws(db.Model):
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 
-# 协会章程
+# 分支机构
 class CMSBranch(db.Model):
     __tablename__ = 'cms_branch'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -130,6 +130,18 @@ class CMSBranch(db.Model):
     address = db.Column(db.String(100))
     href = db.Column(db.String(100))
     content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+
+
+# 协会负责人
+class CMSLeader(db.Model):
+    __tablename__ = 'cms_leader'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100))
+    photo = db.Column(db.String(100))
+    duty = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    company = db.Column(db.String(100))
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 
@@ -178,12 +190,47 @@ class CMSStandard(db.Model):
 
 # 党建活动
 class CMSBuilding(db.Model):
+    """
+    reorder: 排序
+    if_new: 是否有new图标
+    if_banner: 是否轮播
+    banner_url: 轮播图片地址
+    content: 图文信息
+    kind: 种类    1: 党建信息,2:交流活动,3: 教育培训
+    """
     __tablename__ = 'cms_building'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100))
     reorder = db.Column(db.Integer)
+    if_new = db.Column(db.Boolean)
     if_banner = db.Column(db.Integer)
     banner_url = db.Column(db.String(100))
     content = db.Column(db.TEXT)
     addtime = db.Column(db.DateTime, default=datetime.now)
     kind = db.Column(db.Integer)
+
+
+# 通知公告
+class CMSNotice(db.Model):
+    """
+    kind: 种类, 1:通知公告,2:法律法规
+    """
+    __tablename__ = 'cms_notice'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100))
+    reorder = db.Column(db.Integer)
+    if_new = db.Column(db.Boolean)
+    if_banner = db.Column(db.Integer)
+    banner_url = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+    kind = db.Column(db.Integer)
+
+
+# 底部信息
+class CMSFooter(db.Model):
+    __tablename__ = 'cms_footer'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    code = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
