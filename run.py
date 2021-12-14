@@ -15,6 +15,8 @@ def create_app(develop):
     app.register_blueprint(cms_bp)
     from apps.api_1_0 import bp as api_bp
     app.register_blueprint(api_bp)
+    from apps.NetSecurity import bp as net_bp
+    app.register_blueprint(net_bp)
     return app
 
 
