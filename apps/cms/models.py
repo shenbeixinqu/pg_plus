@@ -210,6 +210,28 @@ class CMSBuilding(db.Model):
     kind = db.Column(db.Integer)
 
 
+# 党建活动
+class CMSIndustry(db.Model):
+    """
+    reorder: 排序
+    if_new: 是否有new图标
+    if_banner: 是否轮播
+    banner_url: 轮播图片地址
+    content: 图文信息
+    kind: 种类    1: 热点关注, 2:网安动态, 3: 漏洞发布, 4:安全事件
+    """
+    __tablename__ = 'cms_industry'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100))
+    reorder = db.Column(db.Integer)
+    if_new = db.Column(db.Boolean)
+    if_banner = db.Column(db.Integer)
+    banner_url = db.Column(db.String(100))
+    content = db.Column(db.TEXT)
+    addtime = db.Column(db.DateTime, default=datetime.now)
+    kind = db.Column(db.Integer)
+
+
 # 通知公告
 class CMSNotice(db.Model):
     """

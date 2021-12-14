@@ -16,7 +16,8 @@ from .models import (
     CMSBuilding,
     CMSLeader,
     CMSNotice,
-    CMSFooter
+    CMSFooter,
+    CMSIndustry
 )
 from utils.response_code import RET
 from utils.return_method import success_return, error_return
@@ -860,7 +861,7 @@ def add_building():
     data = request.get_data()
     data = json.loads(data)
     name = data["name"]
-    reorder = data["reorder"]
+    reorder = data["reorder"] if data["reorder"] else 1
     if_new = data["if_new"]
     if_banner = data["if_banner"]
     banner_url = data["banner_url"]
@@ -887,9 +888,10 @@ def add_building():
 @bp.route('/buildingList')
 def building_list():
     pn = int(request.values.get("pn", 1))
+    title = request.values.get("kword")
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
-    querys = CMSBuilding.query.filter(CMSBuilding.kind == kind).offset((pn-1)*limit_num).limit(limit_num).all()
+    querys = CMSBuilding.query.filter(CMSBuilding.kind == kind, CMSBuilding.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
     total = CMSBuilding.query.count()
     data = []
     for q in querys:
@@ -919,13 +921,79 @@ def delete_building():
     return success_return(**{"data": {}})
 
 
+# 添加行业动态
+@bp.route('/addIndustry', methods=['POST'])
+def add_industry():
+    data = request.get_data()
+    data = json.loads(data)
+    name = data["name"]
+    reorder = data["reorder"] if data["reorder"] else 1
+    if_new = data["if_new"]
+    if_banner = data["if_banner"]
+    banner_url = data["banner_url"]
+    content = data["content"]
+    kind = data["kind"]
+    if data["id"]:
+        industry_id = data["id"]
+        industry = CMSIndustry.query.get(industry_id)
+        industry.name = name
+        industry.reorder = reorder
+        industry.if_new = if_new
+        industry.if_banner = if_banner
+        industry.content = content
+        industry.banner_url = banner_url
+    else:
+        industry = CMSIndustry(name=name, reorder=reorder, if_new=if_new,
+                             if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
+        db.session.add(industry)
+    db.session.commit()
+    return success_return()
+
+
+# 行业动态列表
+@bp.route('/industryList')
+def industry_list():
+    title = request.values.get("kword")
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    kind = int(request.values.get('kind'))
+    querys = CMSIndustry.query.filter(CMSIndustry.kind == kind, CMSIndustry.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
+    total = CMSIndustry.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "name": q.name,
+            "reorder": q.reorder,
+            "if_new": q.if_new,
+            "if_banner": q.if_banner,
+            "banner_url": q.banner_url,
+            "content": q.content,
+            "addtime": datetimeformat(q.addtime)
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total": total})
+
+
+# 删除行业动态
+@bp.route('/deleteIndustry', methods=['POST'])
+def delete_industry():
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    industry_id = get_data["deleteId"]
+    industry = CMSIndustry.query.get(industry_id)
+    db.session.delete(industry)
+    db.session.commit()
+    return success_return(**{"data": {}})
+
+
 # 添加通知公告
 @bp.route('/addNotice', methods=['POST'])
 def add_notice():
     data = request.get_data()
     data = json.loads(data)
     name = data["name"]
-    reorder = data["reorder"]
+    reorder = data["reorder"] if data["reorder"] else 1
     if_new = data["if_new"]
     if_banner = data["if_banner"]
     banner_url = data["banner_url"]
@@ -951,10 +1019,11 @@ def add_notice():
 # 通知公告列表
 @bp.route('/noticeList')
 def notice_list():
+    title = request.values.get("kword")
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
-    querys = CMSNotice.query.filter(CMSNotice.kind == kind).offset((pn-1)*limit_num).limit(limit_num).all()
+    querys = CMSNotice.query.filter(CMSNotice.kind == kind, CMSNotice.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
     total = CMSNotice.query.count()
     data = []
     for q in querys:
@@ -1004,7 +1073,7 @@ def add_footer():
 
 
 # 底部信息列表
-@bp.route('/FooterList')
+@bp.route('/footerList')
 def footer_list():
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
