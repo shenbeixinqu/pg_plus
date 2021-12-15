@@ -103,55 +103,15 @@
 			</div>
 			<div class="part1_tip_content">
 				<ul>
-					<li>
-						<a href="#">
-							<div class="point">·</div>
-							<div class="part1_tip_title">辽宁省信息网络安全协会暨云安全研讨会圆满召开</div>
-							<div class="part1_tip_content_date">2021-09-30</div>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<div class="point">·</div>
-							<div class="part1_tip_title">辽宁省信息网络安全协会暨云安全研讨会圆满召开</div>
-							<div class="part1_tip_content_date">2021-09-30</div>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<div class="point">·</div>
-							<div class="part1_tip_title">辽宁省信息网络安全协会暨云安全研讨会圆满召开</div>
-							<div class="part1_tip_content_date">2021-09-30</div>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<div class="point">·</div>
-							<div class="part1_tip_title">辽宁省信息网络安全协会暨云安全研讨会圆满召开</div>
-							<div class="part1_tip_content_date">2021-09-30</div>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<div class="point">·</div>
-							<div class="part1_tip_title">辽宁省信息网络安全协会暨云安全研讨会圆满召开</div>
-							<div class="part1_tip_content_date">2021-09-30</div>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<div class="point">·</div>
-							<div class="part1_tip_title">辽宁省信息网络安全协会暨云安全研讨会圆满召开</div>
-							<div class="part1_tip_content_date">2021-09-30</div>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<div class="point">·</div>
-							<div class="part1_tip_title">辽宁省信息网络安全协会暨云安全研讨会圆满召开</div>
-							<div class="part1_tip_content_date">2021-09-30</div>
-						</a>
-					</li>
+                    {% for notice in notices %}
+                        <li>
+                            <a href="#">
+                                <div class="point">·</div>
+                                <div class="part1_tip_title">{{ notice.name }}</div>
+                                <div class="part1_tip_content_date">{{ notice.adddate }}</div>
+                            </a>
+                        </li>
+                    {% endfor %}
 				</ul>
 			</div>
 		</div>
@@ -169,165 +129,77 @@
 			</div>
 			<div class="tab_box">
 				<div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>01</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>02</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>03</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
+                    {% for building in buildings %}
+                        <div class="tab1_part">
+                            <div class="tab1_part_time">
+                                <h1>{{ building.addtime|date_format|get_day }}</h1>
+                                <p>{{ building.addtime|date_format|get_year_month }}</p>
+                            </div>
+                            <div class="tab1_part_content">
+                                <h1>{{ building.name }}</h1>
+                                <a href="#">
+                                    <p>点击前往</p>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
 					<a href="#">
 						<div class="tab1_part_lookall">查看全部>></div>
 					</a>
 				</div>
 				<div class="hide">
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>04</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>05</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>06</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
+                    {% for communication in communications %}
+                        <div class="tab1_part">
+                            <div class="tab1_part_time">
+                                <h1>{{ communication.addtime|date_format|get_day }}</h1>
+                                <p>{{ communication.addtime|date_format|get_year_month }}</p>
+                            </div>
+                            <div class="tab1_part_content">
+                                <h1>{{ communication.name }}</h1>
+                                <a href="#">
+                                    <p>点击前往</p>
+                                </a>
+                            </div>
+                        </div>
+					{% endfor %}
+                    <a href="#">
+						<div class="tab1_part_lookall">查看全部>></div>
+					</a>
+				</div>
+				<div class="hide">
+                    {% for education in educations %}
+                        <div class="tab1_part">
+                            <div class="tab1_part_time">
+                                <h1>{{ education.addtime|date_format|get_day }}</h1>
+                                <p>{{ education.addtime|date_format|get_year_month }}</p>
+                            </div>
+                            <div class="tab1_part_content">
+                                <h1>{{ education.name }}</h1>
+                                <a href="#">
+                                    <p>点击前往</p>
+                                </a>
+                            </div>
+                        </div>
+					{% endfor %}
 					<a href="#">
 						<div class="tab1_part_lookall">查看全部>></div>
 					</a>
 				</div>
 				<div class="hide">
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>06</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>09</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>06</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<a href="#">
-						<div class="tab1_part_lookall">查看全部>></div>
-					</a>
-				</div>
-				<div class="hide">
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>11</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>06</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
-					<div class="tab1_part">
-						<div class="tab1_part_time">
-							<h1>06</h1>
-							<p>2021-02</p>
-						</div>
-						<div class="tab1_part_content">
-							<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-							<a href="#">
-								<p>点击前往</p>
-							</a>
-						</div>
-					</div>
+                    {% for service in services %}
+                        <div class="tab1_part">
+                            <div class="tab1_part_time">
+                                <h1>{{ service.addtime|date_format|get_day }}</h1>
+                                <p>{{ service.addtime|date_format|get_year_month }}</p>
+                            </div>
+                            <div class="tab1_part_content">
+                                <h1>{{ service.name }}</h1>
+                                <a href="#">
+                                    <p>点击前往</p>
+                                </a>
+                            </div>
+                        </div>
+					{% endfor %}
 					<a href="#">
 						<div class="tab1_part_lookall">查看全部>></div>
 					</a>
@@ -346,165 +218,77 @@
 			</div>
 			<div class="tab_box">
 				<div>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
+					{% for hot_concern in hot_concerns %}
+                        <a href="#">
+                            <div class="tab2_part">
+                                <div class="tab2_part_time">
+                                    <h1>{{ hot_concern.addtime|date_format|get_day }}</h1>
+                                    <p>{{ hot_concern.addtime|date_format|get_year_month }}</p>
+                                </div>
+                                <div class="tab2_part_content">
+                                    <h1>{{ hot_concern.name}}</h1>
+                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
+                                </div>
+                            </div>
+                        </a>
+					{% endfor %}
 					<a href="#">
 						<div class="tab2_part_lookall">查看全部>></div>
 					</a>
 				</div>
 				<div class="hide">
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
+					{% for security_dynamic in security_dynamics %}
+                        <a href="#">
+                            <div class="tab2_part">
+                                <div class="tab2_part_time">
+                                    <h1>{{ security_dynamic.addtime|date_format|get_day }}</h1>
+                                    <p>{{ security_dynamic.addtime|date_format|get_year_month }}</p>
+                                </div>
+                                <div class="tab2_part_content">
+                                    <h1>{{ security_dynamic.name }}</h1>
+                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
+                                </div>
+                            </div>
+                        </a>
+					{% endfor %}
 					<a href="#">
 						<div class="tab2_part_lookall">查看全部>></div>
 					</a>
 				</div>
 				<div class="hide">
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
+                    {% for leak_release in leak_releases %}
+                        <a href="#">
+                            <div class="tab2_part">
+                                <div class="tab2_part_time">
+                                    <h1>{{ leak_release.addtime|date_format|get_day }}</h1>
+                                    <p>{{ leak_release.addtime|date_format|get_year_month }}</p>
+                                </div>
+                                <div class="tab2_part_content">
+                                    <h1>{{ leak_release.name }}</h1>
+                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
+                                </div>
+                            </div>
+                        </a>
+					{% endfor %}
 					<a href="#">
 						<div class="tab2_part_lookall">查看全部>></div>
 					</a>
 				</div>
 				<div class="hide">
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
-					<a href="#">
-						<div class="tab2_part">
-							<div class="tab2_part_time">
-								<h1>01</h1>
-								<p>2021-02</p>
-							</div>
-							<div class="tab2_part_content">
-								<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-								<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-							</div>
-						</div>
-					</a>
+					{% for security_event in security_events %}
+                        <a href="#">
+                            <div class="tab2_part">
+                                <div class="tab2_part_time">
+                                    <h1>{{ security_event.addtime|date_format|get_day }}</h1>
+                                    <p>{{ security_event.addtime|date_format|get_year_month }}</p>
+                                </div>
+                                <div class="tab2_part_content">
+                                    <h1>{{ security_event.name }}</h1>
+                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
+                                </div>
+                            </div>
+                        </a>
+					{% endfor %}
 					<a href="#">
 						<div class="tab2_part_lookall">查看全部>></div>
 					</a>
@@ -520,79 +304,21 @@
 			</a>
 		</div>
 		<div>
-			<a href="#">
-				<div class="part3_part">
-					<div class="tab2_part_time">
-						<h1>01</h1>
-						<p>2021-02</p>
-					</div>
-					<div class="tab2_part_content">
-						<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-						<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-					</div>
-				</div>
-			</a>
-			<a href="#">
-				<div class="part3_part">
-					<div class="tab2_part_time">
-						<h1>02</h1>
-						<p>2021-02</p>
-					</div>
-					<div class="tab2_part_content">
-						<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-						<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-					</div>
-				</div>
-			</a>
-			<a href="#">
-				<div class="part3_part">
-					<div class="tab2_part_time">
-						<h1>03</h1>
-						<p>2021-02</p>
-					</div>
-					<div class="tab2_part_content">
-						<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-						<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-					</div>
-				</div>
-			</a>
-			<a href="#">
-				<div class="part3_part">
-					<div class="tab2_part_time">
-						<h1>01</h1>
-						<p>2021-02</p>
-					</div>
-					<div class="tab2_part_content">
-						<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-						<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-					</div>
-				</div>
-			</a>
-			<a href="#">
-				<div class="part3_part">
-					<div class="tab2_part_time">
-						<h1>02</h1>
-						<p>2021-02</p>
-					</div>
-					<div class="tab2_part_content">
-						<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-						<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-					</div>
-				</div>
-			</a>
-			<a href="#">
-				<div class="part3_part">
-					<div class="tab2_part_time">
-						<h1>03</h1>
-						<p>2021-02</p>
-					</div>
-					<div class="tab2_part_content">
-						<h1>2020第四届丝绸之路网络安全论坛举行</h1>
-						<p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-					</div>
-				</div>
-			</a>
-		</div>
+            {% for law in laws %}
+                <a href="#">
+                    <div class="part3_part">
+                        <div class="tab2_part_time">
+                            <h1>{{ law.addtime|date_format|get_day }}</h1>
+                            <p>{{ law.addtime|date_format|get_year_month}}</p>
+                        </div>
+                        <div class="tab2_part_content">
+                            <h1>{{ law.name }}</h1>
+                            <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
+                        </div>
+                    </div>
+                </a>
+		    {% endfor %}
+        </div>
 	</div>
 	<div class="part4 y_1440">
 		<div class="normal_tip_head">
@@ -604,104 +330,16 @@
 		<div class="part4_example">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide">
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-				</div>
-				<div class="swiper-slide">
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
-					<div class="example">
-						<div class="example_pic"><img src="../../static/img/example_pic.png"></div>
-						<div class="example_content">
-							<div class="example_name">姓名：<span>xxx</span></div>
-							<div class="example_job">职务：<span>xxx</span></div>
-							<div class="example_area">工作单位：<span>xxx</span></div>
-						</div>
-					</div>
+					{% for leader in leaders %}
+                        <div class="example">
+                            <div class="example_pic"><img src="{{ leader.photo }}"></div>
+                            <div class="example_content">
+                                <div class="example_name">姓名：<span>{{ leader.name }}</span></div>
+                                <div class="example_job">职务：<span>{{ leader.duty }}</span></div>
+                                <div class="example_area">工作单位：<span>{{ leader.company }}</span></div>
+                            </div>
+                        </div>
+                    {% endfor %}
 				</div>
 			</div>
 			<div class="swiper-button-next"></div>
@@ -715,24 +353,15 @@
 				<div class="tip_lookall">查看全部&gt;&gt;</div>
 			</a>
 		</div>
-		<div class="part5_part">
-			<div class="part5_pic"><img src="../../static/img/example_pic.png"></div>
-			<div class="part5_content">
-				<h1>辽宁浪潮创新信息技术有限公司</h1>
-				<p>
-					公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容。
-				</p>
-			</div>
-		</div>
-		<div class="part5_part">
-			<div class="part5_pic"><img src="../../static/img/example_pic.png"></div>
-			<div class="part5_content">
-				<h1>辽宁浪潮创新信息技术有限公司</h1>
-				<p>
-					公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容公司简介文字内容内容。
-				</p>
-			</div>
-		</div>
+        {% for director in director_company %}
+            <div class="part5_part">
+                <div class="part5_pic"><img src="{{ director.logo }}"></div>
+                <div class="part5_content">
+                    <h1>{{ director.name }}</h1>
+                    <p>{{ director.desc }}</p>
+                </div>
+            </div>
+        {% endfor %}
 	</div>
 	<div class="part6 y_1440">
 		<div class="normal_tip_head">
@@ -742,27 +371,11 @@
 			</a>
 		</div>
 		<div class="part6_part">
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
+            {% for support in support_company %}
+                <a href="#">
+                    <div><img src="{{ support.logo }}" alt="{{ support.name }}"></div>
+                </a>
+            {% endfor %}
 		</div>
 	</div>
 	<div class="part7 y_1440">
@@ -773,27 +386,11 @@
 			</a>
 		</div>
 		<div class="part7_part">
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
-			<a href="#">
-				<div><img src="../../static/img/example_pic.png"></div>
-			</a>
+            {% for member in member_company %}
+                <a href="#">
+                    <div><img src="{{ member.logo }}" alt="{{ member.name }}"></div>
+                </a>
+            {% endfor %}
 		</div>
 	</div>
 	<div class="foot">

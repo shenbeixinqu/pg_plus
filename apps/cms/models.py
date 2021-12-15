@@ -188,7 +188,7 @@ class CMSStandard(db.Model):
 协会工作
 """
 
-# 党建活动
+# 协会工作
 class CMSBuilding(db.Model):
     """
     reorder: 排序
@@ -196,7 +196,7 @@ class CMSBuilding(db.Model):
     if_banner: 是否轮播
     banner_url: 轮播图片地址
     content: 图文信息
-    kind: 种类    1: 党建信息,2:交流活动,3: 教育培训
+    kind: 种类    1: 党建信息,2:交流活动,3: 教育培训, 4:安全服务
     """
     __tablename__ = 'cms_building'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -206,11 +206,17 @@ class CMSBuilding(db.Model):
     if_banner = db.Column(db.Integer)
     banner_url = db.Column(db.String(100))
     content = db.Column(db.TEXT)
+    # kind =4 (安全事件字段)
+    mold = db.Column(db.String(10))
+    link = db.Column(db.String(100))
+    file_dir = db.Column(db.String(100))
+    file_name = db.Column(db.String(100))
     addtime = db.Column(db.DateTime, default=datetime.now)
+    adddate = db.Column(db.Date, default=datetime.now())
     kind = db.Column(db.Integer)
 
 
-# 党建活动
+# 行业动态
 class CMSIndustry(db.Model):
     """
     reorder: 排序
@@ -229,6 +235,7 @@ class CMSIndustry(db.Model):
     banner_url = db.Column(db.String(100))
     content = db.Column(db.TEXT)
     addtime = db.Column(db.DateTime, default=datetime.now)
+    adddate = db.Column(db.Date, default=datetime.now())
     kind = db.Column(db.Integer)
 
 
@@ -246,6 +253,7 @@ class CMSNotice(db.Model):
     banner_url = db.Column(db.String(100))
     content = db.Column(db.TEXT)
     addtime = db.Column(db.DateTime, default=datetime.now)
+    adddate = db.Column(db.Date, default=datetime.now)
     kind = db.Column(db.Integer)
 
 

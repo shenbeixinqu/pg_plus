@@ -21,7 +21,7 @@ from .models import (
 )
 from utils.response_code import RET
 from utils.return_method import success_return, error_return
-from utils.datetime_format import datetimeformat
+from utils.datetime_format import datetimeformat, dateformat
 from config import Base_dir, Base_url
 from exts import db
 from flask_httpauth import HTTPBasicAuth
@@ -659,7 +659,7 @@ def add_director_company():
         director = CMSDirectorCompany.query.get(director_id)
         director.name = name
         director.content = content
-        director.logoUrl = logoUrl
+        director.logo = logoUrl
         director.desc = desc
     else:
         director = CMSDirectorCompany(name=name, content=content, logo=logoUrl, desc=desc)
@@ -668,7 +668,7 @@ def add_director_company():
     return success_return()
 
 
-# 会员单位列表
+# 理事单位列表
 @bp.route('/directorCompanyList')
 def director_company_list():
     pn = int(request.values.get("pn", 1))
@@ -689,7 +689,7 @@ def director_company_list():
     return success_return(**{"data": data, "total": total})
 
 
-# 删除会员单位
+# 删除理事单位
 @bp.route('/deleteDirectorCompany', methods=['POST'])
 def delete_director_company():
     get_data = request.get_data()
@@ -715,7 +715,7 @@ def add_member_company():
         member = CMSMemberCompany.query.get(member_id)
         member.name = name
         member.content = content
-        member.logoUrl = logoUrl
+        member.logo = logoUrl
     else:
         member = CMSMemberCompany(name=name, content=content, logo=logoUrl)
         db.session.add(member)
@@ -768,7 +768,7 @@ def add_support_company():
         support = CMSSupportCompany.query.get(support_id)
         support.name = name
         support.content = content
-        support.logoUrl = logoUrl
+        support.logo = logoUrl
     else:
         support = CMSSupportCompany(name=name, content=content, logo=logoUrl)
         db.session.add(support)
@@ -860,6 +860,7 @@ def delete_standard():
 def add_building():
     data = request.get_data()
     data = json.loads(data)
+    print("DATA", data)
     name = data["name"]
     reorder = data["reorder"] if data["reorder"] else 1
     if_new = data["if_new"]
@@ -867,6 +868,10 @@ def add_building():
     banner_url = data["banner_url"]
     content = data["content"]
     kind = data["kind"]
+    mold = data["mold"]
+    link = data["link"]
+    file_name = data["file_name"]
+    file_dir = data["file_dir"]
     if data["id"]:
         building_id = data["id"]
         building = CMSBuilding.query.get(building_id)
@@ -876,10 +881,18 @@ def add_building():
         building.if_banner = if_banner
         building.content = content
         building.banner_url = banner_url
+        building.mold = mold
+        building.link = link
+        building.file_dir = file_dir
+        building.file_name = file_name
     else:
-        branch = CMSBuilding(name=name, reorder=reorder, if_new=if_new,
-                             if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
-        db.session.add(branch)
+        if kind == 4:
+            building = CMSBuilding(name=name, reorder=reorder, if_new=if_new, if_banner=if_banner, content=content,
+                                banner_url=banner_url, kind=kind, mold=mold,  link=link, file_dir=file_dir, file_name=file_name)
+        else:
+            building = CMSBuilding(name=name, reorder=reorder, if_new=if_new,
+                                 if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
+        db.session.add(building)
     db.session.commit()
     return success_return()
 
@@ -903,7 +916,12 @@ def building_list():
             "if_banner": q.if_banner,
             "banner_url": q.banner_url,
             "content": q.content,
-            "addtime": datetimeformat(q.addtime)
+            "mold": q.mold,
+            "link": q.link,
+            "file_dir": q.file_dir,
+            "file_name": q.file_name,
+            "addtime": datetimeformat(q.addtime),
+            "adddate": dateformat(q.adddate)
         }
         data.append(record)
     return success_return(**{"data": data, "total": total})
@@ -943,8 +961,8 @@ def add_industry():
         industry.content = content
         industry.banner_url = banner_url
     else:
-        industry = CMSIndustry(name=name, reorder=reorder, if_new=if_new,
-                             if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
+        industry = CMSIndustry(name=name, reorder=reorder, if_new=if_new, if_banner=if_banner,
+                                   content=content, banner_url=banner_url, kind=kind)
         db.session.add(industry)
     db.session.commit()
     return success_return()
