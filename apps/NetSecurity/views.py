@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify, render_template
 from apps.cms.models import *
 
+import json
+
 bp = Blueprint('NetSecurity', __name__, url_prefix='/NetSecurity')
 
 
@@ -23,9 +25,12 @@ def index():
 	return render_template('NetSecurity/index.html', **locals())
 
 
-# @bp.route('/task')
-# def task():
-#
+@bp.route('/task')
+def task():
+	kind = request.args.get("kind")
+	# data = json.loads(data)
+	print("kind", kind)
+	return "123454321"
 
 
 @bp.app_template_filter("date_format")
