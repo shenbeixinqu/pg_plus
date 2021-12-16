@@ -94,7 +94,7 @@
     padding-left: 10px;
 }
 .btn_srh{
-   background: url(../images/search.png) no-repeat;
+   background: url(../../static/img/search.png) no-repeat;
    width: 29px;
    height: 29px;
    border: none;

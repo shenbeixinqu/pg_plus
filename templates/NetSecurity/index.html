@@ -1,32 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'NetSecurity/basic.html' %}
 
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>辽宁省信息网络安全协会</title>
-	<link rel="stylesheet" href="../../static/css/pc_base.css">
-	<link rel="stylesheet" href="../../static/css/pc_style.css">
-	<link href="../../static/css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
-	<script src="../../static/js/jquery.js"></script>
-	<script type="text/javascript" src="../../static/js/swiper-bundle.min.js"></script>
-	<!-- swiper样式 -->
-	<style>
-		.swiper-button-prev,
-		.swiper-container-rtl .swiper-button-next {
-			color: #000;
-		}
-
-		.swiper-button-next,
-		.swiper-container-rtl .swiper-button-prev {
-			color: #000;
-		}
-	</style>
-</head>
-
-<body>
-	<div class="header">
+{% block header %}
+    <div class="header">
 		<div class="y_1440">
 			<a href="#">
 				<div class="memberregister">会员注册</div>
@@ -36,55 +11,10 @@
 			</a>
 		</div>
 	</div>
-	<div class="head">
-		<div class="y_1440">
-			<div class="logo"><img src="../../static/img/logo.png"></div>
-			<div class="nav">
-				<ul>
-					<li><a class="link" href="#">首页</a></li>
-					<li class="mainmenu">
-						<a class="link" href="#">协会概况</a>
-						<dl>
-							<dd><a href="#">协会简介</a></dd>
-							<dd><a href="#">协会章程</a></dd>
-							<dd><a href="#">分支机构</a></dd>
-							<dd><a href="#">协会负责人</a></dd>
-							<dd><a href="#">理事单位</a></dd>
-							<dd><a href="#">支撑单位</a></dd>
-							<dd><a href="#">会员单位</a></dd>
-							<dd><a href="#">会费标准</a></dd>
-						</dl>
-					</li>
-					<li class="mainmenu">
-						<a class="link" href="#">协会工作</a>
-						<dl class="dl_association">
-{#							<dd><a href="#">党建活动</a></dd>#}
-{#							<dd><a href="#">交流活动</a></dd>#}
-{#							<dd><a href="#">教育培训</a></dd>#}
-{#							<dd><a href="#">安全服务</a></dd>#}
-                            <dd class="association">党建活动</dd>
-							<dd class="association">交流活动</dd>
-							<dd class="association">教育培训</dd>
-							<dd class="association">安全服务</dd>
-						</dl>
-					</li>
-					<li class="mainmenu">
-						<a class="link" href="#">行业动态</a>
-						<dl>
-							<dd><a href="#">热点关注</a></dd>
-							<dd><a href="#">网安动态</a></dd>
-							<dd><a href="#">漏洞发布</a></dd>
-							<dd><a href="#">安全事件</a></dd>
-						</dl>
-					</li>
-					<li><a class="link" href="#">通知公告</a></li>
-					<li class="mainmenu"><a href="#">法律法规</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<!-- banner -->
-	<div class="y_banner">
+{% endblock %}
+
+{% block banner %}
+    <div class="y_banner">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide">
 				<div style="background: url(../../static/img/banner.png) top center no-repeat;height: 300px;">
@@ -96,7 +26,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="part1 y_1440">
+{% endblock %}
+
+{% block content %}
+    <div class="part1 y_1440">
 		<div class="part1_pic">
 			<img src="../../static/img/example_pic.png">
 		</div>
@@ -397,35 +330,10 @@
             {% endfor %}
 		</div>
 	</div>
-	<div class="foot">
-		<div class="y_1440 y_flex">
-			<div class="foot_logo"><img src="../../static/img/logo.png"></div>
-			<div class="foot_content">
-				电话：<span>029-8885-9176</span></br>
-				传真：<span>029-8885-9176</span></br>
-				邮箱：<span>409015382@qq.com</span></br>
-				地址：<span>西安市高新区茶张路一号省信息化中心17层</span>
-			</div>
-			<div class="foot_ewm">
-				<img src="../../static/img/ewm.png">
-				<div>微信公众号</div>
-			</div>
-		</div>
-	</div>
-	<div class="footer">
-		<a href="https://beian.miit.gov.cn">Copyright © 2021 辽宁省信息网络安全协会 版权所有</a>
-	</div>
+{% endblock %}
 
-</body>
-
-<script type="text/javascript">
-	// 协会工作
-    $(function () {
-        $('.association').click(function (event) {
-            console.log('dd_event', event)
-        })
-    })
-
+{% block script %}
+    <script type="text/javascript">
     let task_id = 1
     // 查看全部
     $(function () {
@@ -446,20 +354,12 @@
 
                 }
             })
-
-
         })
     })
-    // 下拉选择
-    $(function() {
-        var $dd_association = $('.dl_association dd')
-        $dd_association.click(function () {
-            console.log('this', $dd_association.index(this))
-        })
-    })
-    // tab切换
+      // tab切换
 	$(function () {
 		var $div_li = $("div.tab_menu ul li");
+		console.log("$div_li", $div_li)
 		$div_li.click(function () {
 			$(this).addClass("selected")            //当前<li>元素高亮
 				.siblings().removeClass("selected");  //去掉其它同辈<li>元素的高亮
@@ -508,6 +408,5 @@
 		});
 
 	})
-</script>
-
-</html>
+    </script>
+{% endblock %}

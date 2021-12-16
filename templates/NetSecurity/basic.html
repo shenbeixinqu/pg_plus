@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>辽宁省信息网络安全协会</title>
+	<link rel="stylesheet" href="../../static/css/pc_base.css">
+	<link rel="stylesheet" href="../../static/css/pc_style.css">
+	<link href="../../static/css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+	<script src="../../static/js/jquery.js"></script>
+	<script type="text/javascript" src="../../static/js/swiper-bundle.min.js"></script>
+    <style>
+		.swiper-button-prev,
+		.swiper-container-rtl .swiper-button-next {
+			color: #000;
+		}
+
+		.swiper-button-next,
+		.swiper-container-rtl .swiper-button-prev {
+			color: #000;
+		}
+	</style>
+</head>
+
+<body>
+    <!-- header -->
+    {% block header %}
+    {% endblock %}
+
+    <!--head-->
+	<div class="head">
+		<div class="y_1440">
+			<div class="logo"><img src="../../static/img/logo.png"></div>
+			<div class="nav">
+				<ul>
+					<li><div>首页</div></li>
+					<li class="mainmenu">
+						<div class="link">协会概况</div>
+						<dl>
+							<dd>协会简介</dd>
+							<dd>协会章程</dd>
+							<dd>分支机构</dd>
+							<dd>协会负责人</dd>
+							<dd>理事单位</dd>
+							<dd>支撑单位</dd>
+							<dd>会员单位</dd>
+							<dd>会费标准</dd>
+						</dl>
+					</li>
+					<li class="mainmenu">
+						<div class="link">协会工作</div>
+						<dl class="dl_association">
+							<dd>党建活动</dd>
+							<dd>交流活动</dd>
+							<dd>教育培训</dd>
+							<dd>安全服务</dd>
+						</dl>
+					</li>
+					<li class="mainmenu">
+						<div class="link">行业动态</div>
+						<dl>
+							<dd>热点关注</dd>
+							<dd>网安动态</dd>
+							<dd>漏洞发布</dd>
+							<dd>安全事件</dd>
+						</dl>
+					</li>
+					<li><div class="link">通知公告</div></li>
+					<li class="mainmenu"><div>法律法规</div></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- banner -->
+	{% block banner %}
+    {% endblock %}
+	<!-- content -->
+	{% block content %}
+    {% endblock %}
+
+    <div class="foot">
+		<div class="y_1440 y_flex">
+			<div class="foot_logo"><img src="../../static/img/logo.png"></div>
+			<div class="foot_content">
+				电话：<span>029-8885-9176</span></br>
+				传真：<span>029-8885-9176</span></br>
+				邮箱：<span>409015382@qq.com</span></br>
+				地址：<span>西安市高新区茶张路一号省信息化中心17层</span>
+			</div>
+			<div class="foot_ewm">
+				<img src="../../static/img/ewm.png">
+				<div>微信公众号</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<a href="https://beian.miit.gov.cn">Copyright © 2021 辽宁省信息网络安全协会 版权所有</a>
+	</div>
+
+</body>
+    <script type="text/javascript">
+        // 下拉选择
+        $(function() {
+            var $dd_association = $('.dl_association dd')
+            $dd_association.click(function () {
+                let association_id = $dd_association.index(this) + 1
+                console.log('association_id',association_id)
+                $.ajax({
+                    url: "{{ url_for('NetSecurity.get_id') }}",
+                    type: 'GET',
+                    contentType: "application/json",
+                    data:{kind:association_id},
+                    dataType:"json",
+                    success:function (data) {
+                        if (data['code'] == 200){
+                            let kind_id = data['id']
+                            window.location.href = "/NetSecurity/association?kind=" + kind_id
+                        }
+                    },
+                    error:function (err) {
+                        console.log('err', err)
+                    }
+                })
+            })
+        })
+    </script>
+    {% block script %}
+    {% endblock %}
+</html>

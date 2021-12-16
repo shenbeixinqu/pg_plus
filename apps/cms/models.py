@@ -130,8 +130,11 @@ class CMSLeader(db.Model):
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 
-# 会员单位
+# 分支机构/理事单位/会员单位/支撑单位
 class CMSMemberCompany(db.Model):
+    """
+    kind:种类, 1:分支机构,2:理事单位,3:会员单位,4:支撑单位
+    """
     __tablename__ = 'cms_member_company'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100))

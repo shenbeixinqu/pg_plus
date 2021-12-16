@@ -33,6 +33,31 @@ def task():
 	return "123454321"
 
 
+@bp.route('/get_id')
+def get_id():
+	kind = request.args.get('kind')
+	data = {
+		"code": 200,
+		"id": kind
+	}
+	return jsonify(data)
+
+
+@bp.route('/association', methods=['GET', 'POST'])
+def association():
+	kind = request.args.get('kind')
+	print("association_kind", kind)
+	querys = CMSBuilding.query.filter(CMSBuilding.kind == kind)
+	# buildings = CMSBuilding.query.filter(CMSBuilding.kind == kind)
+	# communications = CMSBuilding.query.filter(CMSBuilding.kind == kind).order_by(CMSBuilding.adddate.desc(),
+	# 																		  CMSBuilding.reorder.desc()).limit(3)
+	# educations = CMSBuilding.query.filter(CMSBuilding.kind == kind).order_by(CMSBuilding.adddate.desc(),
+	# 																	  CMSBuilding.reorder.desc()).limit(3)
+	# services = CMSBuilding.query.filter(CMSBuilding.kind == 4).order_by(CMSBuilding.adddate.desc(),
+	# 																	CMSBuilding.reorder.desc()).limit(3)
+	return render_template('NetSecurity/association_list.html', querys=querys, kind=kind)
+
+
 @bp.app_template_filter("date_format")
 def date_format(value, format="%Y-%m-%d"):
 	if not value:
