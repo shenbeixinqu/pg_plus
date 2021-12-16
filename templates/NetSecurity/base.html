@@ -1,40 +1,13 @@
-{% extends 'NetSecurity/basic.html' %}
-
-{% block header %}
-    <div class="header">
-		<div class="y_1440">
-			<a href="#">
-				<div class="logout">退出</div>
-			</a>
-			<a href="#">
-				<div class="admin">ADMIN</div>
-			</a>
-			<div class="search">
-				<form name="" method="post" action="">
-					<input class="search_input" type="text" name="" id="" value="" placeholder="请输入...">
-					<input class="btn_srh" type="submit" name="submit" value="">
-				</form>
-			</div>
-		</div>
-	</div>
-{% endblock %}
-
-{% block banner %}
-    <div class="y_banner">
-		<div class="swiper-wrapper">
-			<div class="swiper-slide">
-				<div style="background: url(../../static/img/innerbg.png) top center no-repeat;height: 180px;">
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div style="background: url(../../static/img/innerbg.png) top center no-repeat;height: 180px;">
-				</div>
-			</div>
-		</div>
-	</div>
-{% endblock %}
-
-{% block content %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
     <div class="y_1440 list_part">
 		<div class="list_left">
 			<div class="list_left_top">协会工作</div>
@@ -232,10 +205,7 @@
 			</div>
 		</div>
 	</div>
-{% endblock %}
-
-{% block script %}
-    <script type="text/javascript">
+     <script type="text/javascript">
         var $left_li = $("div.tab_menu ul li");
         console.log("$left_li", $left_li)
         $left_li.click(function () {
@@ -249,6 +219,7 @@
                     dataType:"html",
                     success:function (data) {
                         console.log('success', data)
+                        $(".list_part").html(data)
                     },
                     error:function (err) {
                         console.log('err', err)
@@ -257,4 +228,5 @@
         })
 
     </script>
-{% endblock %}
+</body>
+</html>

@@ -58,6 +58,15 @@ def association():
 	return render_template('NetSecurity/association_list.html', querys=querys, kind=kind)
 
 
+@bp.route('/test', methods=['GET', 'POST'])
+def test():
+	kind = request.args.get('kind')
+	print("association_kind", kind)
+	querys = CMSBuilding.query.filter(CMSBuilding.kind == kind)
+	return render_template('NetSecurity/base.html', querys=querys, kind=kind)
+
+
+
 @bp.app_template_filter("date_format")
 def date_format(value, format="%Y-%m-%d"):
 	if not value:
