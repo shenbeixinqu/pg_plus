@@ -106,20 +106,16 @@ class CMSService(db.Model):
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 
-# 协会简介
+# 协会简介/章程/会费标桩
 class CMSIntroduction(db.Model):
+    """
+    kind: 种类, 1:协会简介,2:协会章程,3:会费标准
+    """
     __tablename__ = 'cms_introduction'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content = db.Column(db.TEXT)
     addtime = db.Column(db.DateTime, default=datetime.now)
-
-
-# 协会章程
-class CMSBylaws(db.Model):
-    __tablename__ = 'cms_bylaws'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    content = db.Column(db.TEXT)
-    addtime = db.Column(db.DateTime, default=datetime.now)
+    kind = db.Column(db.Integer)
 
 
 # 分支机构
@@ -175,13 +171,6 @@ class CMSSupportCompany(db.Model):
     content = db.Column(db.TEXT)
     addtime = db.Column(db.DateTime, default=datetime.now)
 
-
-# 会费标准
-class CMSStandard(db.Model):
-    __tablename__ = 'cms_standard'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    content = db.Column(db.TEXT)
-    addtime = db.Column(db.DateTime, default=datetime.now)
 
 
 """

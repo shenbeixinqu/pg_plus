@@ -7,8 +7,6 @@ from .models import (
     CMSEvent,
     CMSService,
     CMSIntroduction,
-    CMSBylaws,
-    CMSStandard,
     CMSMemberCompany,
     CMSSupportCompany,
     CMSDirectorCompany,
@@ -435,29 +433,31 @@ def member_list():
 """
 
 
-# 添加简介
+# 添加简介/章程/会费
 @bp.route('/addIntroduction', methods=['POST'])
 def add_introduction():
     data = request.get_data()
     data = json.loads(data)
     content = data["content"]
+    kind = data["kind"]
     if data["id"]:
         introduction_id = data["id"]
         introduction = CMSIntroduction.query.get(introduction_id)
         introduction.content = content
     else:
-        introduction = CMSIntroduction(content=content)
+        introduction = CMSIntroduction(content=content, kind=kind)
         db.session.add(introduction)
     db.session.commit()
     return success_return()
 
 
-# 协会简介
+# 简介/章程/会费列表
 @bp.route('/introductionList')
 def introduction_list():
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
-    querys = CMSIntroduction.query.offset((pn-1)*limit_num).limit(limit_num).all()
+    kind = int(request.values.get('kind'))
+    querys = CMSIntroduction.query.filter(CMSIntroduction.kind == kind).offset((pn-1)*limit_num).limit(limit_num).all()
     total = CMSIntroduction.query.count()
     data = []
     for q in querys:
@@ -470,7 +470,7 @@ def introduction_list():
     return success_return(**{"data": data, "total": total})
 
 
-# 删除简介
+# 删除简介/章程/会费
 @bp.route('/deleteIntroduction', methods=['POST'])
 def delete_introduction():
     get_data = request.get_data()
@@ -478,53 +478,6 @@ def delete_introduction():
     introduction_id = get_data["deleteId"]
     introduction = CMSIntroduction.query.get(introduction_id)
     db.session.delete(introduction)
-    db.session.commit()
-    return success_return(**{"data": {}})
-
-
-# 添加协会章程
-@bp.route('/addBylaws', methods=['POST'])
-def add_bylaws():
-    data = request.get_data()
-    data = json.loads(data)
-    content = data["content"]
-    if data["id"]:
-        bylaws_id = data["id"]
-        bylaws = CMSBylaws.query.get(bylaws_id)
-        bylaws.content = content
-    else:
-        bylaws = CMSBylaws(content=content)
-        db.session.add(bylaws)
-    db.session.commit()
-    return success_return()
-
-
-# 协会章程列表
-@bp.route('/bylawsList')
-def bylaws_list():
-    pn = int(request.values.get("pn", 1))
-    limit_num = int(request.values.get("limit", 10))
-    querys = CMSBylaws.query.offset((pn-1)*limit_num).limit(limit_num).all()
-    total = CMSBylaws.query.count()
-    data = []
-    for q in querys:
-        record = {
-            "id": q.id,
-            "content": q.content,
-            "addtime": datetimeformat(q.addtime)
-        }
-        data.append(record)
-    return success_return(**{"data": data, "total": total})
-
-
-# 删除协会章程
-@bp.route('/deleteBylaws', methods=['POST'])
-def delete_bylaws():
-    get_data = request.get_data()
-    get_data = json.loads(get_data)
-    bylaws_id = get_data["deleteId"]
-    bylaws = CMSBylaws.query.get(bylaws_id)
-    db.session.delete(bylaws)
     db.session.commit()
     return success_return(**{"data": {}})
 
@@ -804,53 +757,6 @@ def delete_support_company():
     support_id = get_data["deleteId"]
     support = CMSSupportCompany.query.get(support_id)
     db.session.delete(support)
-    db.session.commit()
-    return success_return(**{"data": {}})
-
-
-# 添加会费标准
-@bp.route('/addStandard', methods=['POST'])
-def add_standard():
-    data = request.get_data()
-    data = json.loads(data)
-    content = data["content"]
-    if data["id"]:
-        standard_id = data["id"]
-        standard = CMSStandard.query.get(standard_id)
-        standard.content = content
-    else:
-        standard = CMSStandard(content=content)
-        db.session.add(standard)
-    db.session.commit()
-    return success_return()
-
-
-# 会费标准列表
-@bp.route('/standardList')
-def standard_list():
-    pn = int(request.values.get("pn", 1))
-    limit_num = int(request.values.get("limit", 10))
-    querys = CMSStandard.query.offset((pn-1)*limit_num).limit(limit_num).all()
-    total = CMSStandard.query.count()
-    data = []
-    for q in querys:
-        record = {
-            "id": q.id,
-            "content": q.content,
-            "addtime": datetimeformat(q.addtime)
-        }
-        data.append(record)
-    return success_return(**{"data": data, "total": total})
-
-
-# 删除会费标准
-@bp.route('/deleteStandard', methods=['POST'])
-def delete_standard():
-    get_data = request.get_data()
-    get_data = json.loads(get_data)
-    standard_id = get_data["deleteId"]
-    standard = CMSStandard.query.get(standard_id)
-    db.session.delete(standard)
     db.session.commit()
     return success_return(**{"data": {}})
 
