@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, url_for, redirect
 from apps.cms.models import *
 
 import json
@@ -47,24 +47,53 @@ def get_id():
 def association():
 	kind = request.args.get('kind')
 	print("association_kind", kind)
-	querys = CMSBuilding.query.filter(CMSBuilding.kind == kind)
-	# buildings = CMSBuilding.query.filter(CMSBuilding.kind == kind)
-	# communications = CMSBuilding.query.filter(CMSBuilding.kind == kind).order_by(CMSBuilding.adddate.desc(),
-	# 																		  CMSBuilding.reorder.desc()).limit(3)
-	# educations = CMSBuilding.query.filter(CMSBuilding.kind == kind).order_by(CMSBuilding.adddate.desc(),
-	# 																	  CMSBuilding.reorder.desc()).limit(3)
-	# services = CMSBuilding.query.filter(CMSBuilding.kind == 4).order_by(CMSBuilding.adddate.desc(),
-	# 																	CMSBuilding.reorder.desc()).limit(3)
-	return render_template('NetSecurity/association_list.html', querys=querys, kind=kind)
+	# querys = CMSBuilding.query.filter(CMSBuilding.kind == kind)
+	buildings = CMSBuilding.query.filter(CMSBuilding.kind == 1).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
+	communications = CMSBuilding.query.filter(CMSBuilding.kind == 2).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).limit(3)
+	educations = CMSBuilding.query.filter(CMSBuilding.kind == 3).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
+	services = CMSBuilding.query.filter(CMSBuilding.kind == 4).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).limit(3)
+
+	return render_template('NetSecurity/association_list.html', **locals())
 
 
-@bp.route('/test', methods=['GET', 'POST'])
-def test():
+@bp.route('/association_detail', methods=['GET', 'POST'])
+def association_detail():
+	params = request.args.get('params')
+	print("params", params)
+	query = CMSBuilding.query.filter(CMSBuilding.id == params).first()
+	content = query.content
+	print("content", content)
+	return jsonify(content)
+	# return render_template('NetSecurity/association_detail.html')
+
+
+@bp.route('/association_search', methods=['GET', 'POST'])
+def association_search():
+	search_val = request.args.get('search_val')
 	kind = request.args.get('kind')
-	print("association_kind", kind)
-	querys = CMSBuilding.query.filter(CMSBuilding.kind == kind)
-	return render_template('NetSecurity/base.html', querys=querys, kind=kind)
+	print("search_val", search_val, kind)
+	querys = CMSBuilding.query.filter(CMSBuilding.kind == kind, CMSBuilding.name.contains(search_val))
+	search_list = []
+	for query in querys:
+		search_dict = {}
+		search_dict["name"] = query.name
+		search_dict["content"] = query.content
+		search_list.append(search_dict)
+	return jsonify(data=search_list)
 
+
+@bp.route('/overview', methods=['GET', 'POST'])
+def overview():
+	introduction = CMSIntroduction.query.filter(CMSIntroduction.kind == 1).first()
+	bylaws = CMSIntroduction.query.filter(CMSIntroduction.kind == 2).first()
+	standard = CMSIntroduction.query.filter(CMSIntroduction.kind == 3).first()
+	leaders = CMSLeader.query.all()
+	branches = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 1)
+	directors = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 2)
+	members = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).paginate(page=1, per_page=4).items
+	pagination = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).paginate(page=1, per_page=4)
+	supports = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 4)
+	return render_template('NetSecurity/overview_list.html', **locals())
 
 
 @bp.app_template_filter("date_format")

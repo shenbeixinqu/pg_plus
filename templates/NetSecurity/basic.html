@@ -8,7 +8,7 @@
 	<title>辽宁省信息网络安全协会</title>
 	<link rel="stylesheet" href="../../static/css/pc_base.css">
 	<link rel="stylesheet" href="../../static/css/pc_style.css">
-	<link href="../../static/css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../static/css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 	<script src="../../static/js/jquery.js"></script>
 	<script type="text/javascript" src="../../static/js/swiper-bundle.min.js"></script>
     <style>
@@ -35,10 +35,10 @@
 			<div class="logo"><img src="../../static/img/logo.png"></div>
 			<div class="nav">
 				<ul>
-					<li><div>首页</div></li>
+					<li><div><a href="/NetSecurity">首页</a></div></li>
 					<li class="mainmenu">
 						<div class="link">协会概况</div>
-						<dl>
+						<dl class="dl_overview">
 							<dd>协会简介</dd>
 							<dd>协会章程</dd>
 							<dd>分支机构</dd>
@@ -124,14 +124,23 @@
                     }
                 })
             })
+
+            // 协会概况
+            var $dd_overview = $('.dl_overview dd')
+            $dd_overview.click(function () {
+                console.log('概况')
+            })
+
             // tab切换
             var $div_li = $("div.tab_menu ul li");
-            var index = $div_li.index(this);
             $div_li.click(function () {
                 $(this).addClass("selected")            //当前<li>元素高亮
                     .siblings().removeClass("selected");  //去掉其它同辈<li>元素的高亮
                 var index = $div_li.index(this);  // 获取当前点击的<li>元素 在 全部li元素中的索引。
+                console.log('index', index)
                 task_id = index + 1
+                $(".show_list").show()
+                $(".detail").empty()
                 $("div.tab_box > div")   	//选取子节点。不选取子节点的话，会引起错误。如果里面还有div
                     .eq(index).show()   //显示 <li>元素对应的<div>元素
                     .siblings().hide(); //隐藏其它几个同辈的<div>元素

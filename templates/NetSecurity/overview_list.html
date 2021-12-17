@@ -1,0 +1,211 @@
+{% extends 'NetSecurity/basic.html' %}
+
+{% block header %}
+    <div class="header">
+		<div class="y_1440">
+			<a href="#">
+				<div class="logout">退出</div>
+			</a>
+			<a href="#">
+				<div class="admin">ADMIN</div>
+			</a>
+		</div>
+	</div>
+{% endblock %}
+
+{% block banner %}
+    <div class="y_banner">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<div style="background: url(../../static/img/innerbg.png) top center no-repeat;height: 180px;">
+				</div>
+			</div>
+			<div class="swiper-slide">
+				<div style="background: url(../../static/img/innerbg.png) top center no-repeat;height: 180px;">
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content %}
+    <div class="y_1440 list_part">
+		<div class="list_left online">
+			<div class="list_left_top">协会在线</div>
+			<div class="tab1">
+				<div class="tab_menu">
+					<ul>
+						<li class="selected">协会简介</li>
+						<li>协会章程</li>
+						<li>分支机构</li>
+						<li>协会负责人</li>
+						<li>理事单位</li>
+						<li>支撑单位</li>
+						<li>会员单位</li>
+						<li>会费标准</li>
+						<div class="c"></div>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="list_right">
+			<div class="tab_box">
+				<div>
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">协会简介</a></div>
+					</div>
+					<div class="detail_content">
+						<h4>2021-12-06</h4>
+                        <p>
+                            {{ introduction.content }}
+                        </p>
+					</div>
+				</div>
+				<div class="hide">
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">协会章程</a></div>
+					</div>
+					<div class="detail_content">
+						<h4>2021-12-06</h4>
+						<p>
+                            {{ bylaws.content }}
+						</p>
+					</div>
+				</div>
+				<div class="hide">
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">分支机构</a></div>
+					</div>
+					<div class="detail_content">
+						{% for branch in branches %}
+                            <div class="branch_list">
+                                <div class="branch_list_pic">
+                                    <img src="{{ branch.logo }}">
+                                </div>
+                                <div class="branch_list_content">
+                                    <h1>{{ branch.name }}</h1>
+                                    <p>地址：<span>{{ branch.address }}</span></p>
+                                </div>
+                            </div>
+                        {% endfor %}
+					</div>
+				</div>
+				<div class="hide">
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">协会负责人</a></div>
+					</div>
+					<div class="detail_content">
+                        {% for leader in leaders %}
+                            <div class="person_list">
+                                <div class="person_list_pic">
+                                    <img src="{{ leader.photo }}">
+                                </div>
+                                <div class="person_list_content">
+                                    <h1>姓名：<span>{{ leader.name }}</span></h1>
+                                    <p>职务：<span>{{ leader.duty }}</span></p>
+                                    <p>工作单位：<span>{{ leader.company }}</span></p>
+                                </div>
+                            </div>
+                        {% endfor %}
+					</div>
+				</div>
+				<div class="hide">
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">理事单位</a></div>
+					</div>
+					<div class="detail_content">
+						{% for director in directors %}
+                            <div class="director_list">
+                                <div class="director_list_pic">
+                                    <img src="{{ director.logo }}">
+                                </div>
+                                <div class="director_list_content">
+                                    <h1>{{ director.name }}</h1>
+                                    <p>{{ director.content }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+						<!-- 分页 -->
+						<div class="page">
+							<a href=""><span class="pageup">上一页</span></a>
+							<ul class="pagenumberBox">
+								<a href="">
+									<li class="on">1</li>
+								</a>
+								<a href="">
+									<li>2</li>
+								</a>
+								<a href="">
+									<li>3</li>
+								</a>
+								<a href="">
+									<li>4</li>
+								</a>
+							</ul>
+							<a href=""><span class="nextPage">下一页</span></a>
+						</div>
+					</div>
+				</div>
+				<div class="hide">
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">支撑单位</a></div>
+					</div>
+					<div class="detail_content">
+                        {% for support in supports %}
+                            <div class="branch_list">
+                                <div class="branch_list_pic">
+                                    <img src="{{ support.logo }}">
+                                </div>
+                                <div class="branch_list_content">
+                                    <h1>{{ support.name }}</h1>
+                                    <p>地址：<span>辽宁省沈阳市和平区三好街100号</span></p>
+                                </div>
+                            </div>
+                        {% endfor %}
+					</div>
+				</div>
+				<div class="hide">
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">会员单位</a></div>
+					</div>
+					<div class="detail_content">
+						{% for member in members %}
+                            <div class="branch_list">
+                                <div class="branch_list_pic">
+                                    <img src="{{ member.logo }}">
+                                </div>
+                                <div class="branch_list_content">
+                                    <h1>{{ member.name }}</h1>
+                                    <p>地址：<span>辽宁省沈阳市和平区三好街100号</span></p>
+                                </div>
+                            </div>
+                        {% endfor %}
+					</div>
+                    <!-- 分页 -->
+
+                        {% import 'common/page.html' as pg %}
+                        {{ pg.my_paginate(pagination) }}
+
+				</div>
+				<div class="hide">
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">会费标准</a></div>
+					</div>
+					<div class="detail_content">
+						<h1>{{ standard.name }}</h1>
+						<h4>2021-12-06</h4>
+                        <p>
+                            {{ standard.content }}
+                        </p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
