@@ -43,17 +43,47 @@ def get_id():
 	return jsonify(data)
 
 
-@bp.route('/association', methods=['GET', 'POST'])
+@bp.route('/xhgz', methods=['GET', 'POST'])
 def association():
-	kind = request.args.get('kind')
-	print("association_kind", kind)
-	# querys = CMSBuilding.query.filter(CMSBuilding.kind == kind)
-	buildings = CMSBuilding.query.filter(CMSBuilding.kind == 1).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
-	communications = CMSBuilding.query.filter(CMSBuilding.kind == 2).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).limit(3)
-	educations = CMSBuilding.query.filter(CMSBuilding.kind == 3).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
-	services = CMSBuilding.query.filter(CMSBuilding.kind == 4).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).limit(3)
+	kind = int(request.args.get('sc'))
+	page = request.args.get("page", 1, type=int)
+	key = request.args.get('key', '')
+	if kind == 1:
+		buildings = CMSBuilding.query.filter(CMSBuilding.kind == 1, CMSBuilding.name.contains(key)).order_by(CMSBuilding.adddate.desc(),
+						 CMSBuilding.reorder.desc()).paginate(page=page, per_page=3)
+		return render_template('NetSecurity/xhgz/djhd.html', buildings=buildings.items, pagination=buildings, kind=kind, key=key)
+	elif kind == 2:
+		communications = CMSBuilding.query.filter(CMSBuilding.kind == 2, CMSBuilding.name.contains(key)).order_by(CMSBuilding.adddate.desc(),
+						  CMSBuilding.reorder.desc()).paginate(page=page, per_page=3)
+		return render_template('NetSecurity/xhgz/jlhd.html', communications=communications.items, pagination=communications, kind=kind, key=key)
+	elif kind == 3:
+		educations = CMSBuilding.query.filter(CMSBuilding.kind == 3, CMSBuilding.name.contains(key)).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).paginate(page=page, per_page=3)
+		return render_template('NetSecurity/xhgz/jypx.html', educations=educations.items, pagination=educations, kind=kind, key=key)
+	elif kind == 4:
+		services = CMSBuilding.query.filter(CMSBuilding.kind == 4, CMSBuilding.name.contains(key)).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).paginate(page=page, per_page=3)
+		return render_template('NetSecurity/xhgz/aqfw.html', services=services.items, pagination=services, kind=kind, key=key)
+	else:
+		return jsonify("2222")
 
-	return render_template('NetSecurity/association_list.html', **locals())
+
+@bp.route('/hydt', methods=['GET', 'POST'])
+def industry():
+	kind = int(request.args.get('sc'))
+	page = request.args.get("page", 1, type=int)
+	key = request.args.get('key', '')
+
+	querys = CMSIndustry.query.filter(CMSIndustry.kind == kind, CMSIndustry.name.contains(key)).order_by(CMSIndustry.adddate.desc(),
+											CMSIndustry.reorder.desc()).paginate(page=page, per_page=4)
+	if kind == 1:
+		return render_template('NetSecurity/hydt/rdgz.html', querys=querys.items, pagination=querys, kind=kind, key=key)
+	elif kind == 2:
+		return render_template('NetSecurity/hydt/wadt.html', querys=querys.items, pagination=querys, kind=kind)
+	elif kind == 3:
+		return render_template('NetSecurity/hydt/ldfb.html', querys=querys.items, pagination=querys, kind=kind)
+	elif kind == 4:
+		return render_template('NetSecurity/hydt/aqsj.html', querys=querys.items, pagination=querys, kind=kind)
+	else:
+		return jsonify('123456')
 
 
 @bp.route('/association_detail', methods=['GET', 'POST'])
@@ -82,18 +112,57 @@ def association_search():
 	return jsonify(data=search_list)
 
 
-@bp.route('/overview', methods=['GET', 'POST'])
+@bp.route('/xhgk', methods=['GET', 'POST'])
 def overview():
-	introduction = CMSIntroduction.query.filter(CMSIntroduction.kind == 1).first()
-	bylaws = CMSIntroduction.query.filter(CMSIntroduction.kind == 2).first()
-	standard = CMSIntroduction.query.filter(CMSIntroduction.kind == 3).first()
-	leaders = CMSLeader.query.all()
-	branches = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 1)
-	directors = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 2)
-	members = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).paginate(page=1, per_page=4).items
-	pagination = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).paginate(page=1, per_page=4)
-	supports = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 4)
-	return render_template('NetSecurity/overview_list.html', **locals())
+	kind = int(request.args.get('sc'))
+	page = request.args.get("page", 1, type=int)
+	key = request.args.get('key', '')
+	if kind == 1:
+		introduction = CMSIntroduction.query.filter(CMSIntroduction.kind == 1).first()
+		return render_template('NetSecurity/xhgk/xhjj.html', introduction=introduction)
+	elif kind == 2:
+		bylaws = CMSIntroduction.query.filter(CMSIntroduction.kind == 2).first()
+		return render_template('NetSecurity/xhgk/xhzc.html', bylaws=bylaws)
+	elif kind == 3:
+		branches = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 1).order_by(CMSMemberCompany.addtime.desc()).paginate(page=page, per_page=8)
+		return render_template('NetSecurity/xhgk/fzjg.html', branches=branches.items, pagination=branches, kind=kind, key=key)
+	elif kind == 4:
+		leaders = CMSLeader.query.order_by(CMSLeader.addtime.desc()).paginate(page=page, per_page=8)
+		return render_template('NetSecurity/xhgk/xhfzr.html', leaders=leaders.items, pagination=leaders, kind=kind)
+	elif kind == 5:
+		directors = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 2).order_by(CMSMemberCompany.addtime.desc()).paginate(page=page, per_page=4)
+		return render_template('NetSecurity/xhgk/lsdw.html', directors=directors.items, pagination=directors, kind=kind)
+	elif kind == 6:
+		supports = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 4).order_by(CMSMemberCompany.addtime.desc()).paginate(page=page, per_page=8)
+		return render_template('NetSecurity/xhgk/zcdw.html', supports=supports.items, pagination=supports, kind=kind)
+	elif kind == 7:
+		members = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).order_by(CMSMemberCompany.addtime.desc()).paginate(page=page, per_page=8)
+		return render_template('NetSecurity/xhgk/hydw.html', members=members.items, pagination=members, kind=kind)
+	elif kind == 8:
+		standard = CMSIntroduction.query.filter(CMSIntroduction.kind == 3).first()
+		return render_template('NetSecurity/xhgk/hfbz.html', standard=standard)
+	else:
+		return jsonify("0-00")
+
+
+@bp.route('/overview_page', methods=['POST', 'GET'])
+def overview_page():
+	page = int(request.args.get('page'))
+	print("page", page)
+	# members = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).offset(page).limit(4)
+
+	members = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).paginate(page=page, per_page=4).items
+	pagination = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).paginate(page=page, per_page=4)
+
+	page_list = []
+	for query in members:
+		page_dict = {}
+		page_dict["name"] = query.name
+		page_dict["logo"] = query.logo
+		page_dict["content"] = query.content
+		page_list.append(page_dict)
+
+	return jsonify(data=page_list)
 
 
 @bp.app_template_filter("date_format")

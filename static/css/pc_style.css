@@ -3,7 +3,7 @@
 #left{float:left;}
 #right{float:right;}
 /* nav */
-.nav{width:800px;height:46px;float: right;padding-top: 68px;}
+.nav{width:800px;height:46px;float: right;padding-top: 54px;}
 .nav li{
     float: left;
     width: 120px;
@@ -70,12 +70,12 @@
 }
 .head{
     background: #fff;
-    height: 180px;
+    height: 160px;
     width: 100%;
 }
 .logo{
     padding-left: 118px;
-    padding-top: 55px;
+    padding-top: 45px;
     float: left;
 }
 .search{
@@ -419,8 +419,8 @@
     margin-left: 25px;
 }
 .tab2_part{
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     margin-left: 30px;
     height: 100px;
 }

@@ -3,13 +3,16 @@
 
 <nav class="nav">
     <ul class="pagination">
+        {{  pagination.has_prev }}
         {% if pagination.has_prev %}
             <li class="page-item active">
-                <a class="page-link" href="">上一页</a>
+                <a class="page-link" href="javascript:void(0);" οnclick="js_method({{ pagination.page }})">上一页2</a>
             </li>
         {% else %}
             <li class="page-item disabled">
-                <a class="page-link" href="javascript:">上一页</a>
+{#                <a class="page-link" href="https://www.bilibili.com/">上一页1</a>#}
+                <button class="page-link" onclick="js_method({{ pagination.page }})">上一页2</button>
+
             </li>
         {% endif %}
 
@@ -31,4 +34,35 @@
 
 </nav>
 
+<script type="text/javascript">
+    function js_method(page){
+        $.ajax({
+            url: "{{ url_for('NetSecurity.overview_page') }}",
+            type: 'GET',
+            contentType: 'application/json',
+            data: {page: page},
+            success: function (data) {
+                 //拼接字符串
+                let str = '';
+                //对数据做遍历，拼接到页面显示
+                for(let i=0;i<data['data'].length;i++){
+                    str += '<div class="branch_list">'+
+                                '<div class="branch_list_pic">'+
+                                    '<img src="' + data["data"][i].logo +'">' +
+                                '</div>'+
+                                '<div class="branch_list_content">'+
+                                    '<h1>' + data["data"][i].name + '</h1>'+
+                                    '<p>' + '内容' + '</p>'+
+                                '</div>'+
+                            '</div>';
+                }
+                // 放入页面
+                 $('.detail_content').html(str)
+            },
+            error: function () {
+
+            }
+        })
+    }
+</script>
 {% endmacro %}

@@ -1,0 +1,102 @@
+{% extends 'NetSecurity/basic.html' %}
+
+{% block header %}
+    <div class="header">
+		<div class="y_1440">
+			<a href="#">
+				<div class="logout">退出</div>
+			</a>
+			<a href="#">
+				<div class="admin">ADMIN</div>
+			</a>
+		</div>
+	</div>
+{% endblock %}
+
+{% block banner %}
+    <div class="y_banner">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<div style="background: url(../../static/img/innerbg.png) top center no-repeat;height: 180px;">
+				</div>
+			</div>
+			<div class="swiper-slide">
+				<div style="background: url(../../static/img/innerbg.png) top center no-repeat;height: 180px;">
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content %}
+    <div class="y_1440 list_part">
+		<div class="list_left online">
+			<div class="list_left_top">协会在线</div>
+			<div class="tab1">
+				<div class="tab_menu">
+					<ul>
+						<li>协会简介</li>
+						<li>协会章程</li>
+						<li>分支机构</li>
+						<li>协会负责人</li>
+						<li>理事单位</li>
+						<li class="selected">支撑单位</li>
+						<li>会员单位</li>
+						<li>会费标准</li>
+						<div class="c"></div>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="list_right">
+			<div class="tab_box">
+				<div>
+					<div class="list_head">
+						<div class="list_head_title"><a href="#">支撑单位</a></div>
+					</div>
+					<div>
+                        {% for support in supports %}
+                            <div class="branch_list">
+                                <div class="branch_list_pic">
+                                    <img src="{{ support.logo }}">
+                                </div>
+                                <div class="branch_list_content">
+                                    <h1>{{ support.name }}</h1>
+                                    <p>地址：<span>辽宁省沈阳市和平区三好街100号</span></p>
+                                </div>
+                            </div>
+                        {% endfor %}
+					</div>
+                    {% import 'common/page.html' as pg %}
+                    {{ pg.my_paginate(pagination, 'NetSecurity.overview') }}
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+         // tab切换
+        var $div_li = $("div.tab_menu ul li");
+        $div_li.click(function () {
+            $(this).addClass("selected")            //当前<li>元素高亮
+                .siblings().removeClass("selected");  //去掉其它同辈<li>元素的高亮
+            var index = $div_li.index(this);  // 获取当前点击的<li>元素 在 全部li元素中的索引。
+            console.log('index', index)
+            task_id = index + 1
+            $(".show_list").show()
+            $(".detail").empty()
+            window.location.href = "/NetSecurity/xhgk?sc=" + task_id
+            $("div.tab_box > div")   	//选取子节点。不选取子节点的话，会引起错误。如果里面还有div
+                .eq(index).show()   //显示 <li>元素对应的<div>元素
+                .siblings().hide(); //隐藏其它几个同辈的<div>元素
+        }).hover(function () {
+            $(this).addClass("hover");
+        }, function () {
+            $(this).removeClass("hover");
+        })
+    </script>
+{% endblock %}
