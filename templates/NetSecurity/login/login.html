@@ -1,0 +1,229 @@
+{% extends 'NetSecurity/basic.html' %}
+
+{% block header %}
+    <div class="header">
+		<div class="y_1440">
+			<a href="/NetSecurity/login">
+				<div class="memberregister">会员注册</div>
+			</a>
+			<a href="/NetSecurity/login">
+				<div class="memberlogin">会员登录</div>
+			</a>
+		</div>
+	</div>
+{% endblock %}
+
+{% block banner %}
+	<!-- banner -->
+	<div class="y_banner">
+		<div style="background: url(../../../static/img/loginbg.jpg) top center no-repeat;height: 550px;">
+			<div class="y_1440">
+				<div class="login_tab">
+					<div class="tab_menu">
+						<ul>
+							<li class="selected">会员登录</li>
+							<li>会员注册</li>
+							<div class="c"></div>
+						</ul>
+					</div>
+					<div class="tab_box">
+						<div>
+							<div class="login-form">
+								<form action="" id="loginform" method="get" onsubmit="return LoginForm(this)">
+									<div class="login-name">
+										<input type="text" name="mobile" id="mobile" class="l_mobile" placeholder="*手机号">
+									</div>
+									<div class="login-name">
+										<input placeholder="*动态码" type="text" id="dcode" class="l_code" name="dcode">
+										<a href="#"><span class="get_dcode">获取动态码</span></a>
+									</div>
+									<div class="login-name">
+										<input placeholder="*图形验证码" type="text" id="gcode" name="gcode">
+										<a href="#"><img src="../../../static/img/gcode.png" class="get_gcode"></a>
+									</div>
+									<div class="login-tj">
+										<input name="loginsubmit" type="button" id="LoginBtn" value="登录">
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="hide">
+							<div class="login-form">
+								<form action="" id="loginform" method="get" onsubmit="return RegisterForm(this)">
+									<div class="login-name">
+										<input type="text" name="name" id="name" placeholder="*您的姓名">
+									</div>
+									<div class="login-name">
+										<input placeholder="*所在公司" type="text" id="company" name="company">
+									</div>
+									<div class="login-name">
+										<input type="text" name="job" id="job" placeholder="*目前职务">
+									</div>
+									<div class="login-name">
+										<input type="text" name="mobile" id="mobile" class="r_mobile" placeholder="*联系电话">
+									</div>
+									<div class="login-name">
+										<input placeholder="*动态码" type="text" id="dcode" class="r_code" name="dcode">
+										<a href="#"><span class="get_dcode">获取动态码</span></a>
+									</div>
+									<div class="login-tj">
+										<input name="registersubmit" type="button" id="RegisterBtn" value="确认">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        // tab切换
+        $(function () {
+            var $div_li = $("div.tab_menu ul li");
+            $div_li.click(function () {
+                $(this).addClass("selected")            //当前<li>元素高亮
+                    .siblings().removeClass("selected");  //去掉其它同辈<li>元素的高亮
+                var index = $div_li.index(this);  // 获取当前点击的<li>元素 在 全部li元素中的索引。
+                $("div.tab_box > div")   	//选取子节点。不选取子节点的话，会引起错误。如果里面还有div
+                    .eq(index).show()   //显示 <li>元素对应的<div>元素
+                    .siblings().hide(); //隐藏其它几个同辈的<div>元素
+            }).hover(function () {
+                $(this).addClass("hover");
+            }, function () {
+                $(this).removeClass("hover");
+            })
+            // nav
+            $("dl").hide();
+            $("li.mainmenu").hover(function () {
+                $(this).find("dl").stop(true, true);
+                $(this).find("dl").slideDown();
+            }, function () {
+                $(this).find("dl").stop(true, true);
+                $(this).find("dl").slideUp();
+            });
+
+        })
+    </script>
+    <script>
+
+        String.prototype.Trim = function () {
+            var m = this.match(/^\s*(\S+(\s+\S+)*)\s*$/);
+            return (m == null) ? "" : m[1];
+        }
+        //验证手机号
+        String.prototype.isMobile = function () {
+            return (/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57]|19[0-9]|16[0-9])[0-9]{8}$/.test(this
+                .Trim()));
+        }
+        //验证电话
+        String.prototype.isTel = function () {
+            //"兼容格式: 国家代码(2到3位)-区号(2到3位)-电话号码(7到8位)-分机号(3位)"
+            //return (/^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/.test(this.Trim()));
+            return (/^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/.test(this.Trim()));
+        }
+        function LoginForm(theform) {
+            if (theform.mobile.value.isTel() || theform.mobile.value.isMobile()) {
+                theform.mobile.value = theform.mobile.value.Trim();
+            } else {
+                alert("请输入正确手机号");
+                theform.mobile.focus();
+                return (false);
+            }
+            if (theform.mobile.value == "") {
+                alert("手机号不能为空！");
+                theform.mobile.focus();
+                return (false);
+            }
+            if (theform.dcode.value == "") {
+                alert("动态码不能为空！");
+                theform.dcode.focus();
+                return (false);
+            }
+            if (theform.gcode.value == "") {
+                alert("图形验证码不能为空！");
+                theform.gcode.focus();
+                return (false);
+            }
+        }
+        function RegisterForm(theform) {
+            if (theform.name.value == "") {
+                alert("您的姓名不能为空！");
+                theform.name.focus();
+                return (false);
+            }
+            if (theform.company.value == "") {
+                alert("所在公司不能为空！");
+                theform.company.focus();
+                return (false);
+            }
+            if (theform.job.value == "") {
+                alert("目前职务不能为空！");
+                theform.job.focus();
+                return (false);
+            }
+            if (theform.mobile.value.isTel() || theform.mobile.value.isMobile()) {
+                theform.mobile.value = theform.mobile.value.Trim();
+            } else {
+                alert("请输入正确手机号");
+                theform.mobile.focus();
+                return (false);
+            }
+            if (theform.mobile.value == "") {
+                alert("手机号不能为空！");
+                theform.mobile.focus();
+                return (false);
+            }
+            if (theform.dcode.value == "") {
+                alert("动态码不能为空！");
+                theform.dcode.focus();
+                return (false);
+            }
+        }
+        window.history.replaceState(null, null, window.location.href);
+    </script>
+    <script>
+        $('#RegisterBtn').click(function () {
+            var $name = $("#name").val()
+            var $company = $("#company").val()
+            var $job = $('#job').val()
+            var $mobile = $('.r_mobile').val()
+            var $dcode = $('.r_code').val()
+            $.ajax({
+                url: "{{ url_for('NetSecurity.register') }}",
+                type: 'GET',
+                contentType: 'application/json',
+                data: {name: $name, company: $company, job: $job, mobile: $mobile, code: $dcode },
+                success: function (data) {
+                    console.log('data', data)
+                },
+                error: function (err) {
+                    console.log('err', err)
+                }
+
+            })
+        })
+
+        $('#LoginBtn').click(function () {
+            console.log('登录')
+            var $mobile = $('.l_mobile').val()
+            var $code = $('.l_code').val()
+            var $gcode = $('#gcode').val()
+            $.ajax({
+                url: {{ url_for('NetSecurity.login_validate') }},
+                type: 'GET',
+                contentType: 'application/json',
+                data: { mobile: $mobile},
+                success: function (data) {
+                    console.log('login_Data', data)
+                },
+                error: function (err) {
+                    console.log('login_err', err)
+                }
+            })
+        })
+    </script>
+{% endblock %}

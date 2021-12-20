@@ -3,10 +3,10 @@
 {% block header %}
     <div class="header">
 		<div class="y_1440">
-			<a href="#">
+			<a href="/NetSecurity/login">
 				<div class="memberregister">会员注册</div>
 			</a>
-			<a href="#">
+			<a href="/NetSecurity/login">
 				<div class="memberlogin">会员登录</div>
 			</a>
 		</div>
@@ -67,16 +67,14 @@
 			<div class="tab_box">
 				<div>
                     {% for building in buildings %}
-                        <div class="tab1_part">
-                            <div class="tab1_part_time">
+                        <div class="tab2_part" onclick="xhgz_detail(1, {{ building.id }})">
+                            <div class="tab2_part_time">
                                 <h1>{{ building.addtime|date_format|get_day }}</h1>
                                 <p>{{ building.addtime|date_format|get_year_month }}</p>
                             </div>
-                            <div class="tab1_part_content">
+                            <div class="tab2_part_content">
                                 <h1>{{ building.name }}</h1>
-                                <a href="#">
-                                    <p>点击前往</p>
-                                </a>
+                                <p>{{ building.content|striptags|trim|truncate(60) }}</p>
                             </div>
                         </div>
                     {% endfor %}
@@ -84,16 +82,14 @@
 				</div>
 				<div class="hide">
                     {% for communication in communications %}
-                        <div class="tab1_part">
-                            <div class="tab1_part_time">
+                        <div class="tab2_part" onclick="xhgz_detail(2, {{ communication.id }})">
+                            <div class="tab2_part_time">
                                 <h1>{{ communication.addtime|date_format|get_day }}</h1>
                                 <p>{{ communication.addtime|date_format|get_year_month }}</p>
                             </div>
-                            <div class="tab1_part_content">
+                            <div class="tab2_part_content">
                                 <h1>{{ communication.name }}</h1>
-                                <a href="#">
-                                    <p>点击前往</p>
-                                </a>
+                                <p>{{ communication.content|striptags|trim|truncate(60) }}</p>
                             </div>
                         </div>
 					{% endfor %}
@@ -101,16 +97,14 @@
 				</div>
 				<div class="hide">
                     {% for education in educations %}
-                        <div class="tab1_part">
-                            <div class="tab1_part_time">
+                        <div class="tab2_part" onclick="xhgz_detail(3, {{ education.id }})">
+                            <div class="tab2_part_time">
                                 <h1>{{ education.addtime|date_format|get_day }}</h1>
                                 <p>{{ education.addtime|date_format|get_year_month }}</p>
                             </div>
-                            <div class="tab1_part_content">
+                            <div class="tab2_part_content">
                                 <h1>{{ education.name }}</h1>
-                                <a href="#">
-                                    <p>点击前往</p>
-                                </a>
+                                <p>{{ education.content|striptags|trim|truncate(60) }}</p>
                             </div>
                         </div>
 					{% endfor %}
@@ -125,9 +119,7 @@
                             </div>
                             <div class="tab1_part_content">
                                 <h1>{{ service.name }}</h1>
-                                <a href="#">
                                     <p>点击前往</p>
-                                </a>
                             </div>
                         </div>
 					{% endfor %}
@@ -148,69 +140,61 @@
 			<div class="tab_box">
 				<div>
 					{% for hot_concern in hot_concerns %}
-                        <a href="#">
-                            <div class="tab2_part">
-                                <div class="tab2_part_time">
-                                    <h1>{{ hot_concern.addtime|date_format|get_day }}</h1>
-                                    <p>{{ hot_concern.addtime|date_format|get_year_month }}</p>
-                                </div>
-                                <div class="tab2_part_content">
-                                    <h1>{{ hot_concern.name}}</h1>
-                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-                                </div>
+                        <div class="tab2_part" onclick="hydt_detail(1,{{ hot_concern.id }})">
+                            <div class="tab2_part_time">
+                                <h1>{{ hot_concern.addtime|date_format|get_day }}</h1>
+                                <p>{{ hot_concern.addtime|date_format|get_year_month }}</p>
                             </div>
-                        </a>
+                            <div class="tab2_part_content">
+                                <h1>{{ hot_concern.name}}</h1>
+                                <p>{{ hot_concern.content|striptags|trim|truncate(60) }}</p>
+                            </div>
+                        </div>
 					{% endfor %}
 						<div class="tab2_part_lookall" onclick="hydt_all(1)">查看全部>></div>
 				</div>
 				<div class="hide">
 					{% for security_dynamic in security_dynamics %}
-                        <a href="#">
-                            <div class="tab2_part">
-                                <div class="tab2_part_time">
-                                    <h1>{{ security_dynamic.addtime|date_format|get_day }}</h1>
-                                    <p>{{ security_dynamic.addtime|date_format|get_year_month }}</p>
-                                </div>
-                                <div class="tab2_part_content">
-                                    <h1>{{ security_dynamic.name }}</h1>
-                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-                                </div>
+                        <div class="tab2_part" onclick="hydt_detail(2,{{ security_dynamic.id }})">
+                            <div class="tab2_part_time">
+                                <h1>{{ security_dynamic.addtime|date_format|get_day }}</h1>
+                                <p>{{ security_dynamic.addtime|date_format|get_year_month }}</p>
                             </div>
-                        </a>
+                            <div class="tab2_part_content">
+                                <h1>{{ security_dynamic.name }}</h1>
+                                <p>{{ security_dynamic.content|striptags|trim|truncate(60) }}</p>
+                            </div>
+                        </div>
 					{% endfor %}
 						<div class="tab2_part_lookall" onclick="hydt_all(2)">查看全部>></div>
 				</div>
 				<div class="hide">
                     {% for leak_release in leak_releases %}
-                        <a href="#">
-                            <div class="tab2_part">
-                                <div class="tab2_part_time">
-                                    <h1>{{ leak_release.addtime|date_format|get_day }}</h1>
-                                    <p>{{ leak_release.addtime|date_format|get_year_month }}</p>
-                                </div>
-                                <div class="tab2_part_content">
-                                    <h1>{{ leak_release.name }}</h1>
-                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-                                </div>
+                        <div class="tab2_part" onclick="hydt_detail(3,{{ leak_release.id }})">
+                            <div class="tab2_part_time">
+                                <h1>{{ leak_release.addtime|date_format|get_day }}</h1>
+                                <p>{{ leak_release.addtime|date_format|get_year_month }}</p>
                             </div>
-                        </a>
+                            <div class="tab2_part_content">
+                                <h1>{{ leak_release.name }}</h1>
+                                <p>{{ leak_release.content|striptags|trim|truncate(60) }}</p>
+                            </div>
+                        </div>
 					{% endfor %}
 						<div class="tab2_part_lookall" onclick="hydt_all(3)">查看全部>></div>
 				</div>
 				<div class="hide">
 					{% for security_event in security_events %}
-                        <a href="#">
-                            <div class="tab2_part">
-                                <div class="tab2_part_time">
-                                    <h1>{{ security_event.addtime|date_format|get_day }}</h1>
-                                    <p>{{ security_event.addtime|date_format|get_year_month }}</p>
-                                </div>
-                                <div class="tab2_part_content">
-                                    <h1>{{ security_event.name }}</h1>
-                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-                                </div>
+                        <div class="tab2_part" onclick="hydt_detail(4,{{ security_event.id }})">
+                            <div class="tab2_part_time">
+                                <h1>{{ security_event.addtime|date_format|get_day }}</h1>
+                                <p>{{ security_event.addtime|date_format|get_year_month }}</p>
                             </div>
-                        </a>
+                            <div class="tab2_part_content">
+                                <h1>{{ security_event.name }}</h1>
+                                <p>{{ security_event.content|striptags|trim|truncate(60) }}</p>
+                            </div>
+                        </div>
 					{% endfor %}
                     <div class="tab2_part_lookall" onclick="hydt_all(4)">查看全部>></div>
 				</div>
@@ -224,18 +208,16 @@
 		</div>
 		<div>
             {% for law in laws %}
-                <a href="#">
-                    <div class="part3_part">
-                        <div class="tab2_part_time">
-                            <h1>{{ law.addtime|date_format|get_day }}</h1>
-                            <p>{{ law.addtime|date_format|get_year_month}}</p>
-                        </div>
-                        <div class="tab2_part_content">
-                            <h1>{{ law.name }}</h1>
-                            <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-                        </div>
+                <div class="part3_part" onclick="flfg_detail({{ law.id }})">
+                    <div class="tab2_part_time">
+                        <h1>{{ law.addtime|date_format|get_day }}</h1>
+                        <p>{{ law.addtime|date_format|get_year_month}}</p>
                     </div>
-                </a>
+                    <div class="tab2_part_content">
+                        <h1>{{ law.name }}</h1>
+                        <p>{{ law.content }}</p>
+                    </div>
+                </div>
 		    {% endfor %}
         </div>
 	</div>
@@ -327,24 +309,6 @@
         $(this).removeClass("hover");
     })
     let task_id = 1
-    // 查看全部
-    $(function () {
-        $('.tab1_part_lookall').click(function (event) {
-            $.ajax({
-                url:"{{url_for('NetSecurity.task')}}",
-                type:"GET",
-                contentType: "application/json",
-                data:{kind:task_id},
-                dataType:"json",
-                success:function (data) {
-                    console.log('data', data)
-                },
-                error:function () {
-
-                }
-            })
-        })
-    })
      // 协会工作查看全部
      function xhgz_all(params) {
                 window.location.href = "/NetSecurity/xhgz?sc=" + params
@@ -376,6 +340,18 @@
     // 法律法规查看全部
     function flfg_all() {
         window.location.href = '/NetSecurity/flfg'
+    }
+    // 协会工作详情
+    function xhgz_detail(sc, params) {
+        window.location.href = '/NetSecurity/xhgzxq?sc='+ sc + '&pid=' + params
+    }
+    // 行业动态详情
+    function hydt_detail(sc, params) {
+            window.location.href = '/NetSecurity/hydtxq?sc=' + sc + '&pid=' + params
+    }
+    // 法律法规详情
+    function flfg_detail(params) {
+            window.location.href = '/NetSecurity/flfgxq?pid=' + params
     }
     </script>
 {% endblock %}

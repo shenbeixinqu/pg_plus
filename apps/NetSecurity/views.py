@@ -6,6 +6,28 @@ import json
 bp = Blueprint('NetSecurity', __name__, url_prefix='/NetSecurity')
 
 
+@bp.route('/register', methods=['POST', 'GET'])
+def register():
+	name = request.args.get('name')
+	company = request.args.get('company')
+	job = request.args.get('job')
+	mobile = request.args.get('mobile')
+	code = request.args.get('code')
+	return jsonify('123456')
+
+
+@bp.route('/login')
+def login():
+	return render_template('NetSecurity/login/login.html')
+
+
+@bp.route('/login_validate', methods=['POST'])
+def login_validate():
+	get_data = request.get_data()
+	print('get_Data', get_data)
+	return jsonify('12345678')
+
+
 @bp.route('/')
 def index():
 	buildings = CMSBuilding.query.filter(CMSBuilding.kind == 1).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
@@ -23,24 +45,6 @@ def index():
 	support_company = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 4).order_by(CMSMemberCompany.addtime.desc()).limit(7)
 	member_company = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).order_by(CMSMemberCompany.addtime.desc()).limit(7)
 	return render_template('NetSecurity/index.html', **locals())
-
-
-@bp.route('/task')
-def task():
-	kind = request.args.get("kind")
-	# data = json.loads(data)
-	print("kind", kind)
-	return "123454321"
-
-
-@bp.route('/get_id')
-def get_id():
-	kind = request.args.get('kind')
-	data = {
-		"code": 200,
-		"id": kind
-	}
-	return jsonify(data)
 
 
 @bp.route('/xhgz', methods=['GET', 'POST'])
@@ -134,32 +138,6 @@ def law_detail():
 	return render_template('NetSecurity/flfg/flfg_detail.html', query=query)
 
 
-# @bp.route('/association_detail', methods=['GET', 'POST'])
-# def association_detail():
-# 	params = request.args.get('params')
-# 	print("params", params)
-# 	query = CMSBuilding.query.filter(CMSBuilding.id == params).first()
-# 	content = query.content
-# 	print("content", content)
-# 	return jsonify(content)
-# 	# return render_template('NetSecurity/association_detail.html')
-#
-#
-# @bp.route('/association_search', methods=['GET', 'POST'])
-# def association_search():
-# 	search_val = request.args.get('search_val')
-# 	kind = request.args.get('kind')
-# 	print("search_val", search_val, kind)
-# 	querys = CMSBuilding.query.filter(CMSBuilding.kind == kind, CMSBuilding.name.contains(search_val))
-# 	search_list = []
-# 	for query in querys:
-# 		search_dict = {}
-# 		search_dict["name"] = query.name
-# 		search_dict["content"] = query.content
-# 		search_list.append(search_dict)
-# 	return jsonify(data=search_list)
-
-
 @bp.route('/xhgk', methods=['GET', 'POST'])
 def overview():
 	kind = int(request.args.get('sc'))
@@ -191,26 +169,6 @@ def overview():
 		return render_template('NetSecurity/xhgk/hfbz.html', standard=standard)
 	else:
 		return jsonify("0-00")
-
-
-@bp.route('/overview_page', methods=['POST', 'GET'])
-def overview_page():
-	page = int(request.args.get('page'))
-	print("page", page)
-	# members = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).offset(page).limit(4)
-
-	members = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).paginate(page=page, per_page=4).items
-	pagination = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).paginate(page=page, per_page=4)
-
-	page_list = []
-	for query in members:
-		page_dict = {}
-		page_dict["name"] = query.name
-		page_dict["logo"] = query.logo
-		page_dict["content"] = query.content
-		page_list.append(page_dict)
-
-	return jsonify(data=page_list)
 
 
 @bp.app_template_filter("date_format")
