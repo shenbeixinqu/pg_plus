@@ -59,8 +59,10 @@
                             </div>
                         {% endfor %}
 					</div>
-                    {% import 'common/page.html' as pg %}
-                    {{ pg.my_paginate(pagination, 'NetSecurity.overview', kind, key) }}
+                    <div style="clear: both">
+                         {% import 'common/page.html' as pg %}
+                        {{ pg.my_paginate(pagination, 'NetSecurity.overview', kind, key) }}
+                    </div>
 				</div>
 			</div>
 		</div>

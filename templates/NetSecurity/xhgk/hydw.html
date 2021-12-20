@@ -46,7 +46,7 @@
 					<div class="list_head">
 						<div class="list_head_title"><a href="#">会员单位</a></div>
 					</div>
-					<div class="detail_content">
+					<div>
 						{% for member in members %}
                             <div class="branch_list">
                                 <div class="branch_list_pic">
@@ -60,9 +60,10 @@
                         {% endfor %}
 					</div>
                     <!-- 分页 -->
-                    {% import 'common/page.html' as pg %}
-                    {{ pg.my_paginate(pagination, 'NetSecurity.overview', kind, key) }}
-
+                    <div style="clear: both">
+                         {% import 'common/page.html' as pg %}
+                        {{ pg.my_paginate(pagination, 'NetSecurity.overview', kind, key) }}
+                    </div>
 				</div>
 			</div>
 		</div>

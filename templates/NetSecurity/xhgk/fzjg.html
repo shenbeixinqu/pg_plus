@@ -46,20 +46,24 @@
 					<div class="list_head">
 						<div class="list_head_title"><a href="#">分支机构</a></div>
 					</div>
-                    {% for branch in branches %}
-                        <div class="branch_list">
-                            <div class="branch_list_pic">
-                                <img src="{{ branch.logo }}">
+                    <div class="detail-content">
+                        {% for branch in branches %}
+                            <div class="branch_list">
+                                <div class="branch_list_pic">
+                                    <img src="{{ branch.logo }}">
+                                </div>
+                                <div class="branch_list_content">
+                                    <h1>{{ branch.name }}</h1>
+                                    <p>地址：<span>{{ branch.address }}</span></p>
+                                </div>
                             </div>
-                            <div class="branch_list_content">
-                                <h1>{{ branch.name }}</h1>
-                                <p>地址：<span>{{ branch.address }}</span></p>
-                            </div>
+                        {% endfor %}
+                        <div style="clear: both">
+                            {% import 'common/page.html' as pg %}
+                            {{ pg.my_paginate(pagination, 'NetSecurity.overview', kind, key) }}
                         </div>
-                    {% endfor %}
-                    {% import 'common/page.html' as pg %}
-                    {{ pg.my_paginate(pagination, 'NetSecurity.overview', kind, key) }}
-				</div>
+                    </div>
+                </div>
 			</div>
 		</div>
 
