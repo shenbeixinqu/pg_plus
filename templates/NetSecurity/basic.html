@@ -68,8 +68,8 @@
 							<dd>安全事件</dd>
 						</dl>
 					</li>
-					<li><div class="link">通知公告</div></li>
-					<li class="mainmenu"><div>法律法规</div></li>
+					<li><div class="link" onclick="dd_notice()">通知公告</div></li>
+					<li class="mainmenu" onclick="dd_law()"><div>法律法规</div></li>
 				</ul>
 			</div>
 		</div>
@@ -116,7 +116,6 @@
                 console.log('industry_id',industry_id)
                 window.location.href = "/NetSecurity/hydt?sc=" + industry_id
             })
-
             // 协会概况
             var $dd_overview = $('.dl_overview dd')
             $dd_overview.click(function () {
@@ -157,6 +156,13 @@
                 $(this).find("dl").slideUp();
             });
         })
+
+        function dd_notice() {
+            window.location.href = "/NetSecurity/tzgg"
+        }
+        function dd_law() {
+            window.location.href = "/NetSecurity/flfg"
+        }
     </script>
     {% block script %}
     {% endblock %}

@@ -206,6 +206,7 @@
     height: 40px;
     line-height: 20px;
     color: rgba(226, 152, 54, 100);
+    cursor: pointer;
     font-size: 14px;
     text-align: right;
     float: right;
@@ -410,6 +411,7 @@
     width: 154px;
     height: 40px;
     line-height: 40px;
+    cursor: pointer;
     border-radius: 3px;
     background-color: rgba(253, 245, 233, 100);
     color: rgba(226, 152, 54, 100);
@@ -481,6 +483,7 @@
     border-radius: 3px;
     background-color: rgba(253, 245, 233, 100);
     color: rgba(226, 152, 54, 100);
+    cursor: pointer;
     font-size: 14px;
     text-align: center;
     border: 1px solid rgba(226, 152, 54, 100);

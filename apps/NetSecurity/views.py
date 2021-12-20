@@ -77,39 +77,87 @@ def industry():
 	if kind == 1:
 		return render_template('NetSecurity/hydt/rdgz.html', querys=querys.items, pagination=querys, kind=kind, key=key)
 	elif kind == 2:
-		return render_template('NetSecurity/hydt/wadt.html', querys=querys.items, pagination=querys, kind=kind)
+		return render_template('NetSecurity/hydt/wadt.html', querys=querys.items, pagination=querys, kind=kind, key=key)
 	elif kind == 3:
-		return render_template('NetSecurity/hydt/ldfb.html', querys=querys.items, pagination=querys, kind=kind)
+		return render_template('NetSecurity/hydt/ldfb.html', querys=querys.items, pagination=querys, kind=kind, key=key)
 	elif kind == 4:
-		return render_template('NetSecurity/hydt/aqsj.html', querys=querys.items, pagination=querys, kind=kind)
+		return render_template('NetSecurity/hydt/aqsj.html', querys=querys.items, pagination=querys, kind=kind, key=key)
 	else:
 		return jsonify('123456')
 
 
-@bp.route('/association_detail', methods=['GET', 'POST'])
+@bp.route('/hydtxq', methods=['GET', 'POST'])
+def industry_detail():
+	kind = int(request.args.get('sc'))
+	id = int(request.args.get('pid'))
+	query = CMSIndustry.query.filter(CMSIndustry.id == id).first()
+	return render_template('NetSecurity/hydt/hydt_detail.html', query=query, kind=kind)
+
+
+@bp.route('/xhgzxq', methods=['GET', 'POST'])
 def association_detail():
-	params = request.args.get('params')
-	print("params", params)
-	query = CMSBuilding.query.filter(CMSBuilding.id == params).first()
-	content = query.content
-	print("content", content)
-	return jsonify(content)
-	# return render_template('NetSecurity/association_detail.html')
+	res = request.args.get('sc')
+	print('res', res, type(res))
+	kind = int(request.args.get('sc'))
+	id = int(request.args.get('pid'))
+	query = CMSBuilding.query.filter(CMSBuilding.id == id).first()
+	return render_template('NetSecurity/xhgz/xhgz_detail.html', query=query, kind=kind)
 
 
-@bp.route('/association_search', methods=['GET', 'POST'])
-def association_search():
-	search_val = request.args.get('search_val')
-	kind = request.args.get('kind')
-	print("search_val", search_val, kind)
-	querys = CMSBuilding.query.filter(CMSBuilding.kind == kind, CMSBuilding.name.contains(search_val))
-	search_list = []
-	for query in querys:
-		search_dict = {}
-		search_dict["name"] = query.name
-		search_dict["content"] = query.content
-		search_list.append(search_dict)
-	return jsonify(data=search_list)
+@bp.route('/tzgg', methods=['GET', 'POST'])
+def notice():
+	page = request.args.get("page", 1, type=int)
+	key = request.args.get('key', '')
+	querys = CMSNotice.query.filter(CMSNotice.kind == 1, CMSNotice.name.contains(key)).order_by(CMSNotice.addtime.desc(), CMSNotice.reorder.desc()).paginate(page=page, per_page=3)
+	return render_template('NetSecurity/tzgg/tzgg.html', querys=querys.items, pagination=querys, key=key)
+
+
+@bp.route('/tzggxq', methods=['GET', 'POST'])
+def notice_detail():
+	id = int(request.args.get('pid'))
+	query = CMSNotice.query.filter(CMSNotice.id == id).first()
+	return render_template('NetSecurity/tzgg/tzgg_detail.html', query=query)
+
+
+@bp.route('/flfg', methods=['GET', 'POST'])
+def law():
+	page = request.args.get("page", 1, type=int)
+	key = request.args.get('key', '')
+	querys = CMSNotice.query.filter(CMSNotice.kind == 2, CMSNotice.name.contains(key)).order_by(CMSNotice.addtime.desc(), CMSNotice.reorder.desc()).paginate(page=page, per_page=3)
+	return render_template('NetSecurity/flfg/flfg.html', querys=querys.items, pagination=querys, key=key)
+
+
+@bp.route('/flfgxq', methods=['GET', 'POST'])
+def law_detail():
+	id = int(request.args.get('pid'))
+	query = CMSNotice.query.filter(CMSNotice.id == id).first()
+	return render_template('NetSecurity/flfg/flfg_detail.html', query=query)
+
+
+# @bp.route('/association_detail', methods=['GET', 'POST'])
+# def association_detail():
+# 	params = request.args.get('params')
+# 	print("params", params)
+# 	query = CMSBuilding.query.filter(CMSBuilding.id == params).first()
+# 	content = query.content
+# 	print("content", content)
+# 	return jsonify(content)
+# 	# return render_template('NetSecurity/association_detail.html')
+#
+#
+# @bp.route('/association_search', methods=['GET', 'POST'])
+# def association_search():
+# 	search_val = request.args.get('search_val')
+# 	kind = request.args.get('kind')
+# 	print("search_val", search_val, kind)
+# 	querys = CMSBuilding.query.filter(CMSBuilding.kind == kind, CMSBuilding.name.contains(search_val))
+# 	search_list = []
+# 	for query in querys:
+# 		search_dict = {}
+# 		search_dict["name"] = query.name
+# 		search_dict["content"] = query.content
+# 		search_list.append(search_dict)
+# 	return jsonify(data=search_list)
 
 
 @bp.route('/xhgk', methods=['GET', 'POST'])
@@ -128,16 +176,16 @@ def overview():
 		return render_template('NetSecurity/xhgk/fzjg.html', branches=branches.items, pagination=branches, kind=kind, key=key)
 	elif kind == 4:
 		leaders = CMSLeader.query.order_by(CMSLeader.addtime.desc()).paginate(page=page, per_page=8)
-		return render_template('NetSecurity/xhgk/xhfzr.html', leaders=leaders.items, pagination=leaders, kind=kind)
+		return render_template('NetSecurity/xhgk/xhfzr.html', leaders=leaders.items, pagination=leaders, kind=kind, key=key)
 	elif kind == 5:
 		directors = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 2).order_by(CMSMemberCompany.addtime.desc()).paginate(page=page, per_page=4)
-		return render_template('NetSecurity/xhgk/lsdw.html', directors=directors.items, pagination=directors, kind=kind)
+		return render_template('NetSecurity/xhgk/lsdw.html', directors=directors.items, pagination=directors, kind=kind, key=key)
 	elif kind == 6:
 		supports = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 4).order_by(CMSMemberCompany.addtime.desc()).paginate(page=page, per_page=8)
-		return render_template('NetSecurity/xhgk/zcdw.html', supports=supports.items, pagination=supports, kind=kind)
+		return render_template('NetSecurity/xhgk/zcdw.html', supports=supports.items, pagination=supports, kind=kind, key=key)
 	elif kind == 7:
 		members = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).order_by(CMSMemberCompany.addtime.desc()).paginate(page=page, per_page=8)
-		return render_template('NetSecurity/xhgk/hydw.html', members=members.items, pagination=members, kind=kind)
+		return render_template('NetSecurity/xhgk/hydw.html', members=members.items, pagination=members, kind=kind, key=key)
 	elif kind == 8:
 		standard = CMSIntroduction.query.filter(CMSIntroduction.kind == 3).first()
 		return render_template('NetSecurity/xhgk/hfbz.html', standard=standard)

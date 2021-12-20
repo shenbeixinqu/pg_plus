@@ -57,8 +57,8 @@
 					{% for service in services %}
                         <div class="tab2_part aqfw">
                             <div class="tab2_part_time">
-                                <h1>01</h1>
-                                <p>2021-02</p>
+                                <h1>{{ service.addtime|date_format|get_day }}</h1>
+                                <p>{{ service.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
                                 <h1>{{ service.name }}</h1>
@@ -71,7 +71,7 @@
 					{% endfor %}
 					<!-- 分页 -->
                     {% import 'common/page.html' as pg %}
-                    {{ pg.my_paginate(pagination, 'NetSecurity.association') }}
+                    {{ pg.my_paginate(pagination, 'NetSecurity.association', kind, key) }}
 				</div>
 			</div>
 		</div>

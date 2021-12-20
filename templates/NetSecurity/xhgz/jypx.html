@@ -55,22 +55,20 @@
 						</div>
 					</div>
                     {% for education in educations %}
-                        <a href="#">
-                            <div class="tab2_part">
-                                <div class="tab2_part_time">
-                                    <h1>01</h1>
-                                    <p>2021-02</p>
-                                </div>
-                                <div class="tab2_part_content">
-                                    <h1>{{ education.name }}</h1>
-                                    <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
-                                </div>
+                        <div class="tab2_part" onclick="xhgz_detail({{ education.id }})">
+                            <div class="tab2_part_time">
+                                <h1>{{ education.addtime|date_format|get_day }}</h1>
+                                <p>{{ education.addtime|date_format|get_year_month }}</p>
                             </div>
-                        </a>
+                            <div class="tab2_part_content">
+                                <h1>{{ education.name }}</h1>
+                                <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
+                            </div>
+                        </div>
 					{% endfor %}
 					<!-- 分页 -->
                     {% import 'common/page.html' as pg %}
-                    {{ pg.my_paginate(pagination, 'NetSecurity.association') }}
+                    {{ pg.my_paginate(pagination, 'NetSecurity.association', kind, key) }}
 				</div>
 			</div>
 		</div>
@@ -103,6 +101,10 @@
         function get_search() {
             let $search_val = $(".search_input").val()
             window.location.href = "/NetSecurity/xhgz?sc=3" + "&key=" + $search_val
+        }
+        // 详情
+        function xhgz_detail(params) {
+            window.location.href = '/NetSecurity/xhgzxq?sc=3&pid=' + params
         }
     </script>
 

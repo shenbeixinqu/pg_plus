@@ -55,7 +55,7 @@
 						</div>
 					</div>
                     {% for query in querys %}
-                        <div class="tab2_part">
+                        <div class="tab2_part" onclick="hydt_detail({{ query.id }})">
                             <div class="tab2_part_time">
                                 <h1>{{ query.addtime|date_format|get_day }}</h1>
                                 <p>{{ query.addtime|date_format|get_year_month }}</p>
@@ -101,6 +101,10 @@
         function get_search() {
             let $search_val = $(".search_input").val()
             window.location.href = "/NetSecurity/hydt?sc=1" + "&key=" + $search_val
+        }
+        // 详情
+        function hydt_detail(params) {
+            window.location.href = '/NetSecurity/hydtxq?sc=1&pid=' + params
         }
     </script>
 {% endblock %}
