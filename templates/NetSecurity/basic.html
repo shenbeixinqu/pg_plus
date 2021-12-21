@@ -29,7 +29,16 @@
     <!-- header -->
     {% block header %}
     {% endblock %}
-
+    <div class="header">
+		<div class="y_1440">
+			<a href="/NetSecurity/login">
+				<div class="memberregister">会员注册</div>
+			</a>
+			<a href="/NetSecurity/login">
+				<div class="memberlogin">会员登录</div>
+			</a>
+		</div>
+	</div>
     <!--head-->
 	<div class="head">
 		<div class="y_1440">
@@ -108,7 +117,12 @@
             $dd_association.click(function () {
                 let association_id = $dd_association.index(this) + 1
                 console.log('association_id',association_id)
-                window.location.href = "/NetSecurity/xhgz?sc=" + association_id
+                if (association_id == 4){
+                    window.location.href = "/NetSecurity/aqfw"
+
+                } else  {
+                    window.location.href = "/NetSecurity/xhgz?sc=" + association_id
+                }
             })
             var $dd_industry = $('.dl_industry dd')
             $dd_industry.click(function () {

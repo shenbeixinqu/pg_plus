@@ -1,18 +1,5 @@
 {% extends 'NetSecurity/basic.html' %}
 
-{% block header %}
-    <div class="header">
-		<div class="y_1440">
-			<a href="/NetSecurity/login">
-				<div class="memberregister">会员注册</div>
-			</a>
-			<a href="/NetSecurity/login">
-				<div class="memberlogin">会员登录</div>
-			</a>
-		</div>
-	</div>
-{% endblock %}
-
 {% block banner %}
     <div class="y_banner">
 		<div class="swiper-wrapper">
@@ -30,9 +17,9 @@
 
 {% block content %}
     <div class="part1 y_1440">
-		<div class="part1_pic">
-			<img src="../../static/img/example_pic.png">
-		</div>
+        <div class="part1_pic">
+            <img src="../../static/img/example_pic.png">
+        </div>
 		<div class="part1_tip">
 			<div class="part1_tip_head">
 				<div class="tip_title">通知公告</div>
@@ -44,7 +31,7 @@
                         <li>
                             <a href="#">
 {#                                <div class="point">·</div>#}
-                                <div class="part1_tip_title">{{ notice.name }}</div>
+                                <div class="part1_tip_title">{% if notice.if_new %}<img src="../../static/img/new.png">{% endif %}{{ notice.name }}</div>
                                 <div class="part1_tip_content_date">{{ notice.adddate }}</div>
                             </a>
                         </li>
@@ -73,7 +60,7 @@
                                 <p>{{ building.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
-                                <h1>{{ building.name }}</h1>
+                                <h1>{% if building.if_new %}<img src="../../static/img/new.png">{% endif %}{{ building.name }}</h1>
                                 <p>{{ building.content|striptags|trim|truncate(60) }}</p>
                             </div>
                         </div>
@@ -84,7 +71,7 @@
                     {% for communication in communications %}
                         <div class="tab2_part" onclick="xhgz_detail(2, {{ communication.id }})">
                             <div class="tab2_part_time">
-                                <h1>{{ communication.addtime|date_format|get_day }}</h1>
+                                <h1>{% if communication.if_new %}<img src="../../static/img/new.png">{% endif %}{{ communication.addtime|date_format|get_day }}</h1>
                                 <p>{{ communication.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
@@ -103,7 +90,7 @@
                                 <p>{{ education.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
-                                <h1>{{ education.name }}</h1>
+                                <h1>{% if education.if_new %}<img src="../../static/img/new.png">{% endif %}{{ education.name }}</h1>
                                 <p>{{ education.content|striptags|trim|truncate(60) }}</p>
                             </div>
                         </div>
@@ -118,7 +105,7 @@
                                 <p>{{ service.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab1_part_content">
-                                <h1>{{ service.name }}</h1>
+                                <h1>{% if service.if_new %}<img src="../../static/img/new.png">{% endif %}{{ service.name }}</h1>
                                     <p>点击前往</p>
                             </div>
                         </div>
@@ -146,7 +133,7 @@
                                 <p>{{ hot_concern.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
-                                <h1>{{ hot_concern.name}}</h1>
+                                <h1>{% if hot_concern.if_new %}<img src="../../static/img/new.png">{% endif %}{{ hot_concern.name}}</h1>
                                 <p>{{ hot_concern.content|striptags|trim|truncate(60) }}</p>
                             </div>
                         </div>
@@ -161,7 +148,7 @@
                                 <p>{{ security_dynamic.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
-                                <h1>{{ security_dynamic.name }}</h1>
+                                <h1>{% if security_dynamic.if_new %}<img src="../../static/img/new.png">{% endif %}{{ security_dynamic.name }}</h1>
                                 <p>{{ security_dynamic.content|striptags|trim|truncate(60) }}</p>
                             </div>
                         </div>
@@ -176,7 +163,7 @@
                                 <p>{{ leak_release.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
-                                <h1>{{ leak_release.name }}</h1>
+                                <h1>{% if leak_release.if_new %}<img src="../../static/img/new.png">{% endif %}{{ leak_release.name }}</h1>
                                 <p>{{ leak_release.content|striptags|truncate(50) }}</p>
                             </div>
                         </div>
@@ -191,7 +178,7 @@
                                 <p>{{ security_event.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
-                                <h1>{{ security_event.name }}</h1>
+                                <h1>{% if security_event.if_new %}<img src="../../static/img/new.png">{% endif %}{{ security_event.name }}</h1>
                                 <p>{{ security_event.content|striptags|truncate(50) }}</p>
                             </div>
                         </div>
@@ -214,7 +201,7 @@
                         <p>{{ law.addtime|date_format|get_year_month}}</p>
                     </div>
                     <div class="tab2_part_content">
-                        <h1>{{ law.name }}</h1>
+                        <h1>{% if law.if_new %}<img src="../../static/img/new.png">{% endif %}{{ law.name }}</h1>
                         <p>{{ law.content|striptags|truncate(30) }}</p>
                     </div>
                 </div>

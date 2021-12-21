@@ -1,6 +1,5 @@
 {% extends 'NetSecurity/basic.html' %}
 
-
 {% block banner %}
 	<!-- banner -->
 	<div class="y_banner">
@@ -9,13 +8,13 @@
 				<div class="login_tab">
 					<div class="tab_menu">
 						<ul>
-							<li class="selected">会员登录</li>
-							<li>会员注册</li>
+							<li>会员登录</li>
+							<li class="selected">会员注册</li>
 							<div class="c"></div>
 						</ul>
 					</div>
 					<div class="tab_box">
-						<div>
+						<div class="hide">
 							<div class="login-form">
 								<form action="" id="loginform" method="get" onsubmit="return LoginForm(this)">
 									<div class="login-name">
@@ -30,12 +29,12 @@
 										<a href="#"><img src="../../../static/img/gcode.png" class="get_gcode"></a>
 									</div>
 									<div class="login-tj">
-										<input name="loginsubmit" type="button" id="LoginBtn" value="登录" onclick="get_login()">
+										<input name="loginsubmit" type="button" id="LoginBtn" value="登录">
 									</div>
 								</form>
 							</div>
 						</div>
-						<div class="hide">
+						<div>
 							<div class="login-form">
 								<form action="" id="loginform" method="get" onsubmit="return RegisterForm(this)">
 									<div class="login-name">
@@ -95,10 +94,6 @@
             });
 
         })
-         // 登录
-        function get_login() {
-            console.log('我要登录')
-        }
     </script>
     <script>
 
@@ -177,17 +172,15 @@
         }
         window.history.replaceState(null, null, window.location.href);
     </script>
-
-    <script type="text/javascript">
-         $('#RegisterBtn').click(function () {
-            console.log('注册')
+    <script>
+        $('#RegisterBtn').click(function () {
             var $name = $("#name").val()
             var $company = $("#company").val()
             var $job = $('#job').val()
             var $mobile = $('.r_mobile').val()
             var $dcode = $('.r_code').val()
             $.ajax({
-                url: "{{ url_for('NetSecurity.register_validate') }}",
+                url: "{{ url_for('NetSecurity.register') }}",
                 type: 'GET',
                 contentType: 'application/json',
                 data: {name: $name, company: $company, job: $job, mobile: $mobile, code: $dcode },
@@ -219,5 +212,13 @@
                 }
             })
         })
+    // 登录
+    function get_login() {
+        window.location.href = '/NetSecurity/login'
+    }
+
+    function get_register() {
+        window.location.href = '/NetSecurity/register'
+    }
     </script>
 {% endblock %}

@@ -1,6 +1,7 @@
 from exts import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from flask_login import UserMixin
 
 
 # 员工表
@@ -65,7 +66,7 @@ class CMSLaw(db.Model):
 
 
 # 会员列表
-class CMSMember(db.Model):
+class CMSMember(db.Model, UserMixin):
     __tablename__ = 'cms_member'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100))
@@ -227,3 +228,19 @@ class CMSFooter(db.Model):
     code = db.Column(db.String(100))
     content = db.Column(db.TEXT)
     addtime = db.Column(db.DateTime, default=datetime.now)
+
+
+# 轮播图
+class CMSBanner(db.Model):
+    """
+        kind: sort的子类
+        sort: 出自哪个表 1：协会工作 2：行业动态 3：通知公告
+        o_id: sort表中的主键id
+    """
+    __tablename__ = 'cms_banner'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    o_id = db.Column(db.Integer)
+    kind = db.Column(db.Integer)
+    sort = db.Column(db.Integer)
+    if_banner = db.Column(db.Integer)
+    banner_url = db.Column(db.String(100))

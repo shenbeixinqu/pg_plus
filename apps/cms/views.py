@@ -12,7 +12,8 @@ from .models import (
     CMSLeader,
     CMSNotice,
     CMSFooter,
-    CMSIndustry
+    CMSIndustry,
+    CMSBanner
 )
 from utils.response_code import RET
 from utils.return_method import success_return, error_return
@@ -623,6 +624,7 @@ def add_building():
     if data["id"]:
         building_id = data["id"]
         building = CMSBuilding.query.get(building_id)
+        banner = CMSBanner.query.filter(CMSBanner.o_id == building_id).first()
         building.name = name
         building.reorder = reorder
         building.if_new = if_new
@@ -633,6 +635,9 @@ def add_building():
         building.link = link
         building.file_dir = file_dir
         building.file_name = file_name
+        banner.banner_url = banner_url
+        banner.if_banner = if_banner
+        db.session.commit()
     else:
         if kind == 4:
             building = CMSBuilding(name=name, reorder=reorder, if_new=if_new, if_banner=if_banner, content=content,
@@ -641,7 +646,11 @@ def add_building():
             building = CMSBuilding(name=name, reorder=reorder, if_new=if_new,
                                  if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
         db.session.add(building)
-    db.session.commit()
+        db.session.commit()
+        if kind != 4:
+            banner = CMSBanner(kind=kind, sort=1, if_banner=if_banner, banner_url=banner_url, o_id=building.id)
+            db.session.add(banner)
+            db.session.commit()
     return success_return()
 
 
@@ -702,17 +711,24 @@ def add_industry():
     if data["id"]:
         industry_id = data["id"]
         industry = CMSIndustry.query.get(industry_id)
+        banner = CMSBanner.query.filter(CMSBanner.o_id == industry_id,CMSBanner.sort == 2).first()
         industry.name = name
         industry.reorder = reorder
         industry.if_new = if_new
         industry.if_banner = if_banner
         industry.content = content
         industry.banner_url = banner_url
+        banner.if_banner = if_banner
+        banner.banner_url = banner_url
+        db.session.commit()
     else:
         industry = CMSIndustry(name=name, reorder=reorder, if_new=if_new, if_banner=if_banner,
                                    content=content, banner_url=banner_url, kind=kind)
         db.session.add(industry)
-    db.session.commit()
+        db.session.commit()
+        banner = CMSBanner(kind=kind, sort=2, if_banner=if_banner, banner_url=banner_url, o_id=industry.id)
+        db.session.add(banner)
+        db.session.commit()
     return success_return()
 
 
@@ -768,17 +784,24 @@ def add_notice():
     if data["id"]:
         notice_id = data["id"]
         notice = CMSNotice.query.get(notice_id)
+        banner = CMSBanner.query.filter(CMSBanner.o_id == notice_id, CMSBanner.sort == 3).first()
         notice.name = name
         notice.reorder = reorder
         notice.if_new = if_new
         notice.if_banner = if_banner
         notice.content = content
         notice.banner_url = banner_url
+        banner.if_banner = if_banner
+        banner.banner_url = banner_url
+        db.session.commit()
     else:
         notice = CMSNotice(name=name, reorder=reorder, if_new=if_new,
                              if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
         db.session.add(notice)
-    db.session.commit()
+        db.session.commit()
+        banner = CMSBanner(kind=kind, sort=3, if_banner=if_banner, banner_url=banner_url, o_id=notice.id)
+        db.session.add(banner)
+        db.session.commit()
     return success_return()
 
 

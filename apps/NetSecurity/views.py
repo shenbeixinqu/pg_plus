@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify, render_template, url_for, redirect
+from flask_login import login_user, login_required, current_user
 from apps.cms.models import *
 
 import json
@@ -6,8 +7,13 @@ import json
 bp = Blueprint('NetSecurity', __name__, url_prefix='/NetSecurity')
 
 
-@bp.route('/register', methods=['POST', 'GET'])
+@bp.route('/register', methods=['GET', 'POST'])
 def register():
+	return render_template('NetSecurity/login/register.html')
+
+
+@bp.route('/register_validate', methods=['POST', 'GET'])
+def register_validate():
 	name = request.args.get('name')
 	company = request.args.get('company')
 	job = request.args.get('job')
@@ -21,7 +27,7 @@ def login():
 	return render_template('NetSecurity/login/login.html')
 
 
-@bp.route('/login_validate', methods=['POST'])
+@bp.route('/login_validate', methods=['POST', 'GET'])
 def login_validate():
 	get_data = request.get_data()
 	print('get_Data', get_data)
@@ -30,7 +36,7 @@ def login_validate():
 
 @bp.route('/')
 def index():
-	buildings = CMSBuilding.query.filter(CMSBuilding.kind == 1).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
+	buildings = CMSBuilding.query.filter(CMSBuilding.kind == 1).order_by(CMSBuilding.addtime.desc(), CMSBuilding.reorder.desc()).limit(3)
 	communications = CMSBuilding.query.filter(CMSBuilding.kind == 2).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
 	educations = CMSBuilding.query.filter(CMSBuilding.kind == 3).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
 	services = CMSBuilding.query.filter(CMSBuilding.kind == 4).order_by(CMSBuilding.adddate.desc(), CMSBuilding.reorder.desc()).limit(3)
@@ -44,6 +50,8 @@ def index():
 	director_company = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 2).order_by(CMSMemberCompany.addtime.desc()).limit(2)
 	support_company = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 4).order_by(CMSMemberCompany.addtime.desc()).limit(7)
 	member_company = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).order_by(CMSMemberCompany.addtime.desc()).limit(7)
+	whole_banners = CMSBanner.query.filter(CMSBanner.if_banner == 1).all()
+	half_banners = CMSBanner.query.filter(CMSBanner.if_banner == 2).all()
 	return render_template('NetSecurity/index.html', **locals())
 
 
@@ -67,7 +75,17 @@ def association():
 		services = CMSBuilding.query.filter(CMSBuilding.kind == 4, CMSBuilding.name.contains(key)).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).paginate(page=page, per_page=3)
 		return render_template('NetSecurity/xhgz/aqfw.html', services=services.items, pagination=services, kind=kind, key=key)
 	else:
-		return jsonify("2222")
+		return render_template('NetSecurity/common/404.html')
+
+
+# 安全服务
+@bp.route('/aqfw', methods=['GET', 'POST'])
+@login_required
+def service():
+	page = request.args.get("page", 1, type=int)
+	key = request.args.get('key', '')
+	services = CMSBuilding.query.filter(CMSBuilding.kind == 4, CMSBuilding.name.contains(key)).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).paginate(page=page, per_page=3)
+	return render_template('NetSecurity/xhgz/aqfw.html', service=services.items, pagination=services, key=key)
 
 
 @bp.route('/hydt', methods=['GET', 'POST'])
@@ -87,7 +105,7 @@ def industry():
 	elif kind == 4:
 		return render_template('NetSecurity/hydt/aqsj.html', querys=querys.items, pagination=querys, kind=kind, key=key)
 	else:
-		return jsonify('123456')
+		return render_template('NetSecurity/common/404.html')
 
 
 @bp.route('/hydtxq', methods=['GET', 'POST'])
