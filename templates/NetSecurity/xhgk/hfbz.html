@@ -23,7 +23,7 @@
 {% block content %}
     <div class="y_1440 list_part">
 		<div class="list_left online">
-			<div class="list_left_top">协会在线</div>
+			<div class="list_left_top">协会概况</div>
 			<div class="tab1">
 				<div class="tab_menu">
 					<ul>
@@ -48,9 +48,9 @@
 					</div>
 					<div class="detail_content">
 						<h1>{{ standard.name }}</h1>
-						<h4>2021-12-06</h4>
+						<h4>{{ standard.addtime|date_format }}</h4>
                         <p>
-                            {{ standard.content }}
+                            {{ standard.content|safe }}
                         </p>
 					</div>
 				</div>

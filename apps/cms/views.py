@@ -455,7 +455,7 @@ def introduction_list():
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
     querys = CMSIntroduction.query.filter(CMSIntroduction.kind == kind).offset((pn-1)*limit_num).limit(limit_num).all()
-    total = CMSIntroduction.query.count()
+    total = CMSIntroduction.query.filter(CMSIntroduction.kind == kind).count()
     data = []
     for q in querys:
         record = {
@@ -574,7 +574,7 @@ def member_company_list():
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
     querys = CMSMemberCompany.query.filter(CMSMemberCompany.kind == kind).offset((pn-1)*limit_num).limit(limit_num).all()
-    total = CMSMemberCompany.query.count()
+    total = CMSMemberCompany.query.filter(CMSMemberCompany.kind == kind).count()
     data = []
     for q in querys:
         record = {
@@ -653,7 +653,7 @@ def building_list():
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
     querys = CMSBuilding.query.filter(CMSBuilding.kind == kind, CMSBuilding.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
-    total = CMSBuilding.query.count()
+    total = CMSBuilding.query.filter(CMSBuilding.kind == kind,).count()
     data = []
     for q in querys:
         record = {
@@ -724,7 +724,7 @@ def industry_list():
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
     querys = CMSIndustry.query.filter(CMSIndustry.kind == kind, CMSIndustry.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
-    total = CMSIndustry.query.count()
+    total = CMSIndustry.query.filter(CMSIndustry.kind == kind).count()
     data = []
     for q in querys:
         record = {
@@ -790,7 +790,7 @@ def notice_list():
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
     querys = CMSNotice.query.filter(CMSNotice.kind == kind, CMSNotice.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
-    total = CMSNotice.query.count()
+    total = CMSNotice.query.filter(CMSNotice.kind == kind).count()
     data = []
     for q in querys:
         record = {

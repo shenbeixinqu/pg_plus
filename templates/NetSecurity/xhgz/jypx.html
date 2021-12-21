@@ -54,7 +54,7 @@
                             </div>
                             <div class="tab2_part_content">
                                 <h1>{{ education.name }}</h1>
-                                <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
+                                <p>{{ education.content|striptags|truncate(50) }}</p>
                             </div>
                         </div>
 					{% endfor %}

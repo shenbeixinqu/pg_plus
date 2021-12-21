@@ -23,7 +23,7 @@
 {% block content %}
     <div class="y_1440 list_part">
 		<div class="list_left online">
-			<div class="list_left_top">协会在线</div>
+			<div class="list_left_top">协会概况</div>
 			<div class="tab1">
 				<div class="tab_menu">
 					<ul>
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="director_list_content">
                                     <h1>{{ director.name }}</h1>
-                                    <p>{{ director.content }}</p>
+                                    <p>{{ director.desc|safe }}</p>
                                 </div>
                             </div>
                         {% endfor %}

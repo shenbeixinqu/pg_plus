@@ -54,7 +54,7 @@
                             </div>
                             <div class="tab2_part_content">
                                 <h1>{{ query.name }}</h1>
-                                <p>{{ query.content }}</p>
+                                <p>{{ query.content|striptags|truncate(50) }}</p>
                             </div>
                         </div>
                     {% endfor %}

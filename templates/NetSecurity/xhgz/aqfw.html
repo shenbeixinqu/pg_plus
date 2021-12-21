@@ -54,11 +54,17 @@
                             </div>
                             <div class="tab2_part_content">
                                 <h1>{{ service.name }}</h1>
-                                <p>为加强网络安全行业交流和协作，8月20日，由辽宁省委网信办、辽宁省公安厅、辽宁省国家密码管理局、辽宁省网络社会组织联合会指导...</p>
+                                {% if service.mold == '1' %}
+                                    <p>{{ service.link }}</p>
+                                {% else %}
+                                    <p>{{ service.file_name }}</p>
+                                {% endif %}
                             </div>
-                            <a href="#">
-                                <div class="mousego">点击前往</div>
-                            </a>
+                            {% if service.mold == '1' %}
+                                <div class="mousego" onclick="go_link('{{ service.link }}')">点击前往</div>
+                            {% else %}
+                                <div class="mousego go_download">点击下载</div>
+                            {% endif %}
                         </div>
 					{% endfor %}
 					<!-- 分页 -->
@@ -96,6 +102,10 @@
         function get_search() {
             let $search_val = $(".search_input").val()
             window.location.href = "/NetSecurity/xhgz?sc=4" + "&key=" + $search_val
+        }
+        //
+        function go_link(params) {
+            window.location.href = params
         }
     </script>
 

@@ -43,7 +43,7 @@
                     {% for notice in notices %}
                         <li>
                             <a href="#">
-                                <div class="point">·</div>
+{#                                <div class="point">·</div>#}
                                 <div class="part1_tip_title">{{ notice.name }}</div>
                                 <div class="part1_tip_content_date">{{ notice.adddate }}</div>
                             </a>
@@ -177,7 +177,7 @@
                             </div>
                             <div class="tab2_part_content">
                                 <h1>{{ leak_release.name }}</h1>
-                                <p>{{ leak_release.content|striptags|trim|truncate(60) }}</p>
+                                <p>{{ leak_release.content|striptags|truncate(50) }}</p>
                             </div>
                         </div>
 					{% endfor %}
@@ -192,7 +192,7 @@
                             </div>
                             <div class="tab2_part_content">
                                 <h1>{{ security_event.name }}</h1>
-                                <p>{{ security_event.content|striptags|trim|truncate(60) }}</p>
+                                <p>{{ security_event.content|striptags|truncate(50) }}</p>
                             </div>
                         </div>
 					{% endfor %}
@@ -215,7 +215,7 @@
                     </div>
                     <div class="tab2_part_content">
                         <h1>{{ law.name }}</h1>
-                        <p>{{ law.content }}</p>
+                        <p>{{ law.content|striptags|truncate(30) }}</p>
                     </div>
                 </div>
 		    {% endfor %}
