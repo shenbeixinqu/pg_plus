@@ -175,6 +175,7 @@ class CMSBuilding(db.Model):
     link = db.Column(db.String(100))
     file_dir = db.Column(db.String(100))
     file_name = db.Column(db.String(100))
+    desc = db.Column(db.String(100))
     addtime = db.Column(db.DateTime, default=datetime.now)
     adddate = db.Column(db.Date, default=datetime.now())
     kind = db.Column(db.Integer)

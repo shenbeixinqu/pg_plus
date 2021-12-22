@@ -619,12 +619,16 @@ def add_building():
     kind = data["kind"]
     mold = data["mold"]
     link = data["link"]
+    desc = data["desc"]
     file_name = data["file_name"]
     file_dir = data["file_dir"]
     if data["id"]:
         building_id = data["id"]
         building = CMSBuilding.query.get(building_id)
-        banner = CMSBanner.query.filter(CMSBanner.o_id == building_id).first()
+        if kind != 4:
+            banner = CMSBanner.query.filter(CMSBanner.o_id == building_id).first()
+            banner.banner_url = banner_url
+            banner.if_banner = if_banner
         building.name = name
         building.reorder = reorder
         building.if_new = if_new
@@ -633,15 +637,15 @@ def add_building():
         building.banner_url = banner_url
         building.mold = mold
         building.link = link
+        building.desc = desc
         building.file_dir = file_dir
         building.file_name = file_name
-        banner.banner_url = banner_url
-        banner.if_banner = if_banner
+
         db.session.commit()
     else:
         if kind == 4:
             building = CMSBuilding(name=name, reorder=reorder, if_new=if_new, if_banner=if_banner, content=content,
-                                banner_url=banner_url, kind=kind, mold=mold,  link=link, file_dir=file_dir, file_name=file_name)
+                                banner_url=banner_url, kind=kind, mold=mold,  link=link, desc=desc, file_dir=file_dir, file_name=file_name)
         else:
             building = CMSBuilding(name=name, reorder=reorder, if_new=if_new,
                                  if_banner=if_banner, content=content, banner_url=banner_url, kind=kind)
@@ -675,6 +679,7 @@ def building_list():
             "content": q.content,
             "mold": q.mold,
             "link": q.link,
+            "desc": q.desc,
             "file_dir": q.file_dir,
             "file_name": q.file_name,
             "addtime": datetimeformat(q.addtime),

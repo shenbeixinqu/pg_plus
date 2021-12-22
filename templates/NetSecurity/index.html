@@ -3,23 +3,29 @@
 {% block banner %}
     <div class="y_banner">
 		<div class="swiper-wrapper">
-			<div class="swiper-slide">
-				<div style="background: url(../../static/img/banner.png) top center no-repeat;height: 300px;">
-				</div>
-			</div>
-			<div class="swiper-slide">
-				<div style="background: url(../../static/img/banner.png) top center no-repeat;height: 300px;">
-				</div>
-			</div>
+            {% for whole in whole_banners %}
+                <div class="swiper-slide" onclick="half_to_detail({{ whole.sort }}, {{ whole.kind }}, {{ whole.o_id }})">
+                    <div style="background: url({{ whole.banner_url }}) top center no-repeat;height: 300px;">
+                    </div>
+                </div>
+            {% endfor %}
 		</div>
 	</div>
 {% endblock %}
 
 {% block content %}
     <div class="part1 y_1440">
-        <div class="part1_pic">
-            <img src="../../static/img/example_pic.png">
-        </div>
+        <div class="part1_lunbo">
+			<div class="swiper-wrapper">
+                {% for half_banner in half_banners %}
+                    <div class="swiper-slide">
+                        <div class="part1_pic" onclick="half_to_detail({{ half_banner.sort }}, {{ half_banner.kind }}, {{ half_banner.o_id }})">
+                            <img src="{{ half_banner.banner_url }}">
+                        </div>
+                    </div>
+				{% endfor %}
+			</div>
+		</div>
 		<div class="part1_tip">
 			<div class="part1_tip_head">
 				<div class="tip_title">通知公告</div>
@@ -106,7 +112,12 @@
                             </div>
                             <div class="tab1_part_content">
                                 <h1>{% if service.if_new %}<img src="../../static/img/new.png">{% endif %}{{ service.name }}</h1>
-                                    <p>点击前往</p>
+                                <h3>{{ service.desc }}</h3>
+                                {% if service.mold == '1' %}
+                                    <p><a href="{{ service.link }}">点击前往</a></p>
+                                {% else %}
+                                    <p><a href="{{ service.file_dir }}" download="{{ service.file_name }}">点击下载</a></p>
+                                {% endif %}
                             </div>
                         </div>
 					{% endfor %}
@@ -277,7 +288,19 @@
 
 {% block script %}
     <script type="text/javascript">
-     // tab切换
+    $(function () {
+        // part1图轮播
+		var part1_lunbo = new Swiper(".part1_lunbo", {
+			autoplay: true,
+			loop: true,
+			autoplay: {
+				delay: 3000,
+				stopOnLastSlide: false,
+				disableOnInteraction: true,
+			},
+		});
+    })
+    // tab切换
     var $div_li = $("div.tab_menu ul li");
     $div_li.click(function () {
         $(this).addClass("selected")            //当前<li>元素高亮
@@ -339,6 +362,17 @@
     // 法律法规详情
     function flfg_detail(params) {
             window.location.href = '/NetSecurity/flfgxq?pid=' + params
+    }
+    // 半轮播跳转
+    function half_to_detail(sort, kind, o_id) {
+        console.log('sort', sort, typeof sort)
+        if (sort === 1){
+            window.location.href = '/NetSecurity/xhgzxq?sc=' + kind + '&pid=' + o_id
+        } else if (sort === 2) {
+            window.location.href = '/NetSecurity/hydtxq?sc=' + kind + '&pid=' + o_id
+        } else if (sort === 3) {
+            window.location.href = '/NetSecurity/tzggxq?pid=' + o_id
+        }
     }
     </script>
 {% endblock %}

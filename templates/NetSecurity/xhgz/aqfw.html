@@ -63,7 +63,9 @@
                             {% if service.mold == '1' %}
                                 <div class="mousego" onclick="go_link('{{ service.link }}')">点击前往</div>
                             {% else %}
-                                <div class="mousego go_download">点击下载</div>
+                                <div class="mousego go_download">
+                                    <a href="{{ service.file_dir }}" download="{{ service.file_name }}">点击下载</a>
+                                </div>
                             {% endif %}
                         </div>
 					{% endfor %}
