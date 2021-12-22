@@ -169,6 +169,25 @@
                 $(this).find("dl").stop(true, true);
                 $(this).find("dl").slideUp();
             });
+            // 底部信息替换
+            $.ajax({
+                url: '{{ url_for('NetSecurity.footer_info') }}',
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (data) {
+                    {#var $foot_contenr = $('.foot_content')#}
+                    {#var $foot_ewm = $('.foot_ewm')#}
+                    var str = ''
+                    str += '<img src="' + data["code"] + '">' +
+                            '<div>微信公众号</div>'
+                    $('.foot_content').html(data["content"])
+                    $('.foot_ewm').html(str)
+                    console.log('data', data)
+                },
+                error: function (err) {
+                  console.log('err', err)
+                }
+            })
         })
 
         function dd_notice() {

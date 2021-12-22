@@ -7,6 +7,16 @@ import json
 bp = Blueprint('NetSecurity', __name__, url_prefix='/NetSecurity')
 
 
+@bp.route('/footer', methods=['GET', 'POST'])
+def footer_info():
+	query = CMSFooter.query.first()
+	data = {
+		"code": query.code,
+		"content": query.content
+	}
+	return jsonify(data)
+
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
 	return render_template('NetSecurity/login/register.html')
