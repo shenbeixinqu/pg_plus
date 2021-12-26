@@ -1,5 +1,6 @@
 {% extends 'NetSecurity/basic.html' %}
 
+
 {% block banner %}
 	<!-- banner -->
 	<div class="y_banner">
@@ -29,7 +30,7 @@
 										<a href="#"><img src="../../../static/img/gcode.png" class="get_gcode"></a>
 									</div>
 									<div class="login-tj">
-										<input name="loginsubmit" type="button" id="LoginBtn" value="登录">
+										<input name="loginsubmit" type="button" id="LoginBtn" value="登录" onclick="get_login()">
 									</div>
 								</form>
 							</div>
@@ -54,7 +55,7 @@
 										<a href="#"><span class="get_dcode">获取动态码</span></a>
 									</div>
 									<div class="login-tj">
-										<input name="registersubmit" type="button" id="RegisterBtn" value="确认">
+										<input name="registersubmit" type="button" id="RegisterBtn" value="确认" onclick="get_register()">
 									</div>
 								</form>
 							</div>
@@ -94,6 +95,26 @@
             });
 
         })
+         // 登录
+        function get_login() {
+            var $l_mobile = $('.l_mobile').val()
+            var $l_code = $('.l_code').val()
+            var $gcode = $('#gcode').val()
+            $.ajax({
+                url: '{{ url_for("NetSecurity.login_validate") }}',
+                type: 'GET',
+                contentType:'html',
+                data: {mobile: $l_mobile, m_code: $l_code, v_code: $gcode},
+                success: function (data) {
+                    window.location.href="/NetSecurity"
+                }
+
+            })
+        }
+        // 注册
+        function get_register() {
+            console.log('我要注册')
+        }
     </script>
     <script>
 
@@ -172,15 +193,16 @@
         }
         window.history.replaceState(null, null, window.location.href);
     </script>
-    <script>
-        $('#RegisterBtn').click(function () {
+
+    <script type="text/javascript">
+         $('#RegisterBtn').click(function () {
             var $name = $("#name").val()
             var $company = $("#company").val()
             var $job = $('#job').val()
             var $mobile = $('.r_mobile').val()
             var $dcode = $('.r_code').val()
             $.ajax({
-                url: "{{ url_for('NetSecurity.register') }}",
+                url: "{{ url_for('NetSecurity.register_validate') }}",
                 type: 'GET',
                 contentType: 'application/json',
                 data: {name: $name, company: $company, job: $job, mobile: $mobile, code: $dcode },
@@ -211,13 +233,5 @@
                 }
             })
         })
-    // 登录
-    function get_login() {
-        window.location.href = '/NetSecurity/login'
-    }
-
-    function get_register() {
-        window.location.href = '/NetSecurity/register'
-    }
     </script>
 {% endblock %}
