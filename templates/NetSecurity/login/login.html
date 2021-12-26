@@ -97,7 +97,6 @@
         })
          // 登录
         function get_login() {
-            console.log('我要登录')
             var $l_mobile = $('.l_mobile').val()
             var $l_code = $('.l_code').val()
             var $gcode = $('#gcode').val()
@@ -107,7 +106,6 @@
                 contentType:'html',
                 data: {mobile: $l_mobile, m_code: $l_code, v_code: $gcode},
                 success: function (data) {
-                    console.log('data',data)
                     window.location.href="/NetSecurity"
                 }
 
@@ -198,7 +196,6 @@
 
     <script type="text/javascript">
          $('#RegisterBtn').click(function () {
-            console.log('注册')
             var $name = $("#name").val()
             var $company = $("#company").val()
             var $job = $('#job').val()
@@ -220,7 +217,6 @@
         })
 
         $('#LoginBtn').click(function () {
-            console.log('登录')
             var $mobile = $('.l_mobile').val()
             var $code = $('.l_code').val()
             var $gcode = $('#gcode').val()

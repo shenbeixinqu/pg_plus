@@ -306,7 +306,6 @@
         $(this).addClass("selected")            //当前<li>元素高亮
             .siblings().removeClass("selected");  //去掉其它同辈<li>元素的高亮
         var index = $div_li.index(this);  // 获取当前点击的<li>元素 在 全部li元素中的索引。
-        console.log('index', index)
         task_id = index + 1
         $(".show_list").show()
         $(".detail").empty()
@@ -365,7 +364,6 @@
     }
     // 半轮播跳转
     function half_to_detail(sort, kind, o_id) {
-        console.log('sort', sort, typeof sort)
         if (sort === 1){
             window.location.href = '/NetSecurity/xhgzxq?sc=' + kind + '&pid=' + o_id
         } else if (sort === 2) {

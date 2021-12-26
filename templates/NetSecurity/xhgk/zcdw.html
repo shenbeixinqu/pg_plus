@@ -1,18 +1,5 @@
 {% extends 'NetSecurity/basic.html' %}
 
-{% block header %}
-    <div class="header">
-		<div class="y_1440">
-			<a href="#">
-				<div class="logout">退出</div>
-			</a>
-			<a href="#">
-				<div class="admin">ADMIN</div>
-			</a>
-		</div>
-	</div>
-{% endblock %}
-
 {% block banner %}
     <div class="y_banner">
         <div style="background: url(../../../static/img/innerbg.png) top center no-repeat;height: 180px;">
@@ -79,7 +66,6 @@
             $(this).addClass("selected")            //当前<li>元素高亮
                 .siblings().removeClass("selected");  //去掉其它同辈<li>元素的高亮
             var index = $div_li.index(this);  // 获取当前点击的<li>元素 在 全部li元素中的索引。
-            console.log('index', index)
             task_id = index + 1
             $(".show_list").show()
             $(".detail").empty()

@@ -27,8 +27,6 @@
 
 <body>
     <!-- header -->
-    {% block header %}
-    {% endblock %}
     <div class="header">
 		<div class="y_1440">
             {% if not current_user.name %}
@@ -117,7 +115,6 @@
             var $dd_association = $('.dl_association dd')
             $dd_association.click(function () {
                 let association_id = $dd_association.index(this) + 1
-                console.log('association_id',association_id)
                 if (association_id == 4){
                     window.location.href = "/NetSecurity/aqfw"
 
@@ -128,7 +125,6 @@
             var $dd_industry = $('.dl_industry dd')
             $dd_industry.click(function () {
                 let industry_id = $dd_industry.index(this) + 1
-                console.log('industry_id',industry_id)
                 window.location.href = "/NetSecurity/hydt?sc=" + industry_id
             })
             // 协会概况
@@ -183,10 +179,8 @@
                             '<div>微信公众号</div>'
                     $('.foot_content').html(data["content"])
                     $('.foot_ewm').html(str)
-                    console.log('data', data)
                 },
                 error: function (err) {
-                  console.log('err', err)
                 }
             })
             // 点击登录
