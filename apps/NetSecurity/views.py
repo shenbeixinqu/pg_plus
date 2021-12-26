@@ -1,6 +1,7 @@
-from flask import Blueprint, request, jsonify, render_template, url_for, redirect
-from flask_login import login_user, login_required, current_user
+from flask import Blueprint, request, jsonify, render_template, url_for, redirect, session
+from flask_login import login_user, login_required, logout_user
 from apps.cms.models import *
+import config
 
 import json
 
@@ -39,9 +40,21 @@ def login():
 
 @bp.route('/login_validate', methods=['POST', 'GET'])
 def login_validate():
-	get_data = request.get_data()
-	print('get_Data', get_data)
-	return jsonify('12345678')
+	mobile = request.args.get('mobile')
+	m_code = request.args.get('m_code')
+	v_code = request.args.get('v_code')
+	print(mobile, m_code, v_code)
+	user = CMSMember.query.filter(CMSMember.phone == mobile).first()
+	login_user(user)
+	session[config.CMS_USER_ID] = user.id
+	return jsonify(user.name)
+
+
+# 退出
+@bp.route('/logout')
+def logout():
+	logout_user()
+	return redirect(url_for('NetSecurity.index'))
 
 
 @bp.route('/')

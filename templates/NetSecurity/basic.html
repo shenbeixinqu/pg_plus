@@ -31,13 +31,14 @@
     {% endblock %}
     <div class="header">
 		<div class="y_1440">
-			<a href="/NetSecurity/login">
-				<div class="memberregister">会员注册</div>
-			</a>
-			<a href="/NetSecurity/login">
-				<div class="memberlogin">会员登录</div>
-			</a>
-		</div>
+            {% if not current_user.name %}
+                <div class="memberregister">会员注册</div>
+                <div class="memberlogin">会员登录</div>
+            {% else %}
+                <div class="logout"><a href="{{ url_for('NetSecurity.logout') }}">退出</a></div>
+				<div class="admin">{{ current_user.name }}</div>
+            {% endif %}
+        </div>
 	</div>
     <!--head-->
 	<div class="head">
@@ -187,6 +188,11 @@
                 error: function (err) {
                   console.log('err', err)
                 }
+            })
+            // 点击登录
+            $('.memberlogin').click(function () {
+                current_url = window.location.href;
+                window.location.href='/NetSecurity/login'
             })
         })
 
