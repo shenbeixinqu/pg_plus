@@ -167,6 +167,61 @@ def fileUpload():
     return jsonify(code=RET.OK, file_dir=file_dir)
 
 
+# 管理员列表
+@bp.route('/userList')
+def user_list():
+    phone = request.values.get("kword")
+    pn = int(request.values.get("pn", 1))
+    limit_num = int(request.values.get("limit", 10))
+    if phone:
+        querys = CMSUser.query.filter(CMSUser.phone.contains(phone)).order_by(CMSUser.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
+        total = CMSUser.query.filter(CMSUser.phone.contains(phone)).count()
+    else:
+        querys = CMSUser.query.order_by(CMSUser.addtime.desc()).offset((pn - 1) * limit_num).limit(
+            limit_num).all()
+        total = CMSUser.query.count()
+    data = []
+    for q in querys:
+        record = {
+            "id": q.id,
+            "phone": q.phone
+        }
+        data.append(record)
+    return success_return(**{"data": data, "total":total})
+
+
+# 添加管理员
+@bp.route('/addUser', methods=['POST'])
+def add_user():
+    data = request.get_data()
+    data = json.loads(data)
+    print("Data", data)
+    phone = data["phone"]
+    if data["id"]:
+        user_id = data["id"]
+        user = CMSUser.query.get(user_id)
+        user.phone = phone
+    else:
+        user = CMSUser(phone=phone)
+        db.session.add(user)
+    db.session.commit()
+    return success_return()
+
+
+# 删除管理员
+@bp.route('/deleteUser', methods=['POST'])
+def delete_user():
+    data = {}
+    get_data = request.get_data()
+    get_data = json.loads(get_data)
+    user_id = get_data["deleteId"]
+    user = CMSUser.query.get(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    return success_return(**{"data": data})
+
+
+
 # 添加安全服务
 @bp.route('/addService', methods=['POST'])
 def add_service():
