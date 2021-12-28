@@ -86,7 +86,6 @@ def login():
             data["msg"] = "登录成功"
             data["account"] = account
             data["token"] = token_data
-    # return jsonify({"data": data})
     return success_return(**{"data": data})
 
 

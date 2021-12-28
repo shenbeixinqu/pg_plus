@@ -103,21 +103,42 @@
             $.ajax({
                 url: '{{ url_for("NetSecurity.login_validate") }}',
                 type: 'GET',
-                contentType:'html',
+                contentType:'application/json',
                 data: {mobile: $l_mobile, m_code: $l_code, v_code: $gcode},
                 success: function (data) {
-                    window.location.href="/NetSecurity"
+                    console.log('data', data)
+                    if (data.status === 200){
+                        window.location.href="/NetSecurity"
+                    } else {
+                        alert(data.msg)
+                    }
                 }
 
             })
         }
         // 注册
         function get_register() {
-            console.log('我要注册')
+            var $name = $("#name").val()
+            var $company = $("#company").val()
+            var $job = $("#job").val()
+            var $mobile = $(".r_mobile").val()
+            var $code = $(".r_code").val()
+            $.ajax({
+                url: '{{ url_for("NetSecurity.register_validate") }}',
+                type: 'GET',
+                contentType:'application/json',
+                data: {name: $name,company:$company, job:$job, mobile:$mobile,code:$code},
+                success:function (data) {
+                    if (data.status === 200) {
+                        window.location.href="/NetSecurity/login"
+                    } else {
+                        alert(data.msg)
+                    }
+                }
+            })
         }
     </script>
     <script>
-
         String.prototype.Trim = function () {
             var m = this.match(/^\s*(\S+(\s+\S+)*)\s*$/);
             return (m == null) ? "" : m[1];
@@ -192,46 +213,5 @@
             }
         }
         window.history.replaceState(null, null, window.location.href);
-    </script>
-
-    <script type="text/javascript">
-         $('#RegisterBtn').click(function () {
-            var $name = $("#name").val()
-            var $company = $("#company").val()
-            var $job = $('#job').val()
-            var $mobile = $('.r_mobile').val()
-            var $dcode = $('.r_code').val()
-            $.ajax({
-                url: "{{ url_for('NetSecurity.register_validate') }}",
-                type: 'GET',
-                contentType: 'application/json',
-                data: {name: $name, company: $company, job: $job, mobile: $mobile, code: $dcode },
-                success: function (data) {
-                    console.log('data', data)
-                },
-                error: function (err) {
-                    console.log('err', err)
-                }
-
-            })
-        })
-
-        $('#LoginBtn').click(function () {
-            var $mobile = $('.l_mobile').val()
-            var $code = $('.l_code').val()
-            var $gcode = $('#gcode').val()
-            $.ajax({
-                url: {{ url_for('NetSecurity.login_validate') }},
-                type: 'GET',
-                contentType: 'application/json',
-                data: { mobile: $mobile},
-                success: function (data) {
-                    console.log('login_Data', data)
-                },
-                error: function (err) {
-                    console.log('login_err', err)
-                }
-            })
-        })
     </script>
 {% endblock %}

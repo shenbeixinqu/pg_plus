@@ -30,7 +30,22 @@ def register_validate():
 	job = request.args.get('job')
 	mobile = request.args.get('mobile')
 	code = request.args.get('code')
-	return jsonify('123456')
+	print("name", name, company, job, mobile, code)
+	user = CMSMember.query.filter(CMSMember.phone == mobile).first()
+	print("user", user)
+	result = {
+		"status": 200,
+		"msg": ''
+	}
+	if user:
+		result["status"] = 201
+		result["msg"] = "手机号已注册"
+		return jsonify(result)
+	else:
+		c_user = CMSMember(name= name, company=company, position=job, phone=mobile)
+		db.session.add(c_user)
+		db.session.commit()
+		return jsonify(result)
 
 
 @bp.route('/login')
@@ -44,10 +59,20 @@ def login_validate():
 	m_code = request.args.get('m_code')
 	v_code = request.args.get('v_code')
 	print(mobile, m_code, v_code)
+	result = {
+		"status": 200,
+		"msg": ''
+	}
 	user = CMSMember.query.filter(CMSMember.phone == mobile).first()
-	login_user(user)
-	session[config.CMS_USER_ID] = user.id
-	return jsonify(user.name)
+	if user:
+		print("user", user)
+		login_user(user)
+		session[config.CMS_USER_ID] = user.id
+		return jsonify(result)
+	else:
+		result["status"] = '201'
+		result["msg"] = "手机号不存在"
+		return jsonify(result)
 
 
 # 退出

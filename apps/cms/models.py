@@ -15,7 +15,7 @@ class CMSUser(db.Model):
     addtime = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
-        return self.account
+        return self.name
 
     def check_pwd(self, pwd):
         # 返回true密码正确  返回false密码错误
