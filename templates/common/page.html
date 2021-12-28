@@ -7,14 +7,14 @@
             {% if pagination.has_prev %}
                 <li class="page-item active">
                     {% if key %}
-                        <a class="page-link" href="{{ url_for(url, sc=kind, key=key, page=pagination.page - 1) }}">上一页a</a>
+                        <a class="page-link" href="{{ url_for(url, sc=kind, key=key, page=pagination.page - 1) }}">上一页</a>
                     {% else %}
-                        <a class="page-link" href="{{ url_for(url, sc=kind, page=pagination.page - 1) }}">上一页a</a>
+                        <a class="page-link" href="{{ url_for(url, sc=kind, page=pagination.page - 1) }}">上一页</a>
                     {% endif %}
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <a class="page-link" href="javascript:">上一页d</a>
+                    <a class="page-link" href="javascript:">上一页</a>
                 </li>
             {% endif %}
 

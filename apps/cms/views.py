@@ -475,10 +475,23 @@ def member_list():
             "company": q.company,
             "position": q.position,
             "phone": q.phone,
+            "status": "正常" if q.status == 1 else "移除",
+            "status_val": q.status,
             "addtime": datetimeformat(q.addtime)
         }
         data.append(record)
     return success_return(**{"data": data, "total": total})
+
+
+# 更改会员状态
+@bp.route('/memberStatus')
+def member_status():
+    id = request.args.get('id')
+    kind = int(request.args.get("kind"))
+    member = CMSMember.query.filter(CMSMember.id == id).first()
+    member.status = kind
+    db.session.commit()
+    return success_return()
 
 
 """

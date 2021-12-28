@@ -48,7 +48,7 @@
 					</div>
                     <div class="detail-content">
                         {% for branch in branches %}
-                            <div class="branch_list">
+                            <div class="branch_list" onclick="go_href('{{ branch.href }}')">
                                 <div class="branch_list_pic">
                                     <img src="{{ branch.logo }}">
                                 </div>
@@ -91,5 +91,8 @@
         }, function () {
             $(this).removeClass("hover");
         })
+        function go_href(params) {
+            window.location.href = params
+        }
     </script>
 {% endblock %}

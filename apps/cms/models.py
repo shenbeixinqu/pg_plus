@@ -75,6 +75,7 @@ class CMSMember(db.Model, UserMixin):
     company = db.Column(db.String(100))
     position = db.Column(db.String(100))
     phone = db.Column(db.String(11))
+    status = db.Column(db.Integer, default=1)
     addtime = db.Column(db.DateTime, default=datetime.now)
 
 
