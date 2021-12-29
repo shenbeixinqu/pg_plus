@@ -2,8 +2,8 @@ from flask import Blueprint, request, jsonify, render_template, url_for, redirec
 from flask_login import login_user, login_required, logout_user
 from apps.cms.models import *
 import config
-
-import json
+from utils.random_code import generate_code
+from utils.sent_message import sent_message
 
 bp = Blueprint('NetSecurity', __name__, url_prefix='/NetSecurity')
 
@@ -80,6 +80,24 @@ def login_validate():
 def logout():
 	logout_user()
 	return redirect(url_for('NetSecurity.index'))
+
+
+# 发送验证码
+@bp.route('/message')
+def message():
+	phone = request.args.get("phone")
+	print("phone", phone)
+	code = generate_code()
+	print("code", code)
+	sent_message(code)
+	message_code = CMSMessageCode(phone=phone, code=code)
+	db.session.add(message_code)
+	db.session.commit()
+	result = {
+		"status": 200,
+		"msg": ''
+	}
+	return jsonify(result)
 
 
 @bp.route('/')

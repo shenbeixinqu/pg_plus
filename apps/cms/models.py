@@ -248,3 +248,13 @@ class CMSBanner(db.Model):
     sort = db.Column(db.Integer)
     if_banner = db.Column(db.Integer)
     banner_url = db.Column(db.String(100))
+
+
+# 短信验证码
+class CMSMessageCode(db.Model):
+    __tablename__ = 'cms_message_code'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    phone = db.Column(db.String(11))
+    code = db.Column(db.String(11))
+    sort = db.Column(db.String(11))
+    addtime = db.Column(db.DateTime, default=datetime.now)
