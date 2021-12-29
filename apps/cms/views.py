@@ -13,7 +13,8 @@ from .models import (
     CMSNotice,
     CMSFooter,
     CMSIndustry,
-    CMSBanner
+    CMSBanner,
+    CMSMessageCode
 )
 from utils.response_code import RET
 from utils.return_method import success_return, error_return
@@ -23,6 +24,8 @@ from exts import db
 from flask_httpauth import HTTPBasicAuth
 from utils.minerequests import generate_auth_token, verify_auth_token
 from werkzeug.security import generate_password_hash
+from utils.random_code import generate_code
+from utils.sent_message import sent_message
 
 import os
 import uuid
@@ -88,6 +91,18 @@ def login():
             data["token"] = token_data
     return success_return(**{"data": data})
 
+
+@bp.route('/message')
+def message():
+    account = request.args.get('account')
+    print("account", account)
+    code = generate_code()
+    print("code", code)
+    sent_message(code)
+    message_code = CMSMessageCode(phone=account, code=code)
+    db.session.add(message_code)
+    db.session.commit()
+    return success_return()
 
 # 退出
 @bp.route('/logout', methods=["POST"])
