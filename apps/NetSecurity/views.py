@@ -4,6 +4,8 @@ from apps.cms.models import *
 import config
 from utils.random_code import generate_code
 from utils.sent_message import sent_message
+from datetime import datetime, timedelta
+
 
 bp = Blueprint('NetSecurity', __name__, url_prefix='/NetSecurity')
 
@@ -29,10 +31,9 @@ def register_validate():
 	company = request.args.get('company')
 	job = request.args.get('job')
 	mobile = request.args.get('mobile')
-	code = request.args.get('code')
-	print("name", name, company, job, mobile, code)
+	m_code = request.args.get('code')
+	ifCode = CMSMessageCode.query.filter(CMSMessageCode.phone == mobile, CMSMessageCode.sort == 2).order_by(CMSMessageCode.addtime.desc()).first()
 	user = CMSMember.query.filter(CMSMember.phone == mobile).first()
-	print("user", user)
 	result = {
 		"status": 200,
 		"msg": ''
@@ -42,11 +43,17 @@ def register_validate():
 		result["msg"] = "手机号已注册"
 		return jsonify(result)
 	else:
-		c_user = CMSMember(name= name, company=company, position=job, phone=mobile)
-		db.session.add(c_user)
-		db.session.commit()
-		return jsonify(result)
-
+		code = ifCode.code
+		time_delta = (datetime.now() - ifCode.addtime).seconds
+		if code == m_code and time_delta < 120:
+			c_user = CMSMember(name= name, company=company, position=job, phone=mobile)
+			db.session.add(c_user)
+			db.session.commit()
+			return jsonify(result)
+		else:
+			result["status"] = '202'
+			result["msg"] = "验证码错误"
+			return jsonify(result)
 
 @bp.route('/login')
 def login():
@@ -58,17 +65,23 @@ def login_validate():
 	mobile = request.args.get('mobile')
 	m_code = request.args.get('m_code')
 	v_code = request.args.get('v_code')
-	print(mobile, m_code, v_code)
 	result = {
 		"status": 200,
 		"msg": ''
 	}
+	ifCode = CMSMessageCode.query.filter(CMSMessageCode.phone == mobile, CMSMessageCode.sort == 1).order_by(CMSMessageCode.addtime.desc()).first()
 	user = CMSMember.query.filter(CMSMember.phone == mobile).first()
 	if user:
-		print("user", user)
-		login_user(user)
-		session[config.CMS_USER_ID] = user.id
-		return jsonify(result)
+		code = ifCode.code
+		time_delta = (datetime.now() - ifCode.addtime).seconds
+		if code == m_code and time_delta < 120:
+			login_user(user)
+			session[config.CMS_USER_ID] = user.id
+			return jsonify(result)
+		else:
+			result["status"] = '202'
+			result["msg"] = "验证码错误"
+			return jsonify(result)
 	else:
 		result["status"] = '201'
 		result["msg"] = "手机号不存在"
@@ -86,11 +99,12 @@ def logout():
 @bp.route('/message')
 def message():
 	phone = request.args.get("phone")
-	print("phone", phone)
+	sort = request.args.get('sort')
+	print("phone", phone, 'sort', sort)
 	code = generate_code()
 	print("code", code)
 	sent_message(code)
-	message_code = CMSMessageCode(phone=phone, code=code)
+	message_code = CMSMessageCode(phone=phone, code=code, sort=sort)
 	db.session.add(message_code)
 	db.session.commit()
 	result = {

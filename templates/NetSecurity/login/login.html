@@ -27,7 +27,7 @@
 									</div>
 									<div class="login-name">
 										<input placeholder="*图形验证码" type="text" id="gcode" name="gcode">
-										<a href="#"><img src="../../../static/img/gcode.png" class="get_gcode"></a>
+										<img src="../../../static/img/gcode.png" class="get_gcode">
 									</div>
 									<div class="login-tj">
 										<input name="loginsubmit" type="submit" id="LoginBtn" value="登录">
@@ -52,10 +52,10 @@
 									</div>
 									<div class="login-name">
 										<input placeholder="*动态码" type="text" id="dcode" class="r_code" name="dcode">
-										<span class="get_dcode">获取动态码</span>
+										<span class="get_dcode register_code">获取动态码</span>
 									</div>
 									<div class="login-tj">
-										<input name="registersubmit" type="button" id="RegisterBtn" value="确认" onclick="get_register()">
+										<input name="registersubmit" type="submit" id="RegisterBtn" value="确认">
 									</div>
 								</form>
 							</div>
@@ -109,7 +109,7 @@
                         url: "{{ url_for('NetSecurity.message') }}",
                         type: 'GET',
                         contentType: 'application/json',
-                        data: {phone: $l_mobile},
+                        data: {phone: $l_mobile, sort: 1},
                         success: function (data) {
                             console.log("data", data)
                         }
@@ -127,29 +127,42 @@
                     }
                 }
             })
-        })
-
-        // 注册
-        function get_register() {
-            var $name = $("#name").val()
-            var $company = $("#company").val()
-            var $job = $("#job").val()
-            var $mobile = $(".r_mobile").val()
-            var $code = $(".r_code").val()
-            $.ajax({
-                url: '{{ url_for("NetSecurity.register_validate") }}',
-                type: 'GET',
-                contentType:'application/json',
-                data: {name: $name,company:$company, job:$job, mobile:$mobile,code:$code},
-                success:function (data) {
-                    if (data.status === 200) {
-                        window.location.href="/NetSecurity/login"
-                    } else {
-                        alert(data.msg)
+            // 注册验证码
+            var $register_code = $(".register_code")
+            $register_code.click(function () {
+                console.log('注册验证码')
+                var $r_mobile = $('.r_mobile').val()
+                if ($r_mobile == ''){
+                    alert("手机号不能为空！");
+                    $r_mobile.focus();
+                    return (false);
+                } else {
+                    $register_code.removeAttr("onclick")
+                    var time = 60; //倒计时5秒
+                    var timer = setInterval(countDown, 1000); //设置定时器
+                    $.ajax({
+                        url: "{{ url_for('NetSecurity.message') }}",
+                        type: 'GET',
+                        contentType: 'application/json',
+                        data: {phone: $r_mobile, sort: 2},
+                        success: function (data) {
+                            console.log("data", data)
+                        }
+                    })
+                    function countDown() {
+                        time--;
+                        if(time > 0){
+                            $register_code.text('重新发送(' + time +')')
+                        } else {
+                            $register_code.text('获取验证码')
+                            $register_code.attr("onclick", "get_login_code()")
+                            clearTimeout(timer)
+                            time = 60
+                        }
                     }
                 }
             })
-        }
+        })
     </script>
     <script>
         String.prototype.Trim = function () {
@@ -243,6 +256,24 @@
                 theform.dcode.focus();
                 return (false);
             }
+            var $name = $("#name").val()
+            var $company = $("#company").val()
+            var $job = $("#job").val()
+            var $mobile = $(".r_mobile").val()
+            var $code = $(".r_code").val()
+            $.ajax({
+                url: '{{ url_for("NetSecurity.register_validate") }}',
+                type: 'GET',
+                contentType:'application/json',
+                data: {name: $name,company:$company, job:$job, mobile:$mobile,code:$code},
+                success:function (data) {
+                    if (data.status === 200) {
+                        window.location.href="/NetSecurity/login"
+                    } else {
+                        alert(data.msg)
+                    }
+                }
+            })
         }
         window.history.replaceState(null, null, window.location.href);
     </script>
