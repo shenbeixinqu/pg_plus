@@ -17,7 +17,7 @@
 					<div class="tab_box">
 						<div>
 							<div class="login-form">
-								<form action="" id="loginform" method="POST" onsubmit="return LoginForm(this)">
+								<form action="" id="loginform" method="post" onsubmit="return LoginForm(this)">
 									<div class="login-name">
 										<input type="text" name="mobile" id="mobile" class="l_mobile" placeholder="*手机号">
 									</div>
@@ -27,7 +27,8 @@
 									</div>
 									<div class="login-name">
 										<input placeholder="*图形验证码" type="text" id="gcode" name="gcode">
-										<img src="../../../static/img/gcode.png" class="get_gcode">
+{#										<img src="../../../static/img/gcode.png" class="get_gcode">#}
+                                        <span class="get_gcode login_createCode" id="checkCode" name="checkCode" onclick="createCode(4)"></span>
 									</div>
 									<div class="login-tj">
 										<input name="loginsubmit" type="submit" id="LoginBtn" value="登录">
@@ -69,8 +70,13 @@
 
 {% block script %}
     <script type="text/javascript">
+
         // tab切换
         $(function () {
+            window.onload = function() {
+                createCode(4)
+            }
+
             var $div_li = $("div.tab_menu ul li");
             $div_li.click(function () {
                 $(this).addClass("selected")            //当前<li>元素高亮
@@ -163,6 +169,7 @@
                 }
             })
         })
+
     </script>
     <script>
         String.prototype.Trim = function () {
@@ -203,29 +210,50 @@
                 theform.gcode.focus();
                 return (false);
             }
-            console.log('hereeeeeeee')
+            console.log("gcode", theform.gcode.value)
+            console.log('html', theform.checkCode.html())
+            if (theform.gcode.value != theform.checkCode.html()) {
+                alert('验证码输入有误')
+                createCode(4)
+                return (false)
+            }
               // 登录
             var $l_mobile = $('.l_mobile').val()
             var $l_code = $('.l_code').val()
             var $gcode = $('#gcode').val()
             $.ajax({
                 url: '{{ url_for("NetSecurity.login_validate") }}',
-                type: 'post',
+                type: 'POST',
                 contentType:'application/json',
                 data: JSON.stringify({mobile: $l_mobile, m_code: $l_code, v_code: $gcode}),
                 success: function (data) {
                     console.log('data', data)
                     if (data.status === 200){
                         window.location.href="/NetSecurity"
+                        console.log('ohhhhh')
                     } else {
                         alert(data.msg)
                     }
-                },
-                error: function (data) {
-                    alert('失败')
                 }
 
             })
+        }
+        function createCode(length) {
+            console.log("生成验证码")
+            var code =""
+            var codeLength=parseInt(length)
+            var checkCode = $('#checkCode')
+            console.log('checkCode', checkCode)
+            var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+            for (var i = 0; i < codeLength; i++) {
+                var charNum = Math.floor(Math.random()*36)
+                code += codeChars[charNum]
+            }
+            if (checkCode) {
+                console.log('code', code)
+                checkCode.html(code)
+            }
         }
         function RegisterForm(theform) {
             if (theform.name.value == "") {
@@ -279,6 +307,6 @@
                 }
             })
         }
-        {#window.history.replaceState(null, null, window.location.href);#}
+        window.history.replaceState(null, null, window.location.href);
     </script>
 {% endblock %}

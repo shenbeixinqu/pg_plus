@@ -5,6 +5,7 @@ import config
 from utils.random_code import generate_code
 from utils.sent_message import sent_message
 from datetime import datetime, timedelta
+import json
 
 
 bp = Blueprint('NetSecurity', __name__, url_prefix='/NetSecurity')
@@ -27,11 +28,12 @@ def register():
 
 @bp.route('/register_validate', methods=['POST', 'GET'])
 def register_validate():
-	name = request.args.get('name')
-	company = request.args.get('company')
-	job = request.args.get('job')
-	mobile = request.args.get('mobile')
-	m_code = request.args.get('code')
+	data = request.get_json()
+	name = data["name"]
+	company = data["company"]
+	job = data["job"]
+	mobile = data["mobile"]
+	m_code = data["code"]
 	ifCode = CMSMessageCode.query.filter(CMSMessageCode.phone == mobile, CMSMessageCode.sort == 2).order_by(CMSMessageCode.addtime.desc()).first()
 	user = CMSMember.query.filter(CMSMember.phone == mobile).first()
 	result = {
@@ -55,16 +57,16 @@ def register_validate():
 			result["msg"] = "验证码错误"
 			return jsonify(result)
 
-@bp.route('/login')
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
-	return render_template('NetSecurity/login/login.html')
+	return render_template('NetSecurity/login/login2.html')
 
 
 @bp.route('/login_validate', methods=['POST', 'GET'])
 def login_validate():
-	mobile = request.args.get('mobile')
-	m_code = request.args.get('m_code')
-	v_code = request.args.get('v_code')
+	data = request.get_json()
+	mobile = data["mobile"]
+	m_code = data["m_code"]
 	result = {
 		"status": 200,
 		"msg": ''
@@ -74,13 +76,13 @@ def login_validate():
 	if user:
 		code = ifCode.code
 		time_delta = (datetime.now() - ifCode.addtime).seconds
-		if code == m_code and time_delta < 120:
+		if code == m_code and time_delta < 12000:
 			login_user(user)
 			session[config.CMS_USER_ID] = user.id
 			return jsonify(result)
 		else:
 			result["status"] = '202'
-			result["msg"] = "验证码错误"
+			result["msg"] = "动态码错误"
 			return jsonify(result)
 	else:
 		result["status"] = '201'
@@ -100,10 +102,8 @@ def logout():
 def message():
 	phone = request.args.get("phone")
 	sort = request.args.get('sort')
-	print("phone", phone, 'sort', sort)
 	code = generate_code()
-	print("code", code)
-	sent_message(code)
+	sent_message(phone, code)
 	message_code = CMSMessageCode(phone=phone, code=code, sort=sort)
 	db.session.add(message_code)
 	db.session.commit()
@@ -199,7 +199,6 @@ def industry_detail():
 @bp.route('/xhgzxq', methods=['GET', 'POST'])
 def association_detail():
 	res = request.args.get('sc')
-	print('res', res, type(res))
 	kind = int(request.args.get('sc'))
 	id = int(request.args.get('pid'))
 	query = CMSBuilding.query.filter(CMSBuilding.id == id).first()

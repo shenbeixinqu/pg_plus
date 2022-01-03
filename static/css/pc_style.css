@@ -94,7 +94,7 @@
     padding-left: 10px;
 }
 .btn_srh{
-   background: url(../images/search.png) no-repeat;
+   background: url(../img/search.png) no-repeat;
    width: 29px;
    height: 29px;
    border: none;
@@ -112,6 +112,7 @@
     float: right;
     line-height: 29px;
     margin-right: 20px;
+    cursor: pointer;
 }
 .memberregister{
     margin-top: 15px;
@@ -124,6 +125,7 @@
     float: right;
     line-height: 29px;
     margin-right: 100px;
+    cursor: pointer;
 }
 .logout{
     color: rgba(255, 255, 255, 100);
@@ -639,13 +641,20 @@
     top: 13px;
     font-size: 16px;
     line-height: 50px;
+    cursor: pointer;
 }
 .get_gcode{
-   width: 89px;
-   height: 35px;
-   position: absolute;
-   right: 25px;
-   top: 20px;
+    width: 89px;
+    height: 35px;
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    color: blue;
+    cursor: pointer;
+    text-align: center;
+    font-size: 25px;
+    letter-spacing: 3px;
+    background-color:#D8B7E3;
 }
 .list_left{
     float: left;

@@ -17,17 +17,19 @@
 					<div class="tab_box">
 						<div class="hide">
 							<div class="login-form">
-								<form action="" id="loginform" method="get" onsubmit="return LoginForm(this)">
+								<form action="" id="loginform" method="POST" onsubmit="return LoginForm(this)">
 									<div class="login-name">
 										<input type="text" name="mobile" id="mobile" class="l_mobile" placeholder="*手机号">
 									</div>
 									<div class="login-name">
 										<input placeholder="*动态码" type="text" id="dcode" class="l_code" name="dcode">
-										<span class="get_dcode login_code">获取动态码</span>
+                                        <span class="get_dcode login_code">获取动态码</span>
 									</div>
 									<div class="login-name">
 										<input placeholder="*图形验证码" type="text" id="gcode" name="gcode">
-										<a href="#"><img src="../../../static/img/gcode.png" class="get_gcode"></a>
+{#										<img src="../../../static/img/gcode.png" class="get_gcode">#}
+                                        <span class="get_gcode login_createCode" id="checkCode" name="checkCode"></span>
+
 									</div>
 									<div class="login-tj">
 										<input name="loginsubmit" type="submit" id="LoginBtn" value="登录">
@@ -37,7 +39,7 @@
 						</div>
 						<div>
 							<div class="login-form">
-								<form action="" id="loginform" method="get" onsubmit="return RegisterForm(this)">
+								<form action="" id="registerform" method="POST" onsubmit="return RegisterForm(this)">
 									<div class="login-name">
 										<input type="text" name="name" id="name" placeholder="*您的姓名">
 									</div>
@@ -48,10 +50,10 @@
 										<input type="text" name="job" id="job" placeholder="*目前职务">
 									</div>
 									<div class="login-name">
-										<input type="text" name="mobile" id="mobile" class="r_mobile" placeholder="*联系电话">
+										<input type="text" name="mobile" id="tel" class="r_mobile" placeholder="*联系电话">
 									</div>
 									<div class="login-name">
-										<input placeholder="*动态码" type="text" id="dcode" class="r_code" name="dcode">
+										<input placeholder="*动态码" type="text" id="rcode" class="r_code" name="rcode">
 										<span class="get_dcode register_code">获取动态码</span>
 									</div>
 									<div class="login-tj">
@@ -69,8 +71,28 @@
 
 {% block script %}
     <script type="text/javascript">
+         function createCode(length) {
+                var code =""
+                var codeLength=parseInt(length)
+                var checkCode = $('#checkCode')
+                var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+                for (var i = 0; i < codeLength; i++) {
+                    var charNum = Math.floor(Math.random()*36)
+                    code += codeChars[charNum]
+                }
+                if (checkCode) {
+                    checkCode.html(code)
+                }
+            }
+
         // tab切换
         $(function () {
+            createCode(4)
+            // 点击更换验证码
+            $('.login_createCode').click(function () {
+                createCode(4)
+            })
             var $div_li = $("div.tab_menu ul li");
             $div_li.click(function () {
                 $(this).addClass("selected")            //当前<li>元素高亮
@@ -111,7 +133,6 @@
                         contentType: 'application/json',
                         data: {phone: $l_mobile, sort: 1},
                         success: function (data) {
-                            console.log("data", data)
                         }
                     })
                     function countDown() {
@@ -130,7 +151,6 @@
             // 注册验证码
             var $register_code = $(".register_code")
             $register_code.click(function () {
-                console.log('注册验证码')
                 var $r_mobile = $('.r_mobile').val()
                 if ($r_mobile == ''){
                     alert("手机号不能为空！");
@@ -146,7 +166,6 @@
                         contentType: 'application/json',
                         data: {phone: $r_mobile, sort: 2},
                         success: function (data) {
-                            console.log("data", data)
                         }
                     })
                     function countDown() {
@@ -162,11 +181,9 @@
                     }
                 }
             })
-
         })
     </script>
-    <script>
-
+    <script type="text/javascript">
         String.prototype.Trim = function () {
             var m = this.match(/^\s*(\S+(\s+\S+)*)\s*$/);
             return (m == null) ? "" : m[1];
@@ -205,25 +222,33 @@
                 theform.gcode.focus();
                 return (false);
             }
-            // 登录
+            if (theform.gcode.value != $('.login_createCode').html()) {
+                alert("图形验证码错误")
+                createCode(4)
+                return (false)
+            }
+             // 登录
             var $l_mobile = $('.l_mobile').val()
             var $l_code = $('.l_code').val()
-            var $gcode = $('#gcode').val()
             $.ajax({
                 url: '{{ url_for("NetSecurity.login_validate") }}',
-                type: 'GET',
+                type: 'POST',
                 contentType:'application/json',
-                data: {mobile: $l_mobile, m_code: $l_code, v_code: $gcode},
+                async: false,
+                data: JSON.stringify({mobile: $l_mobile, m_code: $l_code}),
                 success: function (data) {
-                    console.log('data', data)
                     if (data.status === 200){
-                        window.location.href="/NetSecurity"
+                        window.location.href="/NetSecurity/"
                     } else {
                         alert(data.msg)
                     }
+                },
+                error: function (data) {
+                    alert('失败')
                 }
 
             })
+            return false
         }
         function RegisterForm(theform) {
             if (theform.name.value == "") {
@@ -253,9 +278,9 @@
                 theform.mobile.focus();
                 return (false);
             }
-            if (theform.dcode.value == "") {
+            if (theform.rcode.value == "") {
                 alert("动态码不能为空！");
-                theform.dcode.focus();
+                theform.rcode.focus();
                 return (false);
             }
             var $name = $("#name").val()
@@ -265,9 +290,10 @@
             var $code = $(".r_code").val()
             $.ajax({
                 url: '{{ url_for("NetSecurity.register_validate") }}',
-                type: 'GET',
+                type: 'POST',
                 contentType:'application/json',
-                data: {name: $name,company:$company, job:$job, mobile:$mobile,code:$code},
+                async: false,
+                data: JSON.stringify({name: $name,company:$company, job:$job, mobile:$mobile,code:$code}),
                 success:function (data) {
                     if (data.status === 200) {
                         window.location.href="/NetSecurity/login"

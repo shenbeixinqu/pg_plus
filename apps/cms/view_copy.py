@@ -49,6 +49,7 @@ def register():
     get_data = json.loads(get_data)
     name = get_data["account"]
     password = get_data["password"]
+    print("name", name, "password", password)
     # 判断是否注册过，未注册则保存到数据库中
     user = CMSUser.query.filter(CMSUser.name == name).first()
     if user:
@@ -69,18 +70,17 @@ def login():
     account = get_data["account"]
     password = get_data["password"]
     token = get_data["token"]
-    print('account', account, 'password', password, 'token', token)
     if token and account == "":
         check_value = verify_auth_token(token)
-    if account == "":
+    if account == "" or password == "":
         data["rc"] = 1
-        data["msg"] = "手机号不能为空"
+        data["msg"] = "账号和密码不能为空"
     else:
-        user = CMSUser.query.filter(CMSUser.phone == account).first()
-        if not user:
+        user = CMSUser.query.filter(CMSUser.name == account).first()
+        if not user or not user.check_pwd(password):
             print("账号密码错误")
             data["rc"] = 1
-            data["msg"] = "手机号错误"
+            data["msg"] = "账号或密码错误"
             return success_return(msg="账号或密码错误", rc=1)
         else:
             user_id = user.id
@@ -95,12 +95,14 @@ def login():
 @bp.route('/message')
 def message():
     account = request.args.get('account')
+    print("account", account)
     code = generate_code()
-    sent_message(account,code)
-    message_code = CMSMessageCode(phone=account, code=code, sort=3)
+    print("code", code)
+    sent_message(code)
+    message_code = CMSMessageCode(phone=account, code=code)
     db.session.add(message_code)
     db.session.commit()
-    return success_return(**{"code": code})
+    return success_return()
 
 # 退出
 @bp.route('/logout', methods=["POST"])

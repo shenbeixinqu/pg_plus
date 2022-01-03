@@ -9,25 +9,25 @@
 				<div class="login_tab">
 					<div class="tab_menu">
 						<ul>
-							<li class="selected">会员登录</li>
-							<li>会员注册</li>
+							<li>会员登录</li>
+							<li class="selected">会员注册</li>
 							<div class="c"></div>
 						</ul>
 					</div>
 					<div class="tab_box">
-						<div>
+						<div class="hide">
 							<div class="login-form">
-								<form action="" id="loginform" method="POST" onsubmit="return LoginForm(this)">
+								<form action="" id="loginform" method="get" onsubmit="return LoginForm(this)">
 									<div class="login-name">
 										<input type="text" name="mobile" id="mobile" class="l_mobile" placeholder="*手机号">
 									</div>
 									<div class="login-name">
 										<input placeholder="*动态码" type="text" id="dcode" class="l_code" name="dcode">
-                                        <span class="get_dcode login_code">获取动态码</span>
+										<span class="get_dcode login_code">获取动态码</span>
 									</div>
 									<div class="login-name">
 										<input placeholder="*图形验证码" type="text" id="gcode" name="gcode">
-										<img src="../../../static/img/gcode.png" class="get_gcode">
+										<a href="#"><img src="../../../static/img/gcode.png" class="get_gcode"></a>
 									</div>
 									<div class="login-tj">
 										<input name="loginsubmit" type="submit" id="LoginBtn" value="登录">
@@ -35,7 +35,7 @@
 								</form>
 							</div>
 						</div>
-						<div class="hide">
+						<div>
 							<div class="login-form">
 								<form action="" id="loginform" method="get" onsubmit="return RegisterForm(this)">
 									<div class="login-name">
@@ -162,9 +162,11 @@
                     }
                 }
             })
+
         })
     </script>
     <script>
+
         String.prototype.Trim = function () {
             var m = this.match(/^\s*(\S+(\s+\S+)*)\s*$/);
             return (m == null) ? "" : m[1];
@@ -203,16 +205,15 @@
                 theform.gcode.focus();
                 return (false);
             }
-            console.log('hereeeeeeee')
-              // 登录
+            // 登录
             var $l_mobile = $('.l_mobile').val()
             var $l_code = $('.l_code').val()
             var $gcode = $('#gcode').val()
             $.ajax({
                 url: '{{ url_for("NetSecurity.login_validate") }}',
-                type: 'post',
+                type: 'GET',
                 contentType:'application/json',
-                data: JSON.stringify({mobile: $l_mobile, m_code: $l_code, v_code: $gcode}),
+                data: {mobile: $l_mobile, m_code: $l_code, v_code: $gcode},
                 success: function (data) {
                     console.log('data', data)
                     if (data.status === 200){
@@ -220,9 +221,6 @@
                     } else {
                         alert(data.msg)
                     }
-                },
-                error: function (data) {
-                    alert('失败')
                 }
 
             })
@@ -279,6 +277,6 @@
                 }
             })
         }
-        {#window.history.replaceState(null, null, window.location.href);#}
+        window.history.replaceState(null, null, window.location.href);
     </script>
 {% endblock %}
