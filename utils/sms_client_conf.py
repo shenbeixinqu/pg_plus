@@ -5,8 +5,10 @@ from baidubce.bce_client_configuration import BceClientConfiguration
 from baidubce.auth.bce_credentials import BceCredentials
 
 host = "smsv3.bj.baidubce.com"
-access_key_id = "c9650a0c8c6d41fd86fb00952b1ee8a2"
-secret_access_key = "12f00b5e229d4a8abe75390da389b8bc"
+# access_key_id = "c9650a0c8c6d41fd86fb00952b1ee8a2"
+# secret_access_key = "12f00b5e229d4a8abe75390da389b8bc"
+access_key_id = "7fa9a8d02a1240888971f2b928daba7c"
+secret_access_key = "27d91e7a4d95452cbed0aec229c81f84"
 
 #设置日志文件的句柄和日志级别
 logger = logging.getLogger('baidubce.services.sms.smsclient')
