@@ -29,17 +29,15 @@
 		<div class="part1_tip">
 			<div class="part1_tip_head">
 				<div class="tip_title">通知公告</div>
-				<div class="tip_lookall" onclick="tzgg_all()">查看全部>></div>
+				<div class="tip_lookall mainmenu" onclick="tzgg_all()">查看全部>></div>
 			</div>
 			<div class="part1_tip_content">
 				<ul>
                     {% for notice in notices %}
-                        <li>
-                            <a href="#">
+                        <li onclick="tzgg_detail({{ notice.id }})" class="mainmenu">
 {#                                <div class="point">·</div>#}
                                 <div class="part1_tip_title">{% if notice.if_new %}<img src="../../static/img/new.png">{% endif %}{{ notice.name }}</div>
                                 <div class="part1_tip_content_date">{{ notice.adddate }}</div>
-                            </a>
                         </li>
                     {% endfor %}
 				</ul>
@@ -71,7 +69,7 @@
                             </div>
                         </div>
                     {% endfor %}
-						<div class="tab1_part_lookall" onclick="xhgz_all(1)">查看全部>></div>
+						<div class="tab1_part_lookall mainmenu" onclick="xhgz_all(1)">查看全部>></div>
 				</div>
 				<div class="hide">
                     {% for communication in communications %}
@@ -86,7 +84,7 @@
                             </div>
                         </div>
 					{% endfor %}
-						<div class="tab1_part_lookall" onclick="xhgz_all(2)">查看全部>></div>
+						<div class="tab1_part_lookall mainmenu" onclick="xhgz_all(2)">查看全部>></div>
 				</div>
 				<div class="hide">
                     {% for education in educations %}
@@ -101,7 +99,7 @@
                             </div>
                         </div>
 					{% endfor %}
-						<div class="tab1_part_lookall" onclick="xhgz_all(3)">查看全部>></div>
+						<div class="tab1_part_lookall mainmenu" onclick="xhgz_all(3)">查看全部>></div>
 				</div>
 				<div class="hide">
                     {% for service in services %}
@@ -121,7 +119,7 @@
                             </div>
                         </div>
 					{% endfor %}
-						<div class="tab1_part_lookall" onclick="xhgz_all(4)">查看全部>></div>
+						<div class="tab1_part_lookall mainmenu" onclick="xhgz_all(4)">查看全部>></div>
 				</div>
 			</div>
 		</div>
@@ -149,7 +147,7 @@
                             </div>
                         </div>
 					{% endfor %}
-						<div class="tab2_part_lookall" onclick="hydt_all(1)">查看全部>></div>
+						<div class="tab2_part_lookall mainmenu" onclick="hydt_all(1)">查看全部>></div>
 				</div>
 				<div class="hide">
 					{% for security_dynamic in security_dynamics %}
@@ -164,7 +162,7 @@
                             </div>
                         </div>
 					{% endfor %}
-						<div class="tab2_part_lookall" onclick="hydt_all(2)">查看全部>></div>
+						<div class="tab2_part_lookall mainmenu" onclick="hydt_all(2)">查看全部>></div>
 				</div>
 				<div class="hide">
                     {% for leak_release in leak_releases %}
@@ -179,7 +177,7 @@
                             </div>
                         </div>
 					{% endfor %}
-						<div class="tab2_part_lookall" onclick="hydt_all(3)">查看全部>></div>
+						<div class="tab2_part_lookall mainmenu" onclick="hydt_all(3)">查看全部>></div>
 				</div>
 				<div class="hide">
 					{% for security_event in security_events %}
@@ -194,7 +192,7 @@
                             </div>
                         </div>
 					{% endfor %}
-                    <div class="tab2_part_lookall" onclick="hydt_all(4)">查看全部>></div>
+                    <div class="tab2_part_lookall mainmenu" onclick="hydt_all(4)">查看全部>></div>
 				</div>
 			</div>
 		</div>
@@ -202,7 +200,7 @@
 	<div class="part3 y_1440">
 		<div class="normal_tip_head">
 			<div class="tip_title">法律法规</div>
-				<div class="tip_lookall" onclick="flfg_all()">查看全部&gt;&gt;</div>
+				<div class="tip_lookall mainmenu" onclick="flfg_all()">查看全部&gt;&gt;</div>
 		</div>
 		<div>
             {% for law in laws %}
@@ -222,7 +220,7 @@
 	<div class="part4 y_1440">
 		<div class="normal_tip_head">
 			<div class="tip_title">协会负责人</div>
-				<div class="tip_lookall" onclick="xhfzr_all(4)">查看全部&gt;&gt;</div>
+				<div class="tip_lookall mainmenu" onclick="xhfzr_all(4)">查看全部&gt;&gt;</div>
 		</div>
 		<div class="part4_example">
 			<div class="swiper-wrapper">
@@ -239,14 +237,14 @@
                     {% endfor %}
 				</div>
 			</div>
-			<div class="swiper-button-next"></div>
-			<div class="swiper-button-prev"></div>
+{#			<div class="swiper-button-next"></div>#}
+{#			<div class="swiper-button-prev"></div>#}
 		</div>
 	</div>
 	<div class="part5 y_1440">
 		<div class="normal_tip_head">
 			<div class="tip_title">理事单位</div>
-				<div class="tip_lookall" onclick="lsdw_all(5)">查看全部&gt;&gt;</div>
+				<div class="tip_lookall mainmenu" onclick="lsdw_all(5)">查看全部&gt;&gt;</div>
 		</div>
         {% for director in director_company %}
             <div class="part5_part">
@@ -261,26 +259,22 @@
 	<div class="part6 y_1440">
 		<div class="normal_tip_head">
 			<div class="tip_title">支持单位</div>
-				<div class="tip_lookall" onclick="zcdw_all(6)">查看全部&gt;&gt;</div>
+				<div class="tip_lookall mainmenu" onclick="zcdw_all(6)">查看全部&gt;&gt;</div>
 		</div>
 		<div class="part6_part">
             {% for support in support_company %}
-                <a href="#">
                     <div><img src="{{ support.logo }}" alt="{{ support.name }}"></div>
-                </a>
             {% endfor %}
 		</div>
 	</div>
 	<div class="part7 y_1440">
 		<div class="normal_tip_head">
 			<div class="tip_title">会员单位</div>
-				<div class="tip_lookall" onclick="hydw_all(7)">查看全部&gt;&gt;</div>
+				<div class="tip_lookall mainmenu" onclick="hydw_all(7)">查看全部&gt;&gt;</div>
 		</div>
 		<div class="part7_part">
             {% for member in member_company %}
-                <a href="#">
                     <div><img src="{{ member.logo }}" alt="{{ member.name }}"></div>
-                </a>
             {% endfor %}
 		</div>
 	</div>
@@ -349,6 +343,10 @@
     // 法律法规查看全部
     function flfg_all() {
         window.location.href = '/NetSecurity/flfg'
+    }
+    // 通知公告详情
+    function tzgg_detail(params) {
+        window.location.href = '/NetSecurity/tzggxq?pid=' + params
     }
     // 协会工作详情
     function xhgz_detail(sc, params) {

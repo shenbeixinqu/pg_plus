@@ -165,7 +165,7 @@ def service():
 	page = request.args.get("page", 1, type=int)
 	key = request.args.get('key', '')
 	services = CMSBuilding.query.filter(CMSBuilding.kind == 4, CMSBuilding.name.contains(key)).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).paginate(page=page, per_page=3)
-	return render_template('NetSecurity/xhgz/aqfw.html', service=services.items, pagination=services, key=key)
+	return render_template('NetSecurity/xhgz/aqfw.html', services=services.items, pagination=services, key=key)
 
 
 @bp.route('/hydt', methods=['GET', 'POST'])

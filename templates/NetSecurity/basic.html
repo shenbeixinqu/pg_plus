@@ -53,7 +53,7 @@
 							<dd>分支机构</dd>
 							<dd>协会负责人</dd>
 							<dd>理事单位</dd>
-							<dd>支撑单位</dd>
+							<dd>支持单位</dd>
 							<dd>会员单位</dd>
 							<dd>会费标准</dd>
 						</dl>
@@ -76,7 +76,7 @@
 							<dd>安全事件</dd>
 						</dl>
 					</li>
-					<li><div class="link" onclick="dd_notice()">通知公告</div></li>
+					<li><div class="link mainmenu" onclick="dd_notice()">通知公告</div></li>
 					<li class="mainmenu" onclick="dd_law()"><div>法律法规</div></li>
 				</ul>
 			</div>
@@ -133,20 +133,7 @@
                 let overview_id = $dd_overview.index(this) + 1
                 window.location.href = "/NetSecurity/xhgk?sc=" + overview_id
             })
-            // 负责人
-            var part4_example = new Swiper(".part4_example", {
-                autoplay: true,
-                loop: true,
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-                autoplay: {
-                    delay: 3000,
-                    stopOnLastSlide: false,
-                    disableOnInteraction: true,
-                },
-            });
+
             // banner
             var y_banner = new Swiper(".y_banner", {
                 autoplay: true,
