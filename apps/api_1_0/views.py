@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, session
 from apps.cms.models import *
+from utils.random_code import generate_code
+from utils.sent_message import sent_message
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -16,6 +18,50 @@ def register():
 		db.session.commit()
 		return render_template('Safety/success.html')
 	return render_template('Safety/register.html')
+
+
+# 发送验证码
+@bp.route('/message')
+def message():
+	phone = request.args.get("phone")
+	sort = request.args.get('sort')
+	code = generate_code()
+	sent_message(phone, code)
+	message_code = CMSMessageCode(phone=phone, code=code, sort=sort)
+	db.session.add(message_code)
+	db.session.commit()
+	result = {
+		"status": 200,
+		"msg": ''
+	}
+	return jsonify(result)
+
+
+@bp.route('/login', methods=['POST'])
+def login():
+	data = request.get_json()
+	phone = data["phone"]
+	m_code = data["code"]
+	result = {
+		"status": 200,
+		"msg": ''
+	}
+	ifCode = CMSMessageCode.query.filter(CMSMessageCode.phone == phone, CMSMessageCode.sort == 6).order_by(CMSMessageCode.addtime.desc()).first()
+	user = CMSMember.query.filter(CMSMember.phone == phone).first()
+	if user:
+		code = ifCode.code
+		time_delta = (datetime.now() - ifCode.addtime).seconds
+		if code == m_code and time_delta < 120:
+			session['user'] = user.name
+			return jsonify(result)
+		else:
+			result["status"] = '202'
+			result["msg"] = "动态码错误"
+			return jsonify(result)
+	else:
+		result["status"] = '201'
+		result["msg"] = "手机号不存在"
+		return jsonify(result)
 
 
 # 法律法规列表
@@ -75,10 +121,14 @@ def event_detail(event_id):
 # 安全服务列表
 @bp.route('/serviceList')
 def service_list():
-	context = {
-		"services": CMSService.query.order_by(CMSService.addtime.desc())
-	}
-	return render_template('Safety/service_list.html', **context)
+	user = session.get('user')
+	if not user:
+		return render_template('Safety/mobile_login.html')
+	else:
+		context = {
+			"services": CMSService.query.order_by(CMSService.addtime.desc())
+		}
+		return render_template('Safety/service_list.html', **context)
 
 
 # 安全服务详情

@@ -70,8 +70,8 @@
                         </div>
 					{% endfor %}
 					<!-- 分页 -->
-                    {% import 'common/page.html' as pg %}
-                    {{ pg.my_paginate(pagination, 'NetSecurity.association', kind, key) }}
+                    {% import 'common/aqfw_page.html' as pg %}
+                    {{ pg.my_paginate(pagination, 'NetSecurity.service') }}
 				</div>
 			</div>
 		</div>

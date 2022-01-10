@@ -119,7 +119,7 @@
                             </div>
                         </div>
 					{% endfor %}
-						<div class="tab1_part_lookall mainmenu" onclick="xhgz_all(4)">查看全部>></div>
+						<div class="tab1_part_lookall mainmenu" onclick="aqfw_all()">查看全部>></div>
 				</div>
 			</div>
 		</div>
@@ -315,6 +315,9 @@
      // 协会工作查看全部
      function xhgz_all(params) {
                 window.location.href = "/NetSecurity/xhgz?sc=" + params
+     }
+     function aqfw_all() {
+            window.location.href = "/NetSecurity/aqfw"
      }
      // 行业动态查看全部
     function hydt_all(params) {
