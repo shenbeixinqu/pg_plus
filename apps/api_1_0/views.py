@@ -81,6 +81,15 @@ def service_list():
 	return render_template('Safety/service_list.html', **context)
 
 
+# 安全服务详情
+@bp.route('/serviceDetail/<service_id>')
+def service_detail(service_id):
+	service = CMSService.query.filter(CMSService.id == int(service_id)).first()
+	if not service:
+		print('没有service')
+	return render_template('Safety/service_detail.html', service=service)
+
+
 @bp.app_template_filter("date_format")
 def date_format(value, format="%Y-%m-%d"):
 	if not value:

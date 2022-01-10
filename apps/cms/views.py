@@ -26,6 +26,7 @@ from utils.minerequests import generate_auth_token, verify_auth_token
 from werkzeug.security import generate_password_hash
 from utils.random_code import generate_code
 from utils.sent_message import sent_message
+from bos_conf import Bd_Storage
 
 import os
 import uuid
@@ -133,7 +134,7 @@ def get_file(filename):
 # 图片上传
 @bp.route('/imgUpload', methods=["POST"])
 def imgUpload():
-    img_dir = Base_dir + '/static/uploads/'
+    img_dir = Base_dir + '/static/uploads/editorImgs'
     img_info_lst = []
     imgs = request.files
     img_len = len(imgs)
@@ -143,9 +144,12 @@ def imgUpload():
         f_name = f.filename
         uuid_name = picname(f_name)
         f.save(os.path.join(img_dir, uuid_name))
-        url = url_for('cms.get_image', filename=uuid_name)
+        basic_file_dir = img_dir + '/' + uuid_name
+        basic_file_dir = basic_file_dir.replace('\\', '/')
+        file_dir = Bd_Storage.open_image(basic_file_dir, uuid_name)
+        # url = url_for('cms.get_image', filename=uuid_name)
         img_info_dict["name"] = f_name
-        img_info_dict["url"] = Base_url + url
+        img_info_dict["url"] = file_dir
         img_info_lst.append(img_info_dict)
 
     elif img_len > 1:
@@ -156,9 +160,12 @@ def imgUpload():
             f_name = f.filename
             uuid_name = picname(f_name)
             f.save(os.path.join(img_dir, uuid_name))
-            url = url_for('cms.get_image', filename=uuid_name)
+            basic_file_dir = img_dir + '/' + uuid_name
+            basic_file_dir = basic_file_dir.replace('\\', '/')
+            file_dir = Bd_Storage.open_image(basic_file_dir, uuid_name)
+            # url = url_for('cms.get_image', filename=uuid_name)
             img_info_dict["name"] = f_name
-            img_info_dict["url"] = Base_url + url
+            img_info_dict["url"] = file_dir
             img_info_lst.append(img_info_dict)
     return jsonify(code=RET.OK, errmsg="上传成功", img_info=img_info_lst)
 
@@ -167,15 +174,15 @@ def imgUpload():
 @bp.route('/fileUpload', methods=['POST'])
 def fileUpload():
     base_dir = Base_dir + '/static/uploads/files'
-    base_url = Base_url + '/static/uploads/files'
+    # base_url = Base_url + '/static/uploads/files'
     files = request.files
     f = files["file"]
     f_name = f.filename
     uuid_name = picname(f_name)
     f.save(os.path.join(base_dir, uuid_name))
-    file_dir = base_url + '/' + uuid_name
-    file_dir = file_dir.replace('\\', '/')
-    print("file_dir", file_dir)
+    basic_file_dir = base_dir + '/' + uuid_name
+    basic_file_dir = basic_file_dir.replace('\\', '/')
+    file_dir = Bd_Storage.open_image(basic_file_dir, uuid_name)
     return jsonify(code=RET.OK, file_dir=file_dir)
 
 
@@ -243,12 +250,21 @@ def add_service():
     mold = data["mold"]
     link = data["link"]
     file_dir = data["file_dir"]
-    print("文件上传", file_dir)
-    if mold == '1':
-        service = CMSService(title=title, mold=mold, link=link)
+    detail = data["detail"]
+    if data['id']:
+        service_id = data['id']
+        service = CMSService.query.get(service_id)
+        service.mold = mold
+        service.link = link
+        service.file_dir = file_dir
+        service.detail = detail
     else:
-        service = CMSService(title=title, mold=mold, file_dir=file_dir)
-    db.session.add(service)
+        # if mold == '1':
+        #     service = CMSService(title=title, mold=mold, link=link, detail=detail)
+        # else:
+        #     service = CMSService(title=title, mold=mold, file_dir=file_dir, detail=detail)
+        service = CMSService(title=title, mold=mold, file_dir=file_dir, link=link, detail=detail)
+        db.session.add(service)
     db.session.commit()
     return success_return()
 
@@ -271,6 +287,10 @@ def service_list():
             "id": q.id,
             "title": q.title,
             "mold": "链接" if q.mold == '1' else "文件",
+            "mold_val": q.mold,
+            "link": q.link,
+            "detail": q.detail,
+            "file_dir": q.file_dir,
             "addtime": datetimeformat(q.addtime)
         }
         data.append(record)
