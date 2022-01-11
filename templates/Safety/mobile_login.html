@@ -13,6 +13,34 @@
 	<script type="text/javascript" src="../../static/js/mobile_layer.js"></script>
 	<script type="text/javascript" src="../../static/js/mobile_phone.js"></script>
 {#	<script type="text/javascript" src="../../static/js/mobile_the_code.js"></script>#}
+    <style>
+		.els {
+			width: 60%;
+			background-color: #fff;
+			border-radius: 5px;
+			text-indent: 20px;
+		}
+		.to {
+			color: #0097a8;
+			text-decoration: none;
+			text-align: center;
+			padding-top: 30px;
+			display: block;
+		}
+        .get_gcode{
+            width: 267px;
+            height: 80px;
+            position: absolute;
+            right: 0px;
+            top: 235px;
+            color: blue;
+            cursor: pointer;
+            text-align: center;
+            font-size: 25px;
+            letter-spacing: 3px;
+            background-color:#D8B7E3;
+        }
+	</style>
 </head>
 
 <body>
@@ -25,45 +53,63 @@
 					placeholder="请输入您的手机号码" />
 				<input type="button" class="close_tel" id="addSendCode" value="获取验证码" onClick="sendAddmes()" />
 				<input type="number" name="code" class="code error" id="code" value="" placeholder="请输入验证码" />
-				<div class="the-tips">
-					请滑动通过验证：</div>
-				<div id="slide_box">
-					<div id="slide_xbox">
-						<div id="btn">
-						</div>
-					</div>
-				</div>
+				<div style="position: relative">
+					<input placeholder="请输入图形验证码" type="text" id="gcode" name="gcode" class="els error">
+{#					<a href="#"><img src="./images/gcode.png" style="width: 260px;height: 75px;margin-top: 15px;"></a>#}
+                    <span class="get_gcode login_createCode" id="checkCode" name="checkCode"></span>
+
+                </div>
 				<div class="updateBtn">
 					<button type="button">提交</button>
 				</div>
+				<a href="{{ url_for('api.register') }}" class="to">前往注册></a>
 			</form>
 		</div>
 	</div>
 	</div>
     <script type="text/javascript">
+        createCode(4)
+        function createCode(length) {
+                var code =""
+                var codeLength=parseInt(length)
+                var checkCode = $('#checkCode')
+                var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+                for (var i = 0; i < codeLength; i++) {
+                    var charNum = Math.floor(Math.random()*36)
+                    code += codeChars[charNum]
+                }
+                if (checkCode) {
+                    checkCode.html(code)
+                }
+        }
+        // 点击更换验证码
+        $('.login_createCode').click(function () {
+                createCode(4)
+        })
         //获取手机验证码
         var InterValObj; //timer变量，控制时间
         var count = 60; //间隔函数，1秒执行
         var curCount;//当前剩余秒数
 
         function sendMessage() {
-          　curCount = count;
-        　　//设置button效果，开始计时
-             $("#btnSendCode").attr("disabled", "true");
-             $("#btnSendCode").val("" + curCount + "秒后重新获取");
-             InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
-             var dealType ="";
-             var uid = "";
-             var code = "";
-        　　  //向后台发送处理数据
-             $.ajax({
-             　　type: "POST", //用POST方式传输
-             　　dataType: "JSON", //数据格式:JSON
-             　　url: '', //目标地址
-            　　 data: "dealType=" + dealType +"&uid=" + uid + "&code=" + code,
-            　　 error: function (data) { },
-             　　success: function (msg){ }
-             });
+            curCount = count;
+            //设置button效果，开始计时
+            $("#btnSendCode").attr("disabled", "true");
+            $("#btnSendCode").val("" + curCount + "秒后重新获取");
+            InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+            var dealType = "";
+            var uid = "";
+            var code = "";
+            //向后台发送处理数据
+            $.ajax({
+                type: "POST", //用POST方式传输
+                dataType: "JSON", //数据格式:JSON
+                url: '', //目标地址
+                data: "dealType=" + dealType + "&uid=" + uid + "&code=" + code,
+                error: function (data) { },
+                success: function (msg) { }
+            });
         }
 
         //timer处理函数
@@ -71,16 +117,16 @@
             if (curCount == 0) {
                 window.clearInterval(InterValObj);//停止计时器
                 $("#btnSendCode").removeAttr("disabled");//启用按钮
-                $("#btnSendCode").val("重新获取验证码").css({"background-color":"#0097a8"});
+                $("#btnSendCode").val("重新获取验证码").css({ "background-color": "#0097a8" });
             }
             else {
                 curCount--;
-                $("#btnSendCode").val("" + curCount + "秒后重新获取").css({"background-color":"#D1D4D3"});
+                $("#btnSendCode").val("" + curCount + "秒后重新获取").css({ "background-color": "#D1D4D3" });
             }
         }
 
 
-    //*********获取语音验证码*********//
+        //*********获取语音验证码*********//
 
         var AddInterValObj; //timer变量，控制时间
         var adcount = 60; //间隔函数，1秒执行
@@ -88,22 +134,21 @@
 
         function sendAddmes() {
             var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-            if(!myreg.test($("#add_phone").val()))
-            {
+            if (!myreg.test($("#add_phone").val())) {
                 layertest('请输入有效的手机号码')
                 return false;
-            }else{
+            } else {
                 addCount = adcount;
-            　　//设置button效果，开始计时
-                 $("#addSendCode").attr("disabled", "true");
-                 $("#addSendCode").val("" + addCount + "秒后重新获取").css({"background-color":"#D1D4D3"});
-                 AddInterValObj = window.setInterval(SetAddnTime, 1000); //启动计时器，1秒执行一次
-                 var dealType ="";
-                 var uid = "";
-                 var code = "";
-                 var $phone = $("#add_phone").val()
-            　　  //向后台发送处理数据
-                 $.ajax({
+                //设置button效果，开始计时
+                $("#addSendCode").attr("disabled", "true");
+                $("#addSendCode").val("" + addCount + "秒后重新获取").css({ "background-color": "#D1D4D3" });
+                AddInterValObj = window.setInterval(SetAddnTime, 1000); //启动计时器，1秒执行一次
+                var dealType = "";
+                var uid = "";
+                var code = "";
+                var $phone = $("#add_phone").val()
+                //向后台发送处理数据
+                $.ajax({
                  　　type: "GET", //用POST方式传输
                  　　contentType: 'application/json', //数据格式:JSON
                  　　url: '{{ url_for("api.message") }}', //目标地址
@@ -120,63 +165,113 @@
             if (addCount == 0) {
                 window.clearInterval(AddInterValObj);//停止计时器
                 $("#addSendCode").removeAttr("disabled");//启用按钮
-                $("#addSendCode").val("重新获取验证码").css({"background-color":"#0097a8"});
+                $("#addSendCode").val("重新获取验证码").css({ "background-color": "#0097a8" });
             }
             else {
                 addCount--;
-                $("#addSendCode").val("" + addCount + "秒后重新获取").css({"background-color":"#D1D4D3"});
+                $("#addSendCode").val("" + addCount + "秒后重新获取").css({ "background-color": "#D1D4D3" });
             }
         }
 
-        function telphone(){
+        function telphone() {
             var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-            if(!myreg.test($("#add_phone").val()))
-            {
+            if (!myreg.test($("#add_phone").val())) {
                 layertest('请输入有效的手机号码');
                 $('.login_ipt').addClass('error');
                 return false;
-            }else{
+            } else {
                 $('.login_ipt').removeClass('error');
             }
         }
-        $(document).on('blur','.login_ipt',function(){
+        $(document).on('blur', '.login_ipt', function () {
             telphone();
         });
 
         //code 验证
-        function code_test(){
-            if($('#code').val()==''){
+        function code_test() {
+            if ($('#code').val() == '') {
                 layertest('验证码不能为空');
                 $('#code').addClass('error');
-            }else{
+            } else {
                 $('#code').removeClass('error');
             }
         }
-        $(document).on('blur','.code',function(){
+        $(document).on('blur', '.code', function () {
             code_test();
         });
 
+        //其他 验证1
+        function else_test1() {
+            if ($('#name').val() == '') {
+                layertest('姓名不能为空');
+                $('#name').addClass('error');
+            } else {
+                $('#name').removeClass('error');
+            }
+        }
+
+        //其他 验证2
+        function else_test2() {
+            if ($('#job').val() == '') {
+                layertest('目标职位不能为空');
+                $('#job').addClass('error');
+            } else {
+                $('#job').removeClass('error');
+            }
+        }
+
+        //其他 验证3
+        function else_test3() {
+            if ($('#company').val() == '') {
+                layertest('所在公司不能为空');
+                $('#company').addClass('error');
+            } else {
+                $('#company').removeClass('error');
+            }
+        }
+
+        //其他 验证4
+        function else_test4() {
+            if ($('#gcode').val() == '') {
+                layertest('图形验证码不能为空');
+                $('#gcode').addClass('error');
+            }
+            else if ($('#gcode').val() != $('.login_createCode').html()) {
+                layertest('图形验证码错误');
+                createCode(4)
+
+            }
+            else {
+                $('#gcode').removeClass('error');
+            }
+        }
+        $(document).on('blur', '.els', function () {
+            else_test4();
+            else_test3();
+            else_test2();
+            else_test1();
+        });
+
         // layer modal
-        function layertest(content){
+        function layertest(content) {
             layer.open({
                 content: content
-                ,btn: '我知道了'
+                , btn: '我知道了'
             });
         }
         //layer loading
-        function loading(content){
+        function loading(content) {
             layer.open({
                 type: 2
-                ,content: content
+                , content: content
             });
         }
 
         // update btn click
-        $(document).on('click','.updateBtn',function(){
-            console.log('123456')
-            if($('.error').length >0){
-                layertest('请您填写正确的资料')
-            }else{
+        $(document).on('click', '.updateBtn', function () {
+            if ($('.error').length > 0) {
+                layertest('请您填写所有的资料')
+            } else {
                 var $phone = $("#add_phone").val()
                 var $code = $("#code").val()
                 $.ajax({

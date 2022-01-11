@@ -34,8 +34,12 @@ def register():
 				db.session.add(member)
 				db.session.commit()
 				return jsonify(result)
-		return render_template('Safety/success.html')
-	return render_template('Safety/mobile_register.html')
+			else:
+				result["status"] = '203'
+				result["msg"] = "验证码已过期"
+				return jsonify(result)
+	else:
+		return render_template('Safety/mobile_register.html')
 
 
 # 发送验证码

@@ -76,7 +76,7 @@ def login_validate():
 	if user:
 		code = ifCode.code
 		time_delta = (datetime.now() - ifCode.addtime).seconds
-		if code == m_code and time_delta < 12000:
+		if code == m_code and time_delta < 120:
 			login_user(user)
 			session[config.CMS_USER_ID] = user.id
 			return jsonify(result)
