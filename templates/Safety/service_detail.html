@@ -6,6 +6,12 @@
 
 {% block content %}
     <div class="detail-content">
-        {{ service.detail|safe }}
+        {{ service.name }}
+        {% if service.mold == '2' %}
+             <a href="{{ service.file_dir }}" download><div class="list_right_download_a">下载资料</div></a>
+        {% else %}
+            <a href="{{ service.link }}"><div class="list_right_download_b">点击前往</div></a>
+        {% endif %}
+        {{ service.content|safe }}
     </div>
 {% endblock %}

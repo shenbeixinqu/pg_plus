@@ -103,19 +103,14 @@
 				</div>
 				<div class="hide">
                     {% for service in services %}
-                        <div class="tab1_part">
-                            <div class="tab1_part_time">
+                        <div class="tab2_part" onclick="aqfw_detail({{ service.id }})">
+                            <div class="tab2_part_time">
                                 <h1>{{ service.addtime|date_format|get_day }}</h1>
                                 <p>{{ service.addtime|date_format|get_year_month }}</p>
                             </div>
-                            <div class="tab1_part_content">
+                            <div class="tab2_part_content">
                                 <h1>{% if service.if_new %}<img src="../../static/img/new.png">{% endif %}{{ service.name }}</h1>
-                                <h3>{{ service.desc }}</h3>
-                                {% if service.mold == '1' %}
-                                    <p><a href="{{ service.link }}">点击前往</a></p>
-                                {% else %}
-                                    <p><a href="{{ service.file_dir }}" download="{{ service.file_name }}">点击下载</a></p>
-                                {% endif %}
+                                <h3>{{ service.content|striptags|truncate(50) }}</h3>
                             </div>
                         </div>
 					{% endfor %}
@@ -211,7 +206,7 @@
                     </div>
                     <div class="tab2_part_content">
                         <h1>{% if law.if_new %}<img src="../../static/img/new.png">{% endif %}{{ law.name }}</h1>
-                        <p>{{ law.content|striptags|truncate(30) }}</p>
+                        <p>{{ law.content|striptags|truncate(70) }}</p>
                     </div>
                 </div>
 		    {% endfor %}
@@ -236,9 +231,21 @@
                         </div>
                     {% endfor %}
 				</div>
+                <div class="swiper-slide">
+                    {% for two_leader in two_leaders %}
+                        <div class="example">
+                            <div class="example_pic"><img src="{{ two_leader.photo }}"></div>
+                            <div class="example_content">
+                                <div class="example_name">姓名：<span>{{ two_leader.name }}</span></div>
+                                <div class="example_job">职务：<span>{{ two_leader.duty }}</span></div>
+                                <div class="example_area">工作单位：<span>{{ two_leader.company }}</span></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
 			</div>
-{#			<div class="swiper-button-next"></div>#}
-{#			<div class="swiper-button-prev"></div>#}
+			<div class="swiper-button-next"></div>
+			<div class="swiper-button-prev"></div>
 		</div>
 	</div>
 	<div class="part5 y_1440">
@@ -293,6 +300,19 @@
 				disableOnInteraction: true,
 			},
 		});
+		var part4_example = new Swiper(".part4_example", {
+                autoplay: true,
+                loop: true,
+                navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                },
+                autoplay: {
+                        delay: 3000,
+                        stopOnLastSlide: false,
+                        disableOnInteraction: true,
+                },
+        });
     })
     // tab切换
     var $div_li = $("div.tab_menu ul li");
@@ -362,6 +382,10 @@
     // 法律法规详情
     function flfg_detail(params) {
             window.location.href = '/NetSecurity/flfgxq?pid=' + params
+    }
+    // 安全服务详情
+    function aqfw_detail(params) {
+        window.location.href = '/NetSecurity/aqfwxq?pid=' + params
     }
     // 半轮播跳转
     function half_to_detail(sort, kind, o_id) {

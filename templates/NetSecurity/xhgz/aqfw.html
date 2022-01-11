@@ -47,26 +47,27 @@
 						</div>
 					</div>
 					{% for service in services %}
-                        <div class="tab2_part aqfw">
+                        <div class="tab2_part aqfw" onclick="aqfw_detail({{ service.id }})">
                             <div class="tab2_part_time">
                                 <h1>{{ service.addtime|date_format|get_day }}</h1>
                                 <p>{{ service.addtime|date_format|get_year_month }}</p>
                             </div>
                             <div class="tab2_part_content">
                                 <h1>{{ service.name }}</h1>
-                                {% if service.mold == '1' %}
-                                    <p>{{ service.link }}</p>
-                                {% else %}
-                                    <p>{{ service.file_name }}</p>
-                                {% endif %}
+                                <p>{{ service.content|striptags|truncate(50) }}</p>
+{#                                {% if service.mold == '1' %}#}
+{#                                    <p>{{ service.link }}</p>#}
+{#                                {% else %}#}
+{#                                    <p>{{ service.desc }}</p>#}
+{#                                {% endif %}#}
                             </div>
-                            {% if service.mold == '1' %}
-                                <div class="mousego" onclick="go_link('{{ service.link }}')">点击前往</div>
-                            {% else %}
-                                <div class="mousego go_download">
-                                    <a href="{{ service.file_dir }}" download="{{ service.file_name }}">点击下载</a>
-                                </div>
-                            {% endif %}
+{#                            {% if service.mold == '1' %}#}
+{#                                <div class="mousego" onclick="go_link('{{ service.link }}')">点击前往</div>#}
+{#                            {% else %}#}
+{#                                <div class="mousego go_download">#}
+{#                                    <a href="{{ service.file_dir }}" download="{{ service.file_name }}">点击下载</a>#}
+{#                                </div>#}
+{#                            {% endif %}#}
                         </div>
 					{% endfor %}
 					<!-- 分页 -->
@@ -89,8 +90,11 @@
             task_id = index + 1
             $(".show_list").show()
             $(".detail").empty()
-            window.location.href = "/NetSecurity/xhgz?sc=" + task_id
-
+            if (task_id == 4) {
+                window.location.href = "/NetSecurity/aqfw"
+            } else {
+                window.location.href = "/NetSecurity/xhgz?sc=" + task_id
+            }
             $("div.tab_box > div")   	//选取子节点。不选取子节点的话，会引起错误。如果里面还有div
                 .eq(index).show()   //显示 <li>元素对应的<div>元素
                 .siblings().hide(); //隐藏其它几个同辈的<div>元素
@@ -103,6 +107,12 @@
         function get_search() {
             let $search_val = $(".search_input").val()
             window.location.href = "/NetSecurity/xhgz?sc=4" + "&key=" + $search_val
+        }
+        // 详情
+        function aqfw_detail(params) {
+            console.log('安全服务详情')
+            window.location.href = '/NetSecurity/aqfwxq?pid=' + params
+
         }
         //
         function go_link(params) {

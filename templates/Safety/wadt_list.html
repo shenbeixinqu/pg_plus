@@ -1,0 +1,17 @@
+{% extends 'Safety/base_list.html' %}
+
+{% block title %}
+    网安动态
+{% endblock %}
+
+{% block content %}
+    {% for net in nets %}
+        <a href="{{ url_for('api.net_detail', net_id=net.id) }}">
+            <div class="list_part">
+                <div class="point"><img src="../../static/img/point.png"></div>
+                <div class="list_left">{{ net.name }}</div>
+                <div class="list_right">{{ net.addtime|date_format }}</div>
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}

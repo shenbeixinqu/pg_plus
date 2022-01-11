@@ -190,7 +190,7 @@ class CMSIndustry(db.Model):
     """
     reorder: 排序
     if_new: 是否有new图标
-    if_banner: 是否轮播
+    if_banner: 是否轮播 1: 全轮播 2：半轮播  3：不轮播
     banner_url: 轮播图片地址
     content: 图文信息
     kind: 种类    1: 热点关注, 2:网安动态, 3: 漏洞发布, 4:安全事件

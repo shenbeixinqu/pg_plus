@@ -1,0 +1,11 @@
+{% extends 'Safety/base_detail.html' %}
+
+{% block title %}
+    详情
+{% endblock %}
+
+{% block content %}
+    <div class="detail-content">
+        {{ building.content|safe }}
+    </div>
+{% endblock %}

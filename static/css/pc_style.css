@@ -3,7 +3,7 @@
 #left{float:left;}
 #right{float:right;}
 /* nav */
-.nav{width:800px;height:46px;float: right;padding-top: 68px;}
+.nav{width:720px;height:46px;float: right;padding-top: 68px;}
 .nav li{
     float: left;
     width: 120px;
@@ -33,8 +33,8 @@
 }
 /* tab切换 */
 /* CSS Document */
-.tab1 { width: 600px; float: left; margin-top: 30px; }
-.tab2 { width: 600px; float: right; margin-top: 30px; }
+.tab1 { width: 580px; float: left; margin-top: 30px; }
+.tab2 { width: 580px; float: right; margin-top: 30px; }
 .login_tab{
     width: 400px;
     float: right;
@@ -60,7 +60,7 @@
 .login_tab .tab_menu {border-bottom:solid 1px #396CEE;}
 .tab_box  dd{ width:100%; border-bottom:1px #b9cadf solid; margin:0 auto; padding-bottom:20px; padding-top:20px;}
 .y_1440{
-    width: 1440px;
+    width: 1200px;
     margin: 0 auto;
     position: relative;
 }
@@ -74,7 +74,6 @@
     width: 100%;
 }
 .logo{
-    padding-left: 118px;
     padding-top: 55px;
     float: left;
 }
@@ -153,7 +152,7 @@
     height: 60px;
 }
 .part1{
-    height: 450px;
+    height: 430px;
 }
 .part1_lunbo{
     width: 576px;
@@ -169,21 +168,19 @@
 .part1_pic img{
     width: 576px;
     height: 321px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .part1_tip{
     margin-top: 60px;
     float: right;
-    width: 670px;
+    width: 580px;
 }
 .part1_tip li{
     height: 40px;
     line-height: 14px;
-}
-.part1_tip a{
     font-size: 16px;
 }
-.part1_tip li a div{
+.part1_tip li div{
     display: inline-block;
 }
 .point{
@@ -193,7 +190,7 @@
     color: #3299FF;
 }
 .part1_tip_title{
-    width: 500px;
+    width: 460px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -251,23 +248,23 @@
 .part5_pic img{
     width: 120px;
     height: 127px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .part5_content{
     float: left;
-    padding-left: 30px;
-    width: 1290px;
+    padding-left: 75px;
+    width: 1000px;
  }
 .part5_content h1{
-   width: 1290px;
+   width: 1000px;
    font-size: 18px;
-   padding-top: 10px;
+   padding-top: 24px;
    overflow: hidden;
    text-overflow: ellipsis;
    white-space: nowrap;
 }
 .part5_content p{
-    width: 1290px;
+    width: 1000px;
     font-size: 14px;
     padding-top: 20px;
     overflow: hidden;
@@ -283,17 +280,19 @@
 }
 .part6_part{
     display: flex;
-    justify-content: space-around;
     margin-top: 30px;
+    justify-content: start;
 }
 .part6_part div{
     width: 120px;
     height: 80px;
+    padding-right: 25px;
+    padding-left: 25px;
 }
 .part6_part div img{
     width: 120px;
     height: 80px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .part7{
     height: 200px;
@@ -301,17 +300,19 @@
 }
 .part7_part{
     display: flex;
-    justify-content: space-around;
+    justify-content: start;
     margin-top: 30px;
 }
 .part7_part div{
     width: 120px;
     height: 80px;
+    padding-right: 25px;
+    padding-left: 25px;
 }
 .part7_part div img{
     width: 120px;
     height: 80px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .foot{
     height: 300px;
@@ -358,7 +359,7 @@
     padding-left: 25%;
     width: 172px;
     height: 177px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .tab1_part{
     margin-top: 30px;
@@ -511,7 +512,7 @@
     margin-left: 30px;
     height: 100px;
     float: left;
-    width: 680px;
+    width: 560px;
 }
 .part3_part:hover .tab2_part_time h1{
     color: #3299FF;
@@ -526,15 +527,16 @@
     color: #3299FF;
 }
 .example{
-  width: 380px;
+  width: 340px;
   float: left;
   margin-bottom: 30px;
 }
 .part4_example{
     margin: 0 auto;
-    width: 1150px;
+    width: 1100px;
     margin-top: 40px;
     overflow: hidden;
+    margin-left: 125px;
 }
 .example_pic{
     width: 120px;
@@ -545,13 +547,12 @@
     padding-left: 30px;
     float: left;
     width: 181px;
-    background: rgb(243 243 243);
     height: 120px;
 }
 .example_pic img{
     width: 120px;
     height: 120px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .example_name{
    font-size: 18px;
@@ -658,15 +659,14 @@
 }
 .list_left{
     float: left;
-    padding-left: 120px;
-    width: 260px;
+    width: 200px;
     height: 385px;
     padding-top: 50px;
 }
 .list_right{
     float: right;
-    padding-right: 120px;
-    width: 800px;
+    padding-right: 10px;
+    width: 890px;
     padding-top: 50px;
 }
 .list_head{
@@ -683,7 +683,7 @@
     height: 615px;
 }
 .list_part .tab1{
-    width: 260px;
+    width: 200px;
     margin-top: 0;
 }
 .list_part .tab_menu li {
@@ -691,9 +691,9 @@
     cursor: pointer;
     list-style: none;
     line-height: 75px;
-    width: 260px;
+    width: 200px;
     color: #38567a;
-    font-size: 20px;
+    font-size: 18px;
     height: 75px;
     border: 1px solid #ddd;
 }
@@ -855,7 +855,7 @@
     font-size: 14px;
 }
 .detail_content p img{
-    object-fit: cover;
+    object-fit: contain;
     width: 500px;
     height: 300px;
     margin: 0 auto;
@@ -904,9 +904,9 @@
     cursor: pointer;
     list-style: none;
     line-height: 75px;
-    width: 260px;
+    width: 200px;
     color: #38567a;
-    font-size: 20px;
+    font-size: 18px;
     height: 75px;
     border-bottom: 1px solid #ddd;
     background: #3299FF;
@@ -930,7 +930,7 @@
 .branch_list_pic img{
     width: 120px;
     height: 80px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .branch_list_content{
     float: left;
@@ -970,7 +970,7 @@
 .person_list_pic img{
     width: 120px;
     height: 120px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .person_list_content{
     float: left;
@@ -1010,7 +1010,7 @@
 .director_list_pic img{
     width: 120px;
     height: 120px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .director_list_content{
     float: left;

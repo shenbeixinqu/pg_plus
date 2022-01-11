@@ -15,7 +15,7 @@
         <a href="{{ url_for('api.law_detail', law_id=law.id) }}">
             <div class="list_part">
                 <div class="point"><img src="../../static/img/point.png"></div>
-                <div class="list_left">{{ law.title }}</div>
+                <div class="list_left">{{ law.name }}</div>
                 <div class="list_right">{{ law.addtime|date_format }}</div>
             </div>
         </a>

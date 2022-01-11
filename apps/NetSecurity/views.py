@@ -127,6 +127,7 @@ def index():
 	notices = CMSNotice.query.filter(CMSNotice.kind == 1).order_by(CMSNotice.adddate.desc(), CMSNotice.reorder.desc()).limit(7)
 	laws = CMSNotice.query.filter(CMSNotice.kind == 2).order_by(CMSNotice.addtime.desc()).limit(6)
 	leaders = CMSLeader.query.order_by(CMSLeader.addtime.desc()).limit(6)
+	two_leaders = CMSLeader.query.order_by(CMSLeader.addtime.desc()).offset(8).limit(6)
 	director_company = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 2).order_by(CMSMemberCompany.addtime.desc()).limit(2)
 	support_company = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 4).order_by(CMSMemberCompany.addtime.desc()).limit(7)
 	member_company = CMSMemberCompany.query.filter(CMSMemberCompany.kind == 3).order_by(CMSMemberCompany.addtime.desc()).limit(7)
@@ -166,6 +167,13 @@ def service():
 	key = request.args.get('key', '')
 	services = CMSBuilding.query.filter(CMSBuilding.kind == 4, CMSBuilding.name.contains(key)).order_by(CMSBuilding.adddate.desc(),CMSBuilding.reorder.desc()).paginate(page=page, per_page=3)
 	return render_template('NetSecurity/xhgz/aqfw.html', services=services.items, pagination=services)
+
+
+@bp.route('/aqfwxq', methods=['GET', 'POST'])
+def aqfw_detail():
+	id = int(request.args.get('pid'))
+	query = CMSBuilding.query.filter(CMSBuilding.id == id).first()
+	return render_template('NetSecurity/xhgz/xhgz_detail.html', query=query, kind=4)
 
 
 @bp.route('/hydt', methods=['GET', 'POST'])

@@ -79,10 +79,9 @@ def login():
     else:
         user = CMSUser.query.filter(CMSUser.phone == account).first()
         if not user:
-            print("账号密码错误")
             data["rc"] = 1
             data["msg"] = "手机号错误"
-            return success_return(msg="账号或密码错误", rc=1)
+            return success_return(msg="手机号或密验证码错误", rc=1)
         else:
             user_id = user.id
             token_data = generate_auth_token(user_id)
@@ -777,7 +776,8 @@ def building_list():
             "if_banner": q.if_banner,
             "banner_url": q.banner_url,
             "content": q.content,
-            "mold": q.mold,
+            "mold": "链接" if q.mold == '1' else "文件",
+            # "mold": q.mold,
             "link": q.link,
             "desc": q.desc,
             "file_dir": q.file_dir,
@@ -844,7 +844,7 @@ def industry_list():
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
-    querys = CMSIndustry.query.filter(CMSIndustry.kind == kind, CMSIndustry.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
+    querys = CMSIndustry.query.filter(CMSIndustry.kind == kind, CMSIndustry.name.contains(title)).order_by(CMSIndustry.reorder.asc(), CMSIndustry.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
     total = CMSIndustry.query.filter(CMSIndustry.kind == kind).count()
     data = []
     for q in querys:
@@ -917,7 +917,7 @@ def notice_list():
     pn = int(request.values.get("pn", 1))
     limit_num = int(request.values.get("limit", 10))
     kind = int(request.values.get('kind'))
-    querys = CMSNotice.query.filter(CMSNotice.kind == kind, CMSNotice.name.contains(title)).offset((pn-1)*limit_num).limit(limit_num).all()
+    querys = CMSNotice.query.filter(CMSNotice.kind == kind, CMSNotice.name.contains(title)).order_by(CMSNotice.addtime.desc()).offset((pn-1)*limit_num).limit(limit_num).all()
     total = CMSNotice.query.filter(CMSNotice.kind == kind).count()
     data = []
     for q in querys:

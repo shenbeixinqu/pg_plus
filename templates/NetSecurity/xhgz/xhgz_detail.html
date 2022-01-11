@@ -30,7 +30,7 @@
 						<li {% if kind == 1 %}class="selected"{% endif %}>党建活动</li>
 						<li {% if kind == 2 %}class="selected"{% endif %}>交流活动</li>
 						<li {% if kind == 3 %}class="selected"{% endif %}>教育培训</li>
-						<li>安全服务</li>
+                        <li {% if kind == 4 %}class="selected"{% endif %}>安全服务</li>
 						<div class="c"></div>
 					</ul>
 				</div>
@@ -46,10 +46,25 @@
                             <div class="list_head_title">交流活动>详情</div>
                         {% elif kind == 3 %}
                             <div class="list_head_title">教育培训>详情</div>
+                        {% elif kind == 4 %}
+                            <div class="list_head_title">安全服务>详情</div>
                         {% endif %}
 					</div>
 					<div class="detail_content">
-						<h1>{{ query.name }}</h1>
+                        {% if kind == 4 %}
+                                <h1>{{ query.name }}</h1>
+                                <div style="display:inline-block;width: 100%">
+                                {% if query.mold == '1' %}
+                                    <div class="mousego" onclick="go_link('{{ query.link }}')">点击前往</div>
+                                {% else %}
+                                    <div class="mousego go_download">
+                                        <a href="{{ query.file_dir }}" download="{{ query.file_name }}">点击下载</a>
+                                    </div>
+                                {% endif %}
+                                </div>
+                        {% else %}
+                                <h1>{{ query.name }}</h1>
+                        {% endif %}
 						<h4>{{ query.adddate }}</h4>
 						<p>
 							{{ query.content|safe }}
@@ -72,7 +87,12 @@
 				.siblings().removeClass("selected");  //去掉其它同辈<li>元素的高亮
 			var index = $div_li.index(this);  // 获取当前点击的<li>元素 在 全部li元素中的索引。
 			task_id = index + 1
-            window.location.href = "/NetSecurity/xhgz?sc=" + task_id
+            console.log('task_id', task_id, typeof task_id)
+            if (task_id == 4) {
+                window.location.href = "/NetSecurity/aqfw"
+            } else {
+                window.location.href = "/NetSecurity/xhgz?sc=" + task_id
+            }
             $("div.tab_box > div")   	//选取子节点。不选取子节点的话，会引起错误。如果里面还有div
 				.eq(index).show()   //显示 <li>元素对应的<div>元素
 				.siblings().hide(); //隐藏其它几个同辈的<div>元素
@@ -102,5 +122,8 @@
 		});
 
 	})
+     function go_link(params) {
+            window.location.href = params
+     }
 </script>
 {% endblock %}

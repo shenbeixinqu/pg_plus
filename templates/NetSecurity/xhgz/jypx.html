@@ -78,8 +78,11 @@
             task_id = index + 1
             $(".show_list").show()
             $(".detail").empty()
-            window.location.href = "/NetSecurity/xhgz?sc=" + task_id
-
+            if (task_id == 4) {
+                window.location.href = "/NetSecurity/aqfw"
+            } else {
+                window.location.href = "/NetSecurity/xhgz?sc=" + task_id
+            }
             $("div.tab_box > div")   	//选取子节点。不选取子节点的话，会引起错误。如果里面还有div
                 .eq(index).show()   //显示 <li>元素对应的<div>元素
                 .siblings().hide(); //隐藏其它几个同辈的<div>元素

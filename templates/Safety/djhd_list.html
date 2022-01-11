@@ -1,0 +1,17 @@
+{% extends 'Safety/base_list.html' %}
+
+{% block title %}
+    党建活动
+{% endblock %}
+
+{% block content %}
+    {% for building in buildings %}
+        <a href="{{ url_for('api.building_detail', building_id=building.id) }}">
+            <div class="list_part">
+                <div class="point"><img src="../../static/img/point.png"></div>
+                <div class="list_left">{{ building.name }}</div>
+                <div class="list_right">{{ building.addtime|date_format }}</div>
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}
