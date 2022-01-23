@@ -74,16 +74,37 @@ def login_validate():
 	ifCode = CMSMessageCode.query.filter(CMSMessageCode.phone == mobile, CMSMessageCode.sort == 1).order_by(CMSMessageCode.addtime.desc()).first()
 	user = CMSMember.query.filter(CMSMember.phone == mobile).first()
 	if user:
-		code = ifCode.code
-		time_delta = (datetime.now() - ifCode.addtime).seconds
-		if code == m_code and time_delta < 120:
-			login_user(user)
-			session[config.CMS_USER_ID] = user.id
+		validate_time = (datetime.now() - user.login_time).seconds
+		if user.error_count > 2 and validate_time < 1800:
+			result["status"] = '203'
+			result["msg"] = "错误次数过多，请30分钟后重试"
 			return jsonify(result)
 		else:
-			result["status"] = '202'
-			result["msg"] = "动态码错误"
-			return jsonify(result)
+			code = ifCode.code
+			time_delta = (datetime.now() - ifCode.addtime).seconds
+			if code == m_code and time_delta < 120:
+				user.error_count = 0
+				user.login_time = datetime.now()
+				login_user(user)
+				session[config.CMS_USER_ID] = user.id
+				db.session.commit()
+				return jsonify(result)
+			else:
+				if user.error_count == 0:
+					user.error_count = user.error_count + 1
+					user.login_time = datetime.now()
+				else:
+					error_time = (datetime.now() - user.login_time).seconds
+					if error_time > 60:
+						user.error_count = 1
+						user.login_time = datetime.now()
+					else:
+						user.error_count += 1
+						user.login_time = datetime.now()
+				db.session.commit()
+				result["status"] = '202'
+				result["msg"] = "动态码错误"
+				return jsonify(result)
 	else:
 		result["status"] = '201'
 		result["msg"] = "手机号不存在"

@@ -77,6 +77,8 @@ class CMSMember(db.Model, UserMixin):
     phone = db.Column(db.String(11))
     status = db.Column(db.Integer, default=1)
     addtime = db.Column(db.DateTime, default=datetime.now)
+    error_count = db.Column(db.Integer, default=0)
+    login_time = db.Column(db.DateTime, default=datetime.now)
 
 
 # 漏洞发布
