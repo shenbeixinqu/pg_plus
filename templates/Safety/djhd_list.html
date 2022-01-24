@@ -3,7 +3,9 @@
 {% block title %}
     党建活动
 {% endblock %}
-
+{% block img %}
+    <img src="../../static/img/djhd1.jpg">
+{% endblock %}
 {% block content %}
     {% for building in buildings %}
         <a href="{{ url_for('api.building_detail', building_id=building.id) }}">

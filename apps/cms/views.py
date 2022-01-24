@@ -202,7 +202,8 @@ def user_list():
     for q in querys:
         record = {
             "id": q.id,
-            "phone": q.phone
+            "phone": q.phone,
+            "desc": q.desc
         }
         data.append(record)
     return success_return(**{"data": data, "total":total})
@@ -213,14 +214,15 @@ def user_list():
 def add_user():
     data = request.get_data()
     data = json.loads(data)
-    print("Data", data)
     phone = data["phone"]
+    desc = data["desc"]
     if data["id"]:
         user_id = data["id"]
         user = CMSUser.query.get(user_id)
         user.phone = phone
+        user.desc = desc
     else:
-        user = CMSUser(phone=phone)
+        user = CMSUser(phone=phone, desc=desc)
         db.session.add(user)
     db.session.commit()
     return success_return()
@@ -726,8 +728,9 @@ def add_building():
         building = CMSBuilding.query.get(building_id)
         if kind != 4:
             banner = CMSBanner.query.filter(CMSBanner.o_id == building_id).first()
-            banner.banner_url = banner_url
-            banner.if_banner = if_banner
+            if banner:
+                banner.banner_url = banner_url
+                banner.if_banner = if_banner
         building.name = name
         building.reorder = reorder
         building.if_new = if_new
@@ -823,8 +826,9 @@ def add_industry():
         industry.if_banner = if_banner
         industry.content = content
         industry.banner_url = banner_url
-        banner.if_banner = if_banner
-        banner.banner_url = banner_url
+        if banner:
+            banner.if_banner = if_banner
+            banner.banner_url = banner_url
         db.session.commit()
     else:
         industry = CMSIndustry(name=name, reorder=reorder, if_new=if_new, if_banner=if_banner,
@@ -896,8 +900,9 @@ def add_notice():
         notice.if_banner = if_banner
         notice.content = content
         notice.banner_url = banner_url
-        banner.if_banner = if_banner
-        banner.banner_url = banner_url
+        if banner:
+            banner.if_banner = if_banner
+            banner.banner_url = banner_url
         db.session.commit()
     else:
         notice = CMSNotice(name=name, reorder=reorder, if_new=if_new,

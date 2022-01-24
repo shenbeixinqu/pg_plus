@@ -3,7 +3,9 @@
 {% block title %}
     通知公告
 {% endblock %}
-
+{% block img %}
+    <img src="../../static/img/tzgg1.jpg">
+{% endblock %}
 {% block content %}
     {% for advise in advises %}
         <a href="{{ url_for('api.advise_detail', advise_id=advise.id) }}">

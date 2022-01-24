@@ -3,7 +3,9 @@
 {% block title %}
     网安动态
 {% endblock %}
-
+{% block img %}
+    <img src="../../static/img/wadt1.jpg">
+{% endblock %}
 {% block content %}
     {% for net in nets %}
         <a href="{{ url_for('api.net_detail', net_id=net.id) }}">

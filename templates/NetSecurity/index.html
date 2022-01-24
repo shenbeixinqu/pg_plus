@@ -101,21 +101,23 @@
 					{% endfor %}
 						<div class="tab1_part_lookall mainmenu" onclick="xhgz_all(3)">查看全部>></div>
 				</div>
-				<div class="hide">
-                    {% for service in services %}
-                        <div class="tab2_part" onclick="aqfw_detail({{ service.id }})">
-                            <div class="tab2_part_time">
-                                <h1>{{ service.addtime|date_format|get_day }}</h1>
-                                <p>{{ service.addtime|date_format|get_year_month }}</p>
-                            </div>
-                            <div class="tab2_part_content">
-                                <h1>{% if service.if_new %}<img src="../../static/img/new.png">{% endif %}{{ service.name }}</h1>
-                                <h3>{{ service.content|striptags|truncate(50) }}</h3>
-                            </div>
-                        </div>
-					{% endfor %}
-						<div class="tab1_part_lookall mainmenu" onclick="aqfw_all()">查看全部>></div>
-				</div>
+                    <div class="hide">
+                        {% if current_user.name %}
+                            {% for service in services %}
+                                <div class="tab2_part" onclick="aqfw_detail({{ service.id }})">
+                                    <div class="tab2_part_time">
+                                        <h1>{{ service.addtime|date_format|get_day }}</h1>
+                                        <p>{{ service.addtime|date_format|get_year_month }}</p>
+                                    </div>
+                                    <div class="tab2_part_content">
+                                        <h1>{% if service.if_new %}<img src="../../static/img/new.png">{% endif %}{{ service.name }}</h1>
+                                        <p>{{ service.content|striptags|truncate(50) }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                                <div class="tab1_part_lookall mainmenu" onclick="aqfw_all()">查看全部>></div>
+                        {% endif %}
+                    </div>
 			</div>
 		</div>
 		<div class="tab2">
@@ -231,19 +233,21 @@
                         </div>
                     {% endfor %}
 				</div>
-                <div class="swiper-slide">
-                    {% for two_leader in two_leaders %}
-                        <div class="example">
-                            <div class="example_pic"><img src="{{ two_leader.photo }}"></div>
-                            <div class="example_content">
-                                <div class="example_name">姓名：<span>{{ two_leader.name }}</span></div>
-                                <div class="example_job">职务：<span>{{ two_leader.duty }}</span></div>
-                                <div class="example_area">工作单位：<span>{{ two_leader.company }}</span></div>
+                {% if if_two_leader %}
+                    <div class="swiper-slide">
+                        {% for two_leader in two_leaders %}
+                            <div class="example">
+                                <div class="example_pic"><img src="{{ two_leader.photo }}"></div>
+                                <div class="example_content">
+                                    <div class="example_name">姓名：<span>{{ two_leader.name }}</span></div>
+                                    <div class="example_job">职务：<span>{{ two_leader.duty }}</span></div>
+                                    <div class="example_area">工作单位：<span>{{ two_leader.company }}</span></div>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
-			</div>
+            {% endif %}
 			<div class="swiper-button-next"></div>
 			<div class="swiper-button-prev"></div>
 		</div>
@@ -321,8 +325,15 @@
             .siblings().removeClass("selected");  //去掉其它同辈<li>元素的高亮
         var index = $div_li.index(this);  // 获取当前点击的<li>元素 在 全部li元素中的索引。
         task_id = index + 1
+        console.log('task_id', task_id)
+        if (task_id == 4) {
+            {% if not current_user.name %}
+                window.location.href = '/NetSecurity/login'
+            {% endif %}
+        }
         $(".show_list").show()
         $(".detail").empty()
+
         $("div.tab_box > div")   	//选取子节点。不选取子节点的话，会引起错误。如果里面还有div
             .eq(index).show()   //显示 <li>元素对应的<div>元素
             .siblings().hide(); //隐藏其它几个同辈的<div>元素
