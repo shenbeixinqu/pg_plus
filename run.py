@@ -4,12 +4,14 @@ from config import configs
 from flask_cors import *
 from flask_login import LoginManager
 from apps.cms.models import CMSMember
+import datetime
 from flask_httpauth import HTTPBasicAuth
 
 
 def create_app(develop):
     config_name = "develop"
     app = Flask(__name__)
+    app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(minutes=10)
     CORS(app, supports_credentials=True)
     app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
     app.config.from_object(configs[config_name])
